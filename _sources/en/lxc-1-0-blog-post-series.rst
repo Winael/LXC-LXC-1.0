@@ -13,16 +13,16 @@ Since I’ve been doing quite a bit of work on LXC lately in prevision for the L
 
 As a result, I’m preparing a series of 10 blog posts covering what I think are some of the most exciting features of LXC. The planned structure is:
 
-`LXC 1.0: Your first Ubuntu container [1/10]`_
-`LXC 1.0: Your second container [2/10]`_
-`LXC 1.0: Advanced container usage [3/10]`_
-`LXC 1.0: Some more advanced container usage [4/10]`_
-LXC 1.0: Container storage [5/10]
-LXC 1.0: Security features [6/10]
-LXC 1.0: Unprivileged containers [7/10]
-LXC 1.0: Scripting with the API [8/10]
-LXC 1.0: GUI in containers [9/10]
-LXC 1.0: Troubleshooting and debugging [10/10]
+- `LXC 1.0: Your first Ubuntu container [1/10]`_
+- `LXC 1.0: Your second container [2/10]`_
+- `LXC 1.0: Advanced container usage [3/10]`_
+- `LXC 1.0: Some more advanced container usage [4/10]`_
+- LXC 1.0: Container storage [5/10]
+- LXC 1.0: Security features [6/10]
+- LXC 1.0: Unprivileged containers [7/10]
+- LXC 1.0: Scripting with the API [8/10]
+- LXC 1.0: GUI in containers [9/10]
+- LXC 1.0: Troubleshooting and debugging [10/10]
 
 While they are all titled LXC 1.0, most of the things I’ll be showing will work just as well on older LXC. However some of the features will need a very very recent version of LXC (as in, current upstream git). I’ll try to make that clear and will explain how to use our `stable backports in Ubuntu`_ or `current upstream snapshots from our PPA`_.
 
