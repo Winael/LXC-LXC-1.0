@@ -4,16 +4,12 @@
  LXC 1.0
 =========
 
----------
- Summary
----------
-
-.. contents:: Table des matières
+.. contents:: Summary
    :depth: 3
    
 ---------------
 
-.. include:: LXC_1.0_-_Blog_post_series_(0_sur_10).rst
+.. include:: lxc-1-0-blog-post-series.rst
 
 ---------------
 
