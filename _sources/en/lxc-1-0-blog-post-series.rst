@@ -30,11 +30,11 @@ I’ll be updating this first blog post with links to all of the posts in the se
 
 
 
-.. _LXC:: http://linuxcontainers.org/
-.. _`LXC 1.0: Your first Ubuntu container [1/10]`:: ../../_build/en/index.html#lxc-1-0-your-first-ubuntu-container
-.. _`LXC 1.0: Your second container [2/10]`:: ../../_build/en/index.html#lxc-1-0-your-second-container
-.. _`LXC 1.0: Advanced container usage [3/10]`:: ../../_build/en/index.html#lxc-1-0-advanced-container-usage
-.. _`LXC 1.0: Some more advanced container usage [4/10]`:: ../../_build/en/index.html#lxc-1-0-some-more-advanced-container-usage
+.. _LXC: http://linuxcontainers.org/
+.. _`LXC 1.0: Your first Ubuntu container [1/10]`: ../../_build/en/index.html#lxc-1-0-your-first-ubuntu-container
+.. _`LXC 1.0: Your second container [2/10]`: ../../_build/en/index.html#lxc-1-0-your-second-container
+.. _`LXC 1.0: Advanced container usage [3/10]`: ../../_build/en/index.html#lxc-1-0-advanced-container-usage
+.. _`LXC 1.0: Some more advanced container usage [4/10]`: ../../_build/en/index.html#lxc-1-0-some-more-advanced-container-usage
 
-.. _`stable backports in Ubuntu`:: https://launchpad.net/ubuntu/+source/lxc
-.. _`current upstream snapshots from our PPA`:: https://launchpad.net/~ubuntu-lxc/+archive/daily
+.. _`stable backports in Ubuntu`: https://launchpad.net/ubuntu/+source/lxc
+.. _`current upstream snapshots from our PPA`: https://launchpad.net/~ubuntu-lxc/+archive/daily
