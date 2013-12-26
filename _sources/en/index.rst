@@ -13,6 +13,6 @@
 
 ---------------
 
-.. include:: LXC_1.0_-_Votre_premier_conteneur_(1_sur_10).rst
+.. include:: lxc-1-0-your_fisrt_container.rst
 
 ---------------
