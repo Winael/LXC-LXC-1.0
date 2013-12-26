@@ -9,10 +9,10 @@
    
 ---------------
 
-.. include:: lxc-1-0-blog-post-series.rst
+.. include:: ./lxc-1-0-blog-post-series.rst
 
 ---------------
 
-.. include:: lxc-1-0-your_fisrt_container.rst
+.. include:: ./lxc-1-0-your_fisrt_container.rst
 
 ---------------
