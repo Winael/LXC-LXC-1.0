@@ -100,5 +100,5 @@ All of that is obviously configurable and will be covered in the coming posts.
 
 
 
-.. _LXC 1.0 blog post series: ../../_build/en/index.html#lxc-1-0-blog-post-series-0-10
+.. _LXC 1.0 blog post series: ../../_build/en/index.html#intro-blog-post-series
 .. _our PPA: https://launchpad.net/~ubuntu-lxc/+archive/daily
