@@ -56,27 +56,27 @@ Well, that’s been supported for a long time in Ubuntu and other distros by usi
 So here’s how auto-started containers work nowadays:
 
 As you may know, each container has a configuration file typically under
-/var/lib/lxc/<container name>/config
+``/var/lib/lxc/<container name>/config``
 
 That file is key = value with the list of valid keys being specified in `lxc.conf(5)`_.
 
 The startup related values that are available are:
 
-- lxc.start.auto = 0 (disabled) or 1 (enabled)
-- lxc.start.delay = 0 (delay in second to wait after starting the container)
-- lxc.start.order = 0 (priority of the container, higher value means starts earlier)
-- lxc.group = group1,group2,group3,… (groups the container is a member of)
+- ``lxc.start.auto = 0`` (disabled) or 1 (enabled)
+- ``lxc.start.delay = 0`` (delay in second to wait after starting the container)
+- ``lxc.start.order = 0`` (priority of the container, higher value means starts earlier)
+- ``lxc.group = group1,group2,group3,…`` (groups the container is a member of)
 
-When your machine starts, an init script will ask “lxc-autostart” to start all containers of a given group (by default, all containers which aren’t in any) in the right order and waiting the specified time between them.
+When your machine starts, an init script will ask ``lxc-autostart`` to start all containers of a given group (by default, all containers which aren’t in any) in the right order and waiting the specified time between them.
 
-To illustrate that, edit /var/lib/lxc/p1/config and append those lines to the file:
+To illustrate that, edit ``/var/lib/lxc/p1/config`` and append those lines to the file:
 
 .. code::
 
    lxc.start.auto = 1
    lxc.group = ubuntu
 
-And /var/lib/lxc/p2/config and append those lines:
+And ``/var/lib/lxc/p2/config`` and append those lines:
 
 .. code::
 
@@ -87,7 +87,7 @@ And /var/lib/lxc/p2/config and append those lines:
 
 Doing that means that only the p2 container will be started at boot time (since only those without a group are by default), the order value won’t matter since it’s alone and the init script will wait 5s before moving on.
 
-You may check what containers are automatically started using “lxc-ls”:
+You may check what containers are automatically started using ``lxc-ls``:
 
 .. code ::
 
@@ -97,7 +97,7 @@ You may check what containers are automatically started using “lxc-ls”:
    p1      RUNNING  10.0.3.128  2607:f2c0:f00f:2751:216:3eff:feb1:4c7f  YES (ubuntu)
    p2      RUNNING  10.0.3.165  2607:f2c0:f00f:2751:216:3eff:fe3a:f1c1  YES
 
-Now you can also manually play with those containers using the “lxc-autostart” command which let’s you start/stop/kill/reboot any container marked with lxc.start.auto=1.
+Now you can also manually play with those containers using the ``lxc-autostart`` command which let’s you start/stop/kill/reboot any container marked with ``lxc.start.auto=1``.
 
 For example, you could do:
 
@@ -105,71 +105,93 @@ For example, you could do:
 
    sudo lxc-autostart -a
 
-Which will start any container that has lxc.start.auto=1 (ignoring the lxc.group value) which in our case means it’ll first start p2 (because of order = 100), then wait 5s (because of delay = 5) and then start p1 and return immediately afterwards.
+Which will start any container that has ``lxc.start.auto=1`` (ignoring the lxc.group value) which in our case means it’ll first start p2 (because of order = 100), then wait 5s (because of delay = 5) and then start p1 and return immediately afterwards.
 
-If at that point you want to reboot all containers that are in the “ubuntu” group, you may do:
+If at that point you want to reboot all containers that are in the ``ubuntu`` group, you may do:
 
-sudo lxc-autostart -r -g ubuntu
-You can also pass “-L” with any of those commands which will simply print which containers would be affected and what the delays would be but won’t actually do anything (useful to integrate with other scripts).
+.. code::
+
+   sudo lxc-autostart -r -g ubuntu
+
+You can also pass ``-L`` with any of those commands which will simply print which containers would be affected and what the delays would be but won’t actually do anything (useful to integrate with other scripts).
 
 Freezing your containers
+++++++++++++++++++++++++
 
 Sometimes containers may be running daemons that take time to shutdown or restart, yet you don’t want to run the container because you’re not actively using it at the time.
 
-In such cases, “sudo lxc-freeze -n <container name>” can be used. That very simply freezes all the processes in the container so they won’t get any time allocated by the scheduler. However the processes will still exist and will still use whatever memory they used to.
+In such cases, ``sudo lxc-freeze -n <container name>`` can be used. That very simply freezes all the processes in the container so they won’t get any time allocated by the scheduler. However the processes will still exist and will still use whatever memory they used to.
 
-Once you need the service again, just call “sudo lxc-unfreeze -n <container name>” and all the processes will be restarted.
+Once you need the service again, just call ``sudo lxc-unfreeze -n <container name>`` and all the processes will be restarted.
 
 Networking
+++++++++++
 
 As you may have noticed in the configuration file while you were setting the auto-start settings, LXC has a relatively flexible network configuration.
-By default in Ubuntu we allocate one “veth” device per container which is bridged into a “lxcbr0″ bridge on the host on which we run a minimal dnsmasq dhcp server.
+By default in Ubuntu we allocate one ``veth`` device per container which is bridged into a ``lxcbr0`` bridge on the host on which we run a minimal dnsmasq dhcp server.
 
-While that’s usually good enough for most people. You may want something slightly more complex, such as multiple network interfaces in the container or passing through physical network interfaces, … The details of all of those options are listed in lxc.conf(5) so I won’t repeat them here, however here’s a quick example of what can be done.
+While that’s usually good enough for most people. You may want something slightly more complex, such as multiple network interfaces in the container or passing through physical network interfaces, … The details of all of those options are listed in `lxc.conf(5)`_ so I won’t repeat them here, however here’s a quick example of what can be done.
 
-lxc.network.type = veth
-lxc.network.hwaddr = 00:16:3e:3a:f1:c1
-lxc.network.flags = up
-lxc.network.link = lxcbr0
-lxc.network.name = eth0
+.. code::
 
-lxc.network.type = veth
-lxc.network.link = virbr0
-lxc.network.name = virt0
+   lxc.network.type = veth
+   lxc.network.hwaddr = 00:16:3e:3a:f1:c1
+   lxc.network.flags = up
+   lxc.network.link = lxcbr0
+   lxc.network.name = eth0
 
-lxc.network.type = phys
-lxc.network.link = eth2
-lxc.network.name = eth1
-With this setup my container will have 3 interfaces, eth0 will be the usual veth device in the lxcbr0 bridge, eth1 will be the host’s eth2 moved inside the container (it’ll disappear from the host while the container is running) and virt0 will be another veth device in the virbr0 bridge on the host.
+   lxc.network.type = veth
+   lxc.network.link = virbr0
+   lxc.network.name = virt0
+
+   lxc.network.type = phys
+   lxc.network.link = eth2
+   lxc.network.name = eth1
+
+With this setup my container will have 3 interfaces, ``eth0`` will be the usual veth device in the ``lxcbr0`` bridge, ``eth1`` will be the host’s ``eth2`` moved inside the container (it’ll disappear from the host while the container is running) and ``virt0`` will be another veth device in the ``virbr0`` bridge on the host.
 
 Those last two interfaces don’t have a mac address or network flags set, so they’ll get a random mac address at boot time (non-persistent) and it’ll be up to the container to bring the link up.
 
 Attach
+++++++
 
-Provided you are running a sufficiently recent kernel, that is 3.8 or higher, you may use the “lxc-attach” tool. It’s most basic feature is to give you a standard shell inside a running container:
+Provided you are running a sufficiently recent kernel, that is 3.8 or higher, you may use the ``lxc-attach`` tool. It’s most basic feature is to give you a standard shell inside a running container:
 
-sudo lxc-attach -n p1
+.. code::
+
+   sudo lxc-attach -n p1
+
 You may also use it from scripts to run actions in the container, such as:
 
-sudo lxc-attach -n p1 -- restart ssh
+.. code::
+
+   sudo lxc-attach -n p1 -- restart ssh
+
 But it’s a lot more powerful than that. For example, take:
 
-sudo lxc-attach -n p1 -e -s 'NETWORK|UTSNAME'
-In that case, you’ll get a shell that says “root@p1″ (thanks to UTSNAME), running “ifconfig -a” from there will list the container’s network interfaces. But everything else will be that of the host. Also passing “-e” means that the cgroup, apparmor, … restrictions won’t apply to any processes started from that shell.
+.. code::
+   
+   sudo lxc-attach -n p1 -e -s 'NETWORK|UTSNAME'
+
+In that case, you’ll get a shell that says ``root@p1`` (thanks to ``UTSNAME``), running ``ifconfig -a`` from there will list the container’s network interfaces. But everything else will be that of the host. Also passing ``-e`` means that the cgroup, apparmor, … restrictions won’t apply to any processes started from that shell.
 
 This can be very useful at times to spawn a software located on the host but inside the container’s network or pid namespace.
 
 Passing devices to a running container
+++++++++++++++++++++++++++++++++++++++
 
 It’s great being able to enter and leave the container at will, but what about accessing some random devices on your host?
 
 By default LXC will prevent any such access using the devices cgroup as a filtering mechanism. You could edit the container configuration to allow the right additional devices and then restart the container.
 
-But for one-off things, there’s also a very convenient tool called “lxc-device”.
+But for one-off things, there’s also a very convenient tool called ``lxc-device``.
 With it, you can simply do:
 
-sudo lxc-device add -n p1 /dev/ttyUSB0 /dev/ttyS0
-Which will add (mknod) /dev/ttyS0 in the container with the same type/major/minor as /dev/ttyUSB0 and then add the matching cgroup entry allowing access from the container.
+.. code::
+
+   sudo lxc-device add -n p1 /dev/ttyUSB0 /dev/ttyS0
+
+Which will add (mknod) ``/dev/ttyS0`` in the container with the same type/major/minor as ``/dev/ttyUSB0`` and then add the matching cgroup entry allowing access from the container.
 
 The same tool also allows moving network devices from the host to within the container.
 
