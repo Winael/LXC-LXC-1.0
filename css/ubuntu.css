@@ -12,6 +12,12 @@ detailed description here.]
 
 /* Your customizations go here.  For example: */
 
+html {
+
+background: #EFEFEF
+
+}
+
 body {
 
 font-size: 16px;
@@ -38,6 +44,17 @@ z-index: 1;
 width: 984px;
 clear: both;
 margin: 0 auto;
+
+}
+
+.title {
+
+background-color: #DD4814;
+color: #fff;
+font-family: 'Ubuntu';
+font-weight: bold;
+padding-left: 40px;
+margin: 20px 50px 100px;
 
 }
 
@@ -81,5 +98,11 @@ text-decoration: none;
 p, li {
 
 color: #333;
+
+}
+
+.code, .literal-block, .pre, .literal {
+
+background-color: #EFEFEF;
 
 }
