@@ -124,39 +124,53 @@ background-color: #EFEFEF;
 
 <!-- -*- coding: utf-8 -*- -->
 <div class="section" id="summary">
-<h1><a class="toc-backref" href="#id8">Summary</a></h1>
+<h1><a class="toc-backref" href="#id10">Summary</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#summary" id="id8">Summary</a></li>
-<li><a class="reference internal" href="#intro-blog-post-series" id="id9">Intro.  Blog post series</a></li>
-<li><a class="reference internal" href="#id1" id="id10">1. Your first Ubuntu container</a><ul>
-<li><a class="reference internal" href="#so-whats-lxc" id="id11">So what’s LXC ?</a></li>
-<li><a class="reference internal" href="#lxc-1-0" id="id12">LXC 1.0</a></li>
-<li><a class="reference internal" href="#how-to-get-it" id="id13">How to get it ?</a></li>
-<li><a class="reference internal" href="#what-about-that-first-container" id="id14">What about that first container ?</a></li>
+<li><a class="reference internal" href="#summary" id="id10">Summary</a></li>
+<li><a class="reference internal" href="#intro-blog-post-series" id="id11">Intro.  Blog post series</a></li>
+<li><a class="reference internal" href="#id1" id="id12">1. Your first Ubuntu container</a><ul>
+<li><a class="reference internal" href="#so-whats-lxc" id="id13">So what’s LXC ?</a></li>
+<li><a class="reference internal" href="#lxc-1-0" id="id14">LXC 1.0</a></li>
+<li><a class="reference internal" href="#how-to-get-it" id="id15">How to get it ?</a></li>
+<li><a class="reference internal" href="#what-about-that-first-container" id="id16">What about that first container ?</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id2" id="id15">2. Your second container</a><ul>
-<li><a class="reference internal" href="#more-templates" id="id16">More templates</a></li>
-<li><a class="reference internal" href="#auto-start" id="id17">Auto-start</a></li>
-<li><a class="reference internal" href="#freezing-your-containers" id="id18">Freezing your containers</a></li>
-<li><a class="reference internal" href="#networking" id="id19">Networking</a></li>
-<li><a class="reference internal" href="#attach" id="id20">Attach</a></li>
-<li><a class="reference internal" href="#passing-devices-to-a-running-container" id="id21">Passing devices to a running container</a></li>
+<li><a class="reference internal" href="#id2" id="id17">2. Your second container</a><ul>
+<li><a class="reference internal" href="#more-templates" id="id18">More templates</a></li>
+<li><a class="reference internal" href="#auto-start" id="id19">Auto-start</a></li>
+<li><a class="reference internal" href="#freezing-your-containers" id="id20">Freezing your containers</a></li>
+<li><a class="reference internal" href="#networking" id="id21">Networking</a></li>
+<li><a class="reference internal" href="#attach" id="id22">Attach</a></li>
+<li><a class="reference internal" href="#passing-devices-to-a-running-container" id="id23">Passing devices to a running container</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id4" id="id22">3. Advanced container usage</a><ul>
-<li><a class="reference internal" href="#exchanging-data-with-a-container" id="id23">Exchanging data with a container</a></li>
-<li><a class="reference internal" href="#container-nesting" id="id24">Container nesting</a></li>
-<li><a class="reference internal" href="#raw-network-access" id="id25">Raw network access</a></li>
+<li><a class="reference internal" href="#id4" id="id24">3. Advanced container usage</a><ul>
+<li><a class="reference internal" href="#exchanging-data-with-a-container" id="id25">Exchanging data with a container</a></li>
+<li><a class="reference internal" href="#container-nesting" id="id26">Container nesting</a></li>
+<li><a class="reference internal" href="#raw-network-access" id="id27">Raw network access</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id6" id="id26">4. Some more advanced container usage</a><ul>
-<li><a class="reference internal" href="#running-foreign-architectures" id="id27">Running foreign architectures</a></li>
-<li><a class="reference internal" href="#hooks" id="id28">Hooks</a></li>
-<li><a class="reference internal" href="#android-containers" id="id29">Android containers</a></li>
-<li><a class="reference internal" href="#lxc-on-android-devices" id="id30">LXC on Android devices</a></li>
+<li><a class="reference internal" href="#id6" id="id28">4. Some more advanced container usage</a><ul>
+<li><a class="reference internal" href="#running-foreign-architectures" id="id29">Running foreign architectures</a></li>
+<li><a class="reference internal" href="#hooks" id="id30">Hooks</a></li>
+<li><a class="reference internal" href="#android-containers" id="id31">Android containers</a></li>
+<li><a class="reference internal" href="#lxc-on-android-devices" id="id32">LXC on Android devices</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#id8" id="id33">5. Container storage</a><ul>
+<li><a class="reference internal" href="#storage-backingstores" id="id34">Storage backingstores</a><ul>
+<li><a class="reference internal" href="#directory-based-storage-none-and-dir" id="id35">directory based storage (none and dir)</a></li>
+<li><a class="reference internal" href="#btrfs" id="id36">btrfs</a></li>
+<li><a class="reference internal" href="#lvm" id="id37">lvm</a></li>
+<li><a class="reference internal" href="#overlayfs" id="id38">overlayfs</a></li>
+<li><a class="reference internal" href="#zfs" id="id39">zfs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#standard-paths" id="id40">Standard paths</a></li>
+<li><a class="reference internal" href="#cloning-containers" id="id41">Cloning containers</a></li>
+<li><a class="reference internal" href="#snapshotting" id="id42">Snapshotting</a></li>
 </ul>
 </li>
 </ul>
@@ -164,7 +178,7 @@ background-color: #EFEFEF;
 <!-- -*- coding: utf-8 -*- -->
 </div>
 <div class="section" id="intro-blog-post-series">
-<h1><a class="toc-backref" href="#id9">Intro.  Blog post series</a></h1>
+<h1><a class="toc-backref" href="#id11">Intro.  Blog post series</a></h1>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -183,7 +197,7 @@ background-color: #EFEFEF;
 <li><a class="reference external" href="../../_build/en/index.html#your-second-container">2. Your second container</a></li>
 <li><a class="reference external" href="../../_build/en/index.html#advanced-container-usage">3. Advanced container usage</a></li>
 <li><a class="reference external" href="../../_build/en/index.html#lxc-1-0-some-more-advanced-container-usage">4. Some more advanced container usage</a></li>
-<li>LXC 1.0: Container storage [5/10]</li>
+<li><a class="reference external" href="../../_build/en/index.html#lxc-1-0-container-storage">5. Container storage</a></li>
 <li>LXC 1.0: Security features [6/10]</li>
 <li>LXC 1.0: Unprivileged containers [7/10]</li>
 <li>LXC 1.0: Scripting with the API [8/10]</li>
@@ -195,7 +209,7 @@ background-color: #EFEFEF;
 <!-- -*- coding: utf-8 -*- -->
 </div>
 <div class="section" id="id1">
-<h1><a class="toc-backref" href="#id10">1. Your first Ubuntu container</a></h1>
+<h1><a class="toc-backref" href="#id12">1. Your first Ubuntu container</a></h1>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -208,7 +222,7 @@ background-color: #EFEFEF;
 </table>
 <p>This is post 1 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
 <div class="section" id="so-whats-lxc">
-<h2><a class="toc-backref" href="#id11">So what’s LXC ?</a></h2>
+<h2><a class="toc-backref" href="#id13">So what’s LXC ?</a></h2>
 <p>Most of you probably already know the answer to that one, but here it goes:</p>
 <blockquote class="epigraph">
 <em>“LXC is a userspace interface for the Linux kernel containment features.</em>
@@ -220,13 +234,13 @@ background-color: #EFEFEF;
 <p>And mailing lists at: <a class="reference external" href="http://lists.linuxcontainers.org">http://lists.linuxcontainers.org</a></p>
 </div>
 <div class="section" id="lxc-1-0">
-<h2><a class="toc-backref" href="#id12">LXC 1.0</a></h2>
+<h2><a class="toc-backref" href="#id14">LXC 1.0</a></h2>
 <p>So what’s that 1.0 release all about?</p>
 <p>Well, simply put it’s going to be the first real stable release of LXC and the first we’ll be supporting for 5 years with bugfix releases. It’s also the one which will be included in Ubuntu 14.04 LTS to be released in April 2014.</p>
 <p>It’s also going to come with a stable API and a set of bindings, quite a few interesting new features which will be detailed in the next few posts and support for a wide range of host and guest distributions (including Android).</p>
 </div>
 <div class="section" id="how-to-get-it">
-<h2><a class="toc-backref" href="#id13">How to get it ?</a></h2>
+<h2><a class="toc-backref" href="#id15">How to get it ?</a></h2>
 <p>I’m assuming most of you will be using Ubuntu. For the next few posts, I’ll myself be using the current upstream daily builds on Ubuntu 14.04 but we maintain daily builds on 12.04, 12.10, 13.04, 13.10 and 14.04, so if you want the latest upstream code, you can use <a class="reference external" href="https://launchpad.net/~ubuntu-lxc/+archive/daily">our PPA</a>.</p>
 <p>Alternatively, LXC is also directly in Ubuntu and quite usable since Ubuntu 12.04 LTS. You can choose to use the version which comes with whatever release you are on, or you can use one the backported version we maintain.</p>
 <p>If you want to build it yourself, you can do (not recommended when you can simply use the packages for your distribution):</p>
@@ -241,7 +255,7 @@ sudo make install
 </pre>
 </div>
 <div class="section" id="what-about-that-first-container">
-<h2><a class="toc-backref" href="#id14">What about that first container ?</a></h2>
+<h2><a class="toc-backref" href="#id16">What about that first container ?</a></h2>
 <p>Oh right, that was actually the goal of this post wasn’t it?</p>
 <p>Ok, so now that you have LXC installed, hopefully using the Ubuntu packages, it’s really as simple as:</p>
 <pre class="code literal-block">
@@ -280,7 +294,7 @@ All of that is obviously configurable and will be covered in the coming posts.</
 </div>
 </div>
 <div class="section" id="id2">
-<h1><a class="toc-backref" href="#id15">2. Your second container</a></h1>
+<h1><a class="toc-backref" href="#id17">2. Your second container</a></h1>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -293,7 +307,7 @@ All of that is obviously configurable and will be covered in the coming posts.</
 </table>
 <p>This is post 2 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
 <div class="section" id="more-templates">
-<h2><a class="toc-backref" href="#id16">More templates</a></h2>
+<h2><a class="toc-backref" href="#id18">More templates</a></h2>
 <p>So at this point you should have a working Ubuntu container that’s called <tt class="docutils literal">p1</tt> and was created using the default template called simply enough <tt class="docutils literal">ubuntu</tt>.</p>
 <p>But LXC supports much more than just standard Ubuntu. In fact, in <a class="reference external" href="https://github.com/lxc/lxc/tree/master/templates">current upstream git</a> (and daily PPA), we support Alpine Linux, Alt Linux, Arch Linux, busybox, CentOS, Cirros, Debian, Fedora, OpenMandriva, OpenSUSE, Oracle, Plamo, sshd, Ubuntu Cloud and Ubuntu.</p>
 <p>All of those can usually be found in /usr/share/lxc/templates. They also all typically have extra advanced options which you can get to by passing <tt class="docutils literal"><span class="pre">--help</span></tt> after the <tt class="docutils literal"><span class="pre">lxc-create</span></tt> call (the <tt class="docutils literal"><span class="pre">--</span></tt> is required to split <tt class="docutils literal"><span class="pre">lxc-create</span></tt> options from the template’s).</p>
@@ -315,7 +329,7 @@ sudo lxc-start -n p2
 <p>One last note on templates. Most of them use a local cache, so the initial bootstrap of a container for a given arch will be slow, any subsequent one will just be a local copy from the cache and will be much faster.</p>
 </div>
 <div class="section" id="auto-start">
-<h2><a class="toc-backref" href="#id17">Auto-start</a></h2>
+<h2><a class="toc-backref" href="#id19">Auto-start</a></h2>
 <p>So what if you want to start a container automatically at boot time?</p>
 <p>Well, that’s been supported for a long time in Ubuntu and other distros by using some init scripts and symlinks in /etc, but very recently (two days ago), this has now been implemented cleanly upstream.</p>
 <p>So here’s how auto-started containers work nowadays:</p>
@@ -363,13 +377,13 @@ sudo lxc-autostart -r -g ubuntu
 <p>You can also pass <tt class="docutils literal"><span class="pre">-L</span></tt> with any of those commands which will simply print which containers would be affected and what the delays would be but won’t actually do anything (useful to integrate with other scripts).</p>
 </div>
 <div class="section" id="freezing-your-containers">
-<h2><a class="toc-backref" href="#id18">Freezing your containers</a></h2>
+<h2><a class="toc-backref" href="#id20">Freezing your containers</a></h2>
 <p>Sometimes containers may be running daemons that take time to shutdown or restart, yet you don’t want to run the container because you’re not actively using it at the time.</p>
 <p>In such cases, <tt class="docutils literal">sudo <span class="pre">lxc-freeze</span> <span class="pre">-n</span> &lt;container name&gt;</tt> can be used. That very simply freezes all the processes in the container so they won’t get any time allocated by the scheduler. However the processes will still exist and will still use whatever memory they used to.</p>
 <p>Once you need the service again, just call <tt class="docutils literal">sudo <span class="pre">lxc-unfreeze</span> <span class="pre">-n</span> &lt;container name&gt;</tt> and all the processes will be restarted.</p>
 </div>
 <div class="section" id="networking">
-<h2><a class="toc-backref" href="#id19">Networking</a></h2>
+<h2><a class="toc-backref" href="#id21">Networking</a></h2>
 <p>As you may have noticed in the configuration file while you were setting the auto-start settings, LXC has a relatively flexible network configuration.
 By default in Ubuntu we allocate one <tt class="docutils literal">veth</tt> device per container which is bridged into a <tt class="docutils literal">lxcbr0</tt> bridge on the host on which we run a minimal dnsmasq dhcp server.</p>
 <p>While that’s usually good enough for most people. You may want something slightly more complex, such as multiple network interfaces in the container or passing through physical network interfaces, … The details of all of those options are listed in <a class="reference external" href="http://qa.linuxcontainers.org/master/current/doc/man/lxc.conf.5.html">lxc.conf(5)</a> so I won’t repeat them here, however here’s a quick example of what can be done.</p>
@@ -392,7 +406,7 @@ lxc.network.name = eth1
 <p>Those last two interfaces don’t have a mac address or network flags set, so they’ll get a random mac address at boot time (non-persistent) and it’ll be up to the container to bring the link up.</p>
 </div>
 <div class="section" id="attach">
-<h2><a class="toc-backref" href="#id20">Attach</a></h2>
+<h2><a class="toc-backref" href="#id22">Attach</a></h2>
 <p>Provided you are running a sufficiently recent kernel, that is 3.8 or higher, you may use the <tt class="docutils literal"><span class="pre">lxc-attach</span></tt> tool. It’s most basic feature is to give you a standard shell inside a running container:</p>
 <pre class="code literal-block">
 sudo lxc-attach -n p1
@@ -409,7 +423,7 @@ sudo lxc-attach -n p1 -e -s 'NETWORK|UTSNAME'
 <p>This can be very useful at times to spawn a software located on the host but inside the container’s network or pid namespace.</p>
 </div>
 <div class="section" id="passing-devices-to-a-running-container">
-<h2><a class="toc-backref" href="#id21">Passing devices to a running container</a></h2>
+<h2><a class="toc-backref" href="#id23">Passing devices to a running container</a></h2>
 <p>It’s great being able to enter and leave the container at will, but what about accessing some random devices on your host?</p>
 <p>By default LXC will prevent any such access using the devices cgroup as a filtering mechanism. You could edit the container configuration to allow the right additional devices and then restart the container.</p>
 <p>But for one-off things, there’s also a very convenient tool called <tt class="docutils literal"><span class="pre">lxc-device</span></tt>.
@@ -423,7 +437,7 @@ sudo lxc-device add -n p1 /dev/ttyUSB0 /dev/ttyS0
 </div>
 </div>
 <div class="section" id="id4">
-<h1><a class="toc-backref" href="#id22">3. Advanced container usage</a></h1>
+<h1><a class="toc-backref" href="#id24">3. Advanced container usage</a></h1>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -436,7 +450,7 @@ sudo lxc-device add -n p1 /dev/ttyUSB0 /dev/ttyS0
 </table>
 <p>This is post 3 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
 <div class="section" id="exchanging-data-with-a-container">
-<h2><a class="toc-backref" href="#id23">Exchanging data with a container</a></h2>
+<h2><a class="toc-backref" href="#id25">Exchanging data with a container</a></h2>
 <p>Because containers directly share their filesystem with the host, there’s a lot of things that can be done to pass data into a container or to get stuff out.</p>
 <p>The first obvious one is that you can access the container’s root at:
 <tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container</span> <span class="pre">name&gt;/rootfs/</span></tt></p>
@@ -454,7 +468,7 @@ Well, let’s say we want to have our host’s <tt class="docutils literal">/var
 <p>Now restart <tt class="docutils literal">p1</tt> and you’ll see <tt class="docutils literal">/var/cache/lxc</tt> in there, showing the same thing as you have on the host. Note that if you want the container to only be able to read the data, you can simply add <tt class="docutils literal">ro</tt> as a mount flag in the fstab.</p>
 </div>
 <div class="section" id="container-nesting">
-<h2><a class="toc-backref" href="#id24">Container nesting</a></h2>
+<h2><a class="toc-backref" href="#id26">Container nesting</a></h2>
 <p>One pretty cool feature of LXC (though admittedly not very useful to most people) is support for nesting. That is, you can run LXC within LXC with pretty much no overhead.</p>
 <p>By default this is blocked in Ubuntu as allowing this at the moment requires letting the container mount cgroupfs which will let it escape any cgroup restrictions that’s applied to it. It’s not an issue in most environment, but if you don’t trust your containers at all, then you shouldn’t be using nesting at this point.</p>
 <p>So to enable nesting for our <tt class="docutils literal">p1</tt> container, edit <tt class="docutils literal">/var/lib/lxc/p1/config</tt> and add:</p>
@@ -479,7 +493,7 @@ p2      RUNNING  10.0.3.128           -      NO
 <p>There’s no real limit to the number of level you can go, though as fun as it may be, it’s hard to imagine why 10 levels of nesting would be of much use to anyone :)</p>
 </div>
 <div class="section" id="raw-network-access">
-<h2><a class="toc-backref" href="#id25">Raw network access</a></h2>
+<h2><a class="toc-backref" href="#id27">Raw network access</a></h2>
 <p>In the previous post I mentioned passing raw devices from the host inside the container. One such container I use relatively often is when working with a remote network over a VPN. That network uses OpenVPN and a raw ethernet tap device.</p>
 <p>I needed to have a completely isolated system access that VPN so I wouldn’t get mixed routes and it’d appear just like any other machine to the machines on the remote site.</p>
 <p>All I had to do to make this work was set my container’s network configuration to:</p>
@@ -495,7 +509,7 @@ lxc.network.name = eth0
 </div>
 </div>
 <div class="section" id="id6">
-<h1><a class="toc-backref" href="#id26">4. Some more advanced container usage</a></h1>
+<h1><a class="toc-backref" href="#id28">4. Some more advanced container usage</a></h1>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -508,7 +522,7 @@ lxc.network.name = eth0
 </table>
 <p>This is post 4 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
 <div class="section" id="running-foreign-architectures">
-<h2><a class="toc-backref" href="#id27">Running foreign architectures</a></h2>
+<h2><a class="toc-backref" href="#id29">Running foreign architectures</a></h2>
 <p>By default LXC will only let you run containers of one of the architectures supported by the host. That makes sense since after all, your CPU doesn’t know what to do with anything else.</p>
 <p>Except that we have this convenient package called <tt class="docutils literal"><span class="pre">qemu-user-static</span></tt> which contains a whole bunch of emulators for quite a few interesting architectures. The most common and useful of those is qemu-arm-static which will let you run most armv7 binaries directly on x86.</p>
 <p>The <tt class="docutils literal">ubuntu</tt> template knows how to make use of <tt class="docutils literal"><span class="pre">qemu-user-static</span></tt>, so you can simply check that you have the <tt class="docutils literal"><span class="pre">qemu-user-static</span></tt> package installed, then run:</p>
@@ -533,7 +547,7 @@ stgraber&#64;castiana:~$
 </pre>
 </div>
 <div class="section" id="hooks">
-<h2><a class="toc-backref" href="#id28">Hooks</a></h2>
+<h2><a class="toc-backref" href="#id30">Hooks</a></h2>
 <p>As we know people like to script their containers and that our configuration can’t always accommodate every single use case, we’ve introduced a set of hooks which you may use.</p>
 <p>Those hooks are simple paths to an executable file which LXC will run at some specific time in the lifetime of the container. Those executables will also be passed a set of useful environment variables so they can easily know what container invoked them and what to do.</p>
 <p>The currently available hooks are (details in <a class="reference external" href="http://qa.linuxcontainers.org/master/current/doc/man/lxc.conf.5.html">lxc.conf(5)</a>):</p>
@@ -575,7 +589,7 @@ LXC_NAME=p1
 </pre>
 </div>
 <div class="section" id="android-containers">
-<h2><a class="toc-backref" href="#id29">Android containers</a></h2>
+<h2><a class="toc-backref" href="#id31">Android containers</a></h2>
 <p>I’ve often been asked whether it was possible to run Android in an LXC container. Well, the short answer is yes. However it’s not very simple and it really depends on what you want to do with it.</p>
 <p>The first thing you’ll need if you want to do this is get your machine to run an Android kernel, you’ll need to have any modules needed by Android built and loaded before you can start the container.</p>
 <p>Once you have that, you’ll need to create a new container by hand.
@@ -619,7 +633,7 @@ lxc-start -n android -- /init
 </pre>
 </div>
 <div class="section" id="lxc-on-android-devices">
-<h2><a class="toc-backref" href="#id30">LXC on Android devices</a></h2>
+<h2><a class="toc-backref" href="#id32">LXC on Android devices</a></h2>
 <p>So now that we’ve seen how to run Android in LXC, let’s talk about running Ubuntu on Android in LXC.</p>
 <p>LXC has been ported to bionic (Android’s C library) and while not feature-equivalent with its glibc build, it’s still good enough to be used.</p>
 <p>Unfortunately due to the kind of low level access LXC requires and the fact that our primary focus isn’t Android, installation could be easier…You won’t be finding LXC on the Google PlayStore and we won’t provide you with a .apk that you can install.</p>
@@ -629,6 +643,151 @@ lxc-start -n android -- /init
 <p>As scary as this may sound, it’s usually not that difficult as long as your device is unlocked and you’re already using an alternate ROM like Cyanogen which usually make their kernel git tree easily available.</p>
 <p>Once your device has a working kernel, all you need to do is unpack our tarball as root in your device’s <tt class="docutils literal">/</tt> directory, copy an arm container to <tt class="docutils literal"><span class="pre">/data/lxc/containers/&lt;container</span> name&gt;</tt>, get into <tt class="docutils literal">/data/lxc</tt> and run <tt class="docutils literal"><span class="pre">./run-lxc</span> <span class="pre">lxc-start</span> <span class="pre">-n</span> &lt;container name&gt;”</tt>.
 A few seconds later you’ll be greeted by a login prompt.</p>
+<!-- -*- coding: utf-8 -*- -->
+</div>
+</div>
+<div class="section" id="id8">
+<h1><a class="toc-backref" href="#id33">5. Container storage</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Date:</th><td class="field-body">2013/12/27</td>
+</tr>
+<tr class="field"><th class="field-name">Author:</th><td class="field-body">Stéphane Graber</td>
+</tr>
+</tbody>
+</table>
+<p>This is post 5 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
+<div class="section" id="storage-backingstores">
+<h2><a class="toc-backref" href="#id34">Storage backingstores</a></h2>
+<p>LXC supports a variety of storage backends (also referred to as
+backingstore).
+It defaults to none which simply stores the rootfs under
+<tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container&gt;/rootfs</span></tt> but you can specify something else to
+<tt class="docutils literal"><span class="pre">lxc-create</span></tt> or <tt class="docutils literal"><span class="pre">lxc-clone</span></tt> with the <tt class="docutils literal"><span class="pre">-B</span></tt> option.</p>
+<p>Currently supported values are:</p>
+<div class="section" id="directory-based-storage-none-and-dir">
+<h3><a class="toc-backref" href="#id35">directory based storage (none and dir)</a></h3>
+<p>This is the default backingstore, the container rootfs is stored under
+<tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container&gt;/rootfs</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">--dir</span></tt> option (when using dir) can be used to override the path.</p>
+</div>
+<div class="section" id="btrfs">
+<h3><a class="toc-backref" href="#id36">btrfs</a></h3>
+<p>With this backingstore LXC will setup a new subvolume for the
+container which makes snapshotting much easier.</p>
+</div>
+<div class="section" id="lvm">
+<h3><a class="toc-backref" href="#id37">lvm</a></h3>
+<p>This one will use a new logical volume for the container.
+The LV can be set with <tt class="docutils literal"><span class="pre">--lvname</span></tt> (the default is the container name).
+The VG can be set with <tt class="docutils literal"><span class="pre">--vgname</span></tt> (the default is lxc).
+The filesystem can be set with <tt class="docutils literal"><span class="pre">--fstype</span></tt> (the default is ext4).
+The size can be set with <tt class="docutils literal"><span class="pre">--fssize</span></tt> (the default is 1G).
+You can also use LVM thinpools with <tt class="docutils literal"><span class="pre">--thinpool</span></tt></p>
+</div>
+<div class="section" id="overlayfs">
+<h3><a class="toc-backref" href="#id38">overlayfs</a></h3>
+<p>This one is mostly used when cloning containers to create a container
+based on another one and storing any changes in an overlay.</p>
+<p>When used with <tt class="docutils literal"><span class="pre">lxc-create</span></tt> it'll create a container where any change
+done after its initial creation will be stored in a delta0 directory
+next to the containers rootfs.</p>
+</div>
+<div class="section" id="zfs">
+<h3><a class="toc-backref" href="#id39">zfs</a></h3>
+<p>Very similar to btrfs, as Ive not used either of those myself I cant
+say much about them besides that it should also create some kind of
+subvolume for the container and make snapshots and clones faster and
+more space efficient.</p>
+</div>
+</div>
+<div class="section" id="standard-paths">
+<h2><a class="toc-backref" href="#id40">Standard paths</a></h2>
+<p>One quick word with the way LXC usually works and where its storing
+its files:</p>
+<ul class="simple">
+<li><tt class="docutils literal">/var/lib/lxc</tt> (default location for containers)</li>
+<li><tt class="docutils literal">/var/lib/lxcsnap</tt> (default location for snapshots)</li>
+<li><tt class="docutils literal">/var/cache/lxc</tt> (default location for the template cache)</li>
+<li><tt class="docutils literal"><span class="pre">$HOME/.local/share/lxc</span></tt> (default location for unprivileged
+containers)</li>
+<li><tt class="docutils literal"><span class="pre">$HOME/.local/share/lxcsnap</span></tt> (default location for unprivileged
+snapshots)</li>
+<li><tt class="docutils literal"><span class="pre">$HOME/.cache/lxc</span></tt> (default location for unprivileged template cache)</li>
+</ul>
+<p>The default path, also called <tt class="docutils literal">lxcpath</tt> can be overridden on the command
+line with the <tt class="docutils literal"><span class="pre">-P</span></tt> option or once and for all by setting <tt class="docutils literal">lxcpath =
+/new/path</tt> in <tt class="docutils literal">/etc/lxc/lxc.conf</tt> (or <tt class="docutils literal"><span class="pre">$HOME/.config/lxc/lxc.conf</span></tt> for
+unprivileged containers).</p>
+<p>The snapshot directory is always snap appended to lxcpath so it'll
+magically follow <tt class="docutils literal">lxcpath</tt>. The template cache is unfortunately
+hardcoded and cant easily be moved short of relying on bind-mounts or
+symlinks.</p>
+<p>The default configuration used for all containers at creation time is
+taken from
+<tt class="docutils literal">/etc/lxc/default.conf</tt> (no unprivileged equivalent yet).
+The templates themselves are stored in <tt class="docutils literal">/usr/share/lxc/templates</tt>.</p>
+</div>
+<div class="section" id="cloning-containers">
+<h2><a class="toc-backref" href="#id41">Cloning containers</a></h2>
+<p>All those backingstores only really shine once you start cloning
+containers.
+For example, lets take our good old <tt class="docutils literal">p1 Ubuntu</tt> container and lets say
+you want to make a usable copy of it called <tt class="docutils literal">p4</tt>, you can simply do:</p>
+<pre class="code literal-block">
+sudo lxc-clone -o p1 -n p4
+</pre>
+<p>And there you go, youve got a working <tt class="docutils literal">p4</tt> container thatll be a simple
+copy of <tt class="docutils literal">p1</tt> but with a new mac address and its hostname properly set.</p>
+<p>Now lets say you want to do a quick test against <tt class="docutils literal">p1</tt> but dont want to
+alter that container itself, yet you dont want to wait the time needed
+for a full copy, you can simply do:</p>
+<pre class="code literal-block">
+sudo lxc-clone -o p1 -n p1-test -B overlayfs -s
+</pre>
+<p>And there you go, youve got a new p1-test container which is entirely
+based on the <tt class="docutils literal">p1</tt> rootfs and where any change will be stored in the
+<tt class="docutils literal">delta0</tt> directory of <tt class="docutils literal"><span class="pre">p1-test</span></tt>.
+The same <tt class="docutils literal"><span class="pre">-s</span></tt> option also works with lvm and btrfs (possibly zfs too)
+containers and tells <tt class="docutils literal"><span class="pre">lxc-clone</span></tt> to use a snapshot rather than copy the
+whole rootfs across.</p>
+</div>
+<div class="section" id="snapshotting">
+<h2><a class="toc-backref" href="#id42">Snapshotting</a></h2>
+<p>So cloning is nice and convenient, great for things like development
+environments where you want throw away containers. But in production,
+snapshots tend to be a whole lot more useful for things like backup or
+just before you do possibly risky changes.</p>
+<p>In LXC we have a <tt class="docutils literal"><span class="pre">lxc-snapshot</span></tt> tool which will let you create, list,
+restore and destroy snapshots of your containers.
+Before I show you how it works, please note that <tt class="docutils literal"><span class="pre">lxc-snapshot</span></tt>
+currently doesnt appear to work with directory based containers. With
+those it produces an empty snapshot, this should be fixed by the time
+LXC 1.0 is actually released.</p>
+<p>So, lets say we want to backup our p1-lvm container before installing
+apache2 into it, simply run:</p>
+<pre class="code literal-block">
+echo &quot;before installing apache2&quot; &gt; snap-comment
+sudo lxc-snapshot -n p1-lvm -c snap-comment
+</pre>
+<p>At which point, you can confirm the snapshot was created with:</p>
+<pre class="code literal-block">
+sudo lxc-snapshot -n p1-lvm -L -C
+</pre>
+<p>Now you can go ahead and install apache2 in the container.</p>
+<p>If you want to revert the container at a later point, simply use:</p>
+<pre class="code literal-block">
+sudo lxc-snapshot -n p1-lvm -r snap0
+</pre>
+<p>Or if you want to restore a snapshot as its own container, you can
+use:</p>
+<pre class="code literal-block">
+sudo lxc-snapshot -n p1-lvm -r snap0 p1-lvm-snap0
+</pre>
+<p>And youll get a new <tt class="docutils literal"><span class="pre">p1-lvm-snap0</span></tt> container which will contain a
+working copy of <tt class="docutils literal"><span class="pre">p1-lvm</span></tt> as it was at <tt class="docutils literal">snap0</tt>.</p>
 </div>
 </div>
 </div>
