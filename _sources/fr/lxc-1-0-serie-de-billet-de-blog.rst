@@ -4,8 +4,8 @@
 Intro. Série de billets de blog
 ---------------------------------
 
-: Date: 20/12/2013
-Auteur: Stéphane Graber
+:Date: 20/12/2013
+:Auteur: Stéphane Graber
 
 Comme c'est presque la fin de l'année, j'ai environ 10 jours de congés pour les vacances et un peu de temps entre les mains.
 
