@@ -9,7 +9,7 @@ Intro. Série de billets de blog
 
 Comme c'est presque la fin de l'année, j'ai environ 10 jours de congés pour les vacances et un peu de temps entre les mains.
 
-Puisque j'étais en train de faire un peu de travail sur LXC dernièrement en prévision de la sortie de la version 1.0 de LXC_ en début d'année prochaine, je pensais que ce serait une bonne utilisation de ce temps supplémentaire pour blogger au sujet de l'état actuel de LXC.
+Puisque j'étais en train de faire un peu de travail sur LXC dernièrement en prévision de la sortie de la version 1.0 de LXC_ en début d'année prochaine, je pensais que ce serait une bonne occasion d'utiliser ce temps supplémentaire pour blogger au sujet de l'état actuel de LXC.
 
 En conséquence, je prépare une série de 10 billets de blog couvrant ce que je pense être quelques-unes des caractéristiques les plus intéressantes de LXC. La structure prévue est :
 
@@ -24,7 +24,7 @@ En conséquence, je prépare une série de 10 billets de blog couvrant ce que je
 - LXC 1.0: interface graphique dans des conteneurs [9/10]
 - LXC 1.0: Dépannage et débogage [10/10]
 
-Alors qu'ils sont tous intitulés LXC 1.0, la plupart des choses que je vais montrer fonctionnent aussi sur des versions moins récentes de LXC. Toutefois, certaines des fonctionnalités ont besoin d'une version très très récente de LXC (telle que celle disponible dans le dépôt git courant en amont). Je vais essayer de faire que ce soit clair et vais vous expliquer comment utiliser nos `rétroportages stables dans Ubuntu`_ ou les `instantanés courants disponibles en amont dans notre Archive de Paquets Personnelle (PPA)`_.
+Alors qu'ils sont tous intitulés LXC 1.0, la plupart des choses que je vais montrer fonctionnent aussi sur des versions moins récentes de LXC. Toutefois, certaines des fonctionnalités ont besoin d'une version très très récente de LXC (telle que celle disponible dans le dépôt source git courant). Je vais essayer de faire que ce soit clair et vais vous expliquer comment utiliser nos `rétroportages stables dans Ubuntu`_ ou les `instantanés courants disponibles dans notre Archive de Paquets Personnelle (PPA) source`_.
 
 Je mettrai à jour ce premier billet de blog avec des liens vers tous les billets de la série. Donc, si vous souhaitez ajouter un signet ou se référer à ceux-ci, je vous prie d'utiliser ce poste.
 
@@ -37,5 +37,6 @@ Je mettrai à jour ce premier billet de blog avec des liens vers tous les billet
 .. _4. D'autres utilisations de conteneurs plus avancées: ../../_build/fr/index.html#d-autres-utilisations-de-conteneurs-plus-avancees
 .. _5. Stockage des conteneurs: ../../_build/fr/index.html#stockage-des-conteneurs
 
+.. _dépôt source git courant: https://github.com/lxc/lxc
 .. _rétroportages stables dans Ubuntu: https://launchpad.net/ubuntu/+source/lxc
-.. _instantanés courants disponibles en amont dans notre Archive de Paquets Personnelle (PPA): https://launchpad.net/~ubuntu-lxc/+archive/daily
+.. _instantanés courants disponibles dans notre Archive de Paquets Personnelle (PPA) source: https://launchpad.net/~ubuntu-lxc/+archive/daily
