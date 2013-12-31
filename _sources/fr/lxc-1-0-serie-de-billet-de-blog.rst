@@ -24,7 +24,7 @@ En conséquence, je prépare une série de 10 billets de blog couvrant ce que je
 - LXC 1.0: interface graphique dans des conteneurs [9/10]
 - LXC 1.0: Dépannage et débogage [10/10]
 
-Alors qu'ils sont tous intitulés LXC 1.0, la plupart des choses que je vais montrer fonctionnent aussi sur des versions moins récentes de LXC. Toutefois, certaines des fonctionnalités ont besoin d'une version très très récente de LXC (telle que celle disponible dans le dépôt source git courant). Je vais essayer de faire que ce soit clair et vais vous expliquer comment utiliser nos `rétroportages stables dans Ubuntu`_ ou les `instantanés courants disponibles dans notre Archive de Paquets Personnelle (PPA) source`_.
+Alors qu'ils sont tous intitulés LXC 1.0, la plupart des choses que je vais montrer fonctionnent aussi sur des versions moins récentes de LXC. Toutefois, certaines des fonctionnalités ont besoin d'une version très très récente de LXC (telle que celle disponible dans le `dépôt source git courant`_). Je vais essayer de faire que ce soit clair et vais vous expliquer comment utiliser nos `rétroportages stables dans Ubuntu`_ ou les `instantanés courants disponibles dans notre Archive de Paquets Personnelle (PPA) source`_.
 
 Je mettrai à jour ce premier billet de blog avec des liens vers tous les billets de la série. Donc, si vous souhaitez ajouter un signet ou se référer à ceux-ci, je vous prie d'utiliser ce poste.
 
