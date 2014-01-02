@@ -18,7 +18,7 @@ As a result, I’m preparing a series of 10 blog posts covering what I think are
 - `3. Advanced container usage`_
 - `4. Some more advanced container usage`_
 - `5. Container storage`_
-- LXC 1.0: Security features [6/10]
+- `6. Security features`_
 - LXC 1.0: Unprivileged containers [7/10]
 - LXC 1.0: Scripting with the API [8/10]
 - LXC 1.0: GUI in containers [9/10]
@@ -34,8 +34,9 @@ I’ll be updating this first blog post with links to all of the posts in the se
 .. _1. Your first Ubuntu container: ../../_build/en/index.html#your-first-ubuntu-container
 .. _2. Your second container: ../../_build/en/index.html#your-second-container
 .. _3. Advanced container usage: ../../_build/en/index.html#advanced-container-usage
-.. _4. Some more advanced container usage: ../../_build/en/index.html#lxc-1-0-some-more-advanced-container-usage
-.. _5. Container storage: ../../_build/en/index.html#lxc-1-0-container-storage
+.. _4. Some more advanced container usage: ../../_build/en/index.html#some-more-advanced-container-usage
+.. _5. Container storage: ../../_build/en/index.html#container-storage
+.. _6. Security features: ../../_build/en/index.html#security-features
 
 .. _stable backports in Ubuntu: https://launchpad.net/ubuntu/+source/lxc
 .. _current upstream snapshots from our PPA: https://launchpad.net/~ubuntu-lxc/+archive/daily

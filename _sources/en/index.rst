@@ -23,4 +23,7 @@
 
 .. include:: lxc-1-0-container-storage.rst
 
+.. include:: lxc-1-0-security-features.rst
+
+
 

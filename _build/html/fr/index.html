@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.11: http://docutils.sourceforge.net/" />
+<title>LXC 1.0 : Démarrage Rapide</title>
+<style type="text/css">
+
+/*
+:Author: Your Name
+:Contact: Your Email Address
+:Copyright: This stylesheet has been placed in the public domain.
+
+Stylesheet for use with Docutils.  [Optionally place a more
+detailed description here.]
+*/
+
+/*@import url(reset.css);*/
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Mono|Ubuntu|Ubuntu+Light);
+
+/* Your customizations go here.  For example: */
+
+html {
+
+background: #EFEFEF
+
+}
+
+body {
+
+font-size: 16px;
+line-height: 1.5;
+text-align: justify;
+padding: 40px 40px 20px;
+-moz-box-shadow: 0 0 3px #c9c9c9;
+-webkit-box-shadow: 0 0 3px #c9c9c9;
+box-shadow: 0 0 3px #c9c9c9;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;
+background: #fff;
+clear: both;
+display: block;
+width: 100%;
+margin: 10px 0 30px;
+padding-bottom: 20px;
+position: relative;
+z-index: 1;
+width: 984px;
+clear: both;
+margin: 0 auto;
+
+}
+
+.title {
+
+background-color: #DD4814;
+color: #fff;
+font-family: 'Ubuntu';
+font-weight: bold;
+padding-left: 40px;
+margin: 20px 50px 100px;
+
+}
+
+h1, h2, h3, h4, h5, h6, p.topic-title {
+
+  font-family: 'Ubuntu Light', sans-serif; 
+
+}
+
+p, a, li {
+
+  font-family: 'Ubuntu', sans-serif;
+
+}
+
+a {
+
+color: #dd4814;
+text-decoration: none;
+
+
+}
+
+h1 a {
+
+font-size: 45px;
+text-align: center;
+color: #333;
+text-decoration: none;
+
+}
+
+h2 a {
+
+font-size: 32px;
+color: #dd4814;
+text-decoration: none;
+
+}
+
+p, li {
+
+color: #333;
+
+}
+
+.code, .literal-block, .pre, .literal {
+
+background-color: #EFEFEF;
+
+}
+
+</style>
+</head>
+<body>
+<div class="document" id="lxc-1-0-demarrage-rapide">
+<h1 class="title">LXC 1.0 : Démarrage Rapide</h1>
+
+<!-- -*- coding: utf-8 -*- -->
+<div class="section" id="table-des-matieres">
+<h1><a class="toc-backref" href="#id2">Table des matières</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#table-des-matieres" id="id2">Table des matières</a></li>
+<li><a class="reference internal" href="#intro-serie-de-billets-de-blog" id="id3">Intro. Série de billets de blog</a></li>
+<li><a class="reference internal" href="#id1" id="id4">1. Votre premier conteneur Ubuntu</a><ul>
+<li><a class="reference internal" href="#alors-qu-est-ce-que-lxc" id="id5">Alors, qu'est-ce que LXC ?</a></li>
+<li><a class="reference internal" href="#lxc-1-0" id="id6">LXC 1.0</a></li>
+<li><a class="reference internal" href="#comment-l-obtenir" id="id7">Comment l'obtenir ?</a></li>
+<li><a class="reference internal" href="#qu-en-est-il-du-premier-conteneur" id="id8">Qu'en est-il du premier conteneur ?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<!-- -*- coding: utf-8 -*- -->
+</div>
+<div class="section" id="intro-serie-de-billets-de-blog">
+<h1><a class="toc-backref" href="#id3">Intro. Série de billets de blog</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Date:</th><td class="field-body">20/12/2013</td>
+</tr>
+<tr class="field"><th class="field-name">Auteur:</th><td class="field-body">Stéphane Graber</td>
+</tr>
+</tbody>
+</table>
+<p>Comme c'est presque la fin de l'année, j'ai environ 10 jours de congés pour les vacances et un peu de temps entre les mains.</p>
+<p>Puisque j'étais en train de faire un peu de travail sur LXC dernièrement en prévision de la sortie de la version 1.0 de <a class="reference external" href="http://linuxcontainers.org/">LXC</a> en début d'année prochaine, je pensais que ce serait une bonne occasion d'utiliser ce temps supplémentaire pour blogger au sujet de l'état actuel de LXC.</p>
+<p>En conséquence, je prépare une série de 10 billets de blog couvrant ce que je pense être quelques-unes des caractéristiques les plus intéressantes de LXC. La structure prévue est :</p>
+<ul class="simple">
+<li><a class="reference external" href="../../_build/fr/index.html#votre-premier-conteneur-ubuntu">1. Votre premier conteneur Ubuntu</a></li>
+<li><a class="reference external" href="../../_build/fr/index.html#votre-deuxieme-conteneur">2. Votre deuxième conteneur</a></li>
+<li><a class="reference external" href="../../_build/fr/index.html#utilisation-avancee-des-conteneurs">3. Utilisation avancée de conteneurs</a></li>
+<li><a class="reference external" href="../../_build/fr/index.html#d-autres-utilisations-de-conteneurs-plus-avancees">4. D'autres utilisations de conteneurs plus avancées</a></li>
+<li><a class="reference external" href="../../_build/fr/index.html#stockage-des-conteneurs">5. Stockage des conteneurs</a></li>
+<li>LXC 1.0: fonctionnalités de sécurité [6/10]</li>
+<li>LXC 1.0: des conteneurs non privilégiés [7/10]</li>
+<li>LXC 1.0: script avec l'API [8/10]</li>
+<li>LXC 1.0: interface graphique dans des conteneurs [9/10]</li>
+<li>LXC 1.0: Dépannage et débogage [10/10]</li>
+</ul>
+<p>Alors qu'ils sont tous intitulés LXC 1.0, la plupart des choses que je vais montrer fonctionnent aussi sur des versions moins récentes de LXC. Toutefois, certaines des fonctionnalités ont besoin d'une version très très récente de LXC (telle que celle disponible dans le <a class="reference external" href="https://github.com/lxc/lxc">dépôt source git courant</a>). Je vais essayer de faire que ce soit clair et vais vous expliquer comment utiliser nos <a class="reference external" href="https://launchpad.net/ubuntu/+source/lxc">rétroportages stables dans Ubuntu</a> ou les <a class="reference external" href="https://launchpad.net/~ubuntu-lxc/+archive/daily">instantanés courants disponibles dans notre Archive de Paquets Personnelle (PPA) source</a>.</p>
+<p>Je mettrai à jour ce premier billet de blog avec des liens vers tous les billets de la série. Donc, si vous souhaitez ajouter un signet ou se référer à ceux-ci, je vous prie d'utiliser ce poste.</p>
+<!-- -*- coding: utf-8 -*- -->
+</div>
+<div class="section" id="id1">
+<h1><a class="toc-backref" href="#id4">1. Votre premier conteneur Ubuntu</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Date:</th><td class="field-body">20/12/2013</td>
+</tr>
+<tr class="field"><th class="field-name">Auteur:</th><td class="field-body">Stéphane Graber</td>
+</tr>
+</tbody>
+</table>
+<p>Ceci est le billet 1 sur 10 dans la <a class="reference external" href="../../_build/fr/index.html#intro-serie-de-billets-de-blog">série de billets de blog sur LXC 1.0</a>.</p>
+<div class="section" id="alors-qu-est-ce-que-lxc">
+<h2><a class="toc-backref" href="#id5">Alors, qu'est-ce que LXC ?</a></h2>
+<p>La plupart d'entre vous savez probablement déjà la réponse à cette question, mais voilà :</p>
+<blockquote class="epigraph">
+<em>« LXC est une interface de l'espace utilisateur pour les fonctionnalités de confinement du noyau Linux.</em>
+<em>Grâce à une API puissante et des outils simples, il permet aux utilisateurs de Linux de créer et de gérer des conteneurs système ou applicatifs facilement. »</em></blockquote>
+<p>Je suis l'un des deux responsables des sources de LXC avec Serge Hallyn.</p>
+<p>Le projet est très activement développé avec des étapes chaque mois et une version stable à venir en Février. Il a, jusqu'ici, été développé par 67 contributeurs à partir d'un large éventail de milieux et sociétés.</p>
+<p>Le projet est principalement développé sur github: <a class="reference external" href="http://github.com/lxc">http://github.com/lxc</a></p>
+<p>Nous avons un site Web à l'adresse: <a class="reference external" href="http://linuxcontainers.org">http://linuxcontainers.org</a></p>
+<p>Et des listes de diffusion à l'adresse: <a class="reference external" href="http://lists.linuxcontainers.org">http://lists.linuxcontainers.org</a></p>
+</div>
+<div class="section" id="lxc-1-0">
+<h2><a class="toc-backref" href="#id6">LXC 1.0</a></h2>
+<p>Alors, de quoi s'agit-il dans la version 1.0 ?</p>
+<p>Eh bien, pour dire les choses simplement, ça va être la première vraie version stable de LXC et la première que nous allons supporter pendant 5 ans avec sortie de correction de bugs. C'est aussi celle qui sera incluse dans Ubuntu 14.04 LTS, publiée en Avril 2014.</p>
+<p>Elle va aussi sortir avec une API stable et un ensemble de liaisons, un bon nombre de nouvelles fonctionnalités intéressantes qui seront détaillées dans les prochains billets et le support pour un large éventail de distributions hôtes et invitées (y compris Android).</p>
+</div>
+<div class="section" id="comment-l-obtenir">
+<h2><a class="toc-backref" href="#id7">Comment l'obtenir ?</a></h2>
+<p>Je suppose que la plupart d'entre vous utiliseront Ubuntu. Pour les prochains billet, j'utiliserai es sources construites quotidiennement pour Ubuntu 14.04 mais nous maintenons une constructions quotidienne des paquets pour Ubuntu 12.04, 12.10, 13.04, 13.10 et 14.04, donc si vous voulez le dernier code source, vous pouvez utiliser <a class="reference external" href="https://launchpad.net/~ubuntu-lxc/+archive/daily">notre PPA</a>.</p>
+<p>Sinon, LXC est aussi inclus dans les dépôts Ubuntu et tout à fait utilisable depuis Ubuntu 12.04 LTS. Vous pouvez choisir d'utiliser la version qui vient avec cette version que vous avez, ou vous pouvez utiliser une version rétroportée que nous maintenons.</p>
+<p>Si vous voulez construire vous-même la dernière version de LXC, vous pouvez le faire (non recommandé lorsque vous pouvez simplement utiliser les paquets de votre distribution) :</p>
+<pre class="code literal-block">
+git clone git://github.com/lxc/lxc
+cd lxc
+sh autogen.sh
+# Vous aurez probablement envie de lancer le script configure avec
+# --help, puis de définir les chemins
+./configure
+make
+sudo make install
+</pre>
+</div>
+<div class="section" id="qu-en-est-il-du-premier-conteneur">
+<h2><a class="toc-backref" href="#id8">Qu'en est-il du premier conteneur ?</a></h2>
+<p>Ah oui, c'était effectivement le but de ce post n'est-ce pas?</p>
+<p>Ok, alors maintenant que vous avez installé LXC, en utilisant j'espère les paquets Ubuntu, c'est vraiment aussi simple que :</p>
+<pre class="code literal-block">
+# Création d'un conteneur &quot;p1&quot; en utilisant le modèle &quot;ubuntu&quot;
+# et la même version d'Ubuntu
+# Et architecture que l'hôte. Passer &quot;-- --help&quot; pour lister toutes
+# les options disponibles.
+sudo lxc-create -t ubuntu -n p1
+
+# Démarrage du conteneur (en tâche de fond)
+sudo lxc-start -n p1 -d
+
+# Arrêt du conteneur via un de ces moyens
+## Attachement à la console du conteneur (ctrl-a + q pour détacher)
+sudo lxc-console -n p1
+
+## Apparition en bash directement dans le conteneur (sans passer par
+## la connexion de la console),
+## Nécessite un noyau &gt;= 3.8
+sudo lxc-attach -n p1
+
+## SSH dans le conteneur
+sudo lxc-info -n p1
+ssh ubuntu&#64;&lt;ip from lxc-info&gt;
+
+# Arrêt du conteneur via un de ces moyens
+## Arrêt de l'intérieur
+sudo poweroff
+
+## Arrêt proprement de l'extérieur
+sudo lxc-stop -n p1
+
+## Conteneur tué depuis l'extérieur
+sudo lxc-stop -n p1 -k
+</pre>
+<p>Et voilà, c'est votre premier conteneur. Vous remarquerez que tout fonctionne normalement sur Ubuntu. Nos noyaux supportent toutes les fonctionnalités que LXC peut utiliser et notre paquets configurent un pont et un serveur DHCP que les conteneurs utiliseront par défaut.
+Tout cela est évidemment configurable et sera couvert dans les billets à venir.</p>
+</div>
+</div>
+</div>
+</body>
+</html>
