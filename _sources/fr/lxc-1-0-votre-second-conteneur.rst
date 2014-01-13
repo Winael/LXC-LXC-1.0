@@ -14,7 +14,7 @@ Plus de modèles
 
 Donc, à ce stade, vous devriez avoir un conteneur Ubuntu en train de tourner qui s'appelle ``p1`` et a qui été créé en utilisant le modèle par défaut appelé simplement ``ubuntu``.
 
-Mais LXC supporte beaucoup plus que le standard Ubuntu. En fait, dans `dépôt source courant` _ (et tous les mise à jours quotidienne du PPA source), nous supportons Alpine Linux, Alt Linux, Arch Linux, Busybox, CentOS, Cirros, Debian, Fedora, OpenMandriva, OpenSUSE, Oracle, Plamo, sshd, Ubuntu Cloud et Ubuntu.
+Mais LXC supporte beaucoup plus que le standard Ubuntu. En fait, dans `dépôt source courant`_ (et tous les mise à jours quotidienne du PPA source), nous supportons Alpine Linux, Alt Linux, Arch Linux, Busybox, CentOS, Cirros, Debian, Fedora, OpenMandriva, OpenSUSE, Oracle, Plamo, sshd, Ubuntu Cloud et Ubuntu.
 
 Tous ceux qui se trouvent généralement dans ``/usr/share/lxc/templates``. Ils ont également tous généralement des options avancées supplémentaires que vous pouvez obtenir par le passage ``--help`` après l'appel de ``lxc-create`` (le ``--`` est nécessaire pour séparer les options de ``lxc-create`` du modèle).
 
