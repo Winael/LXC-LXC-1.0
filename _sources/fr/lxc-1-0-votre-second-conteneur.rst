@@ -39,7 +39,7 @@ Après un certain temps de téléchargement des RPM, le conteneur sera créé, a
 
 Et vous serez accueillis par l'invite de connexion Oracle Linux (root / root).
 
-À ce moment, puisque que vous avez démarré le conteneur sans passer``-d`` à ``lxc-start``, vous aurez à l'éteindre pour récupérer votre invite shell (vous ne pouvez pas détacher un conteneur qui n'a pas été démarré d'abord en arrière-plan).
+À ce moment, puisque que vous avez démarré le conteneur sans passer ``-d`` à ``lxc-start``, vous aurez à l'éteindre pour récupérer votre invite shell (vous ne pouvez pas détacher un conteneur qui n'a pas été démarré d'abord en arrière-plan).
 
 Maintenant, vous vous demandez pourquoi Ubuntu dispose de deux modèles. Le modèle Ubuntu dont je me sers jusqu'à présent fait un bootstrap local en utilisant "debootstrap" en construisant en gros votre conteneur à partir de zéro, alors que le modèle Ubuntu Cloud (ubuntu-cloud) télécharge une image pour nuage pré-générés (identique à ce que vous obtenir sur EC2 ou d'autres services de cloud computing) et le démarre. Cette image comprend également cloud-init et prend en charge les métadonnées de nuage standard.
 
