@@ -15,3 +15,5 @@
 
 .. include:: lxc-1-0-votre-premier-conteneur-ubuntu.rst
 
+.. include:: lxc-1-0-votre-second-conteneur.rst
+
