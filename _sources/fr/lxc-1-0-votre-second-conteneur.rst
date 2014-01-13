@@ -59,7 +59,7 @@ Alors, voici comment conteneurs à démarrage automatique fonctionnement mainten
 Comme vous le savez, chaque conteneur dispose d'un fichier de configuration généralement sous
 ``/var/lib/lxc/<container name>/config``
 
-Ce fichier est un fichier de typé clé = valeur avec une liste des clés valides spécifiées dans `lxc.conf (5)`_.
+Ce fichier est un fichier de typé clé = valeur avec une liste des clés valides spécifiées dans `lxc.conf(5)`_.
 
 Les valeurs de démarrage liés qui sont disponibles sont les suivantes :
 
