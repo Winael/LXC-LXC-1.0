@@ -1,0 +1,113 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. 3. Advanced container usage</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-some-more-advanced-container-usage.html" title="5. 4. Some more advanced container usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-your-second-container.html" title="3. 2. Your second container"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="advanced-container-usage">
+<h1>4. 3. Advanced container usage</h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Date:</th><td class="field-body">2013/12/21</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Stéphane Graber</td>
+</tr>
+</tbody>
+</table>
+<p>This is post 3 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
+<div class="section" id="exchanging-data-with-a-container">
+<h2>4.1. Exchanging data with a container</h2>
+<p>Because containers directly share their filesystem with the host, there’s a lot of things that can be done to pass data into a container or to get stuff out.</p>
+<p>The first obvious one is that you can access the container’s root at:
+<tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container</span> <span class="pre">name&gt;/rootfs/</span></tt></p>
+<p>That’s great, but sometimes you need to access data that’s in the container and on a filesystem which was mounted by the container itself (such as a tmpfs). In those cases, you can use this trick:</p>
+<div class="code highlight-python"><pre>sudo ls -lh /proc/$(sudo lxc-info -n p1 -p -H)/root/run/</pre>
+</div>
+<p>Which will show you what’s in <tt class="docutils literal"><span class="pre">/run</span></tt> of the running container <tt class="docutils literal"><span class="pre">p1</span></tt>.</p>
+<p>Now, that’s great to have access from the host to the container, but what about having the container access and write data to the host?
+Well, let’s say we want to have our host’s <tt class="docutils literal"><span class="pre">/var/cache/lxc</span></tt> shared with <tt class="docutils literal"><span class="pre">p1</span></tt>, we can edit <tt class="docutils literal"><span class="pre">/var/lib/lxc/p1/fstab</span></tt> and append:</p>
+<div class="code highlight-python"><pre>/var/cache/lxc var/cache/lxc none bind,create=dir</pre>
+</div>
+<p>This line means, mount <tt class="docutils literal"><span class="pre">/var/cache/lxc</span></tt> from the host as <tt class="docutils literal"><span class="pre">/var/cache/lxc</span></tt> (the lack of initial / makes it relative to the container’s root), mount it as a bind-mount (<tt class="docutils literal"><span class="pre">none</span></tt> fstype and <tt class="docutils literal"><span class="pre">bind</span></tt> option) and create any directory that’s missing in the container (<tt class="docutils literal"><span class="pre">create=dir</span></tt>).</p>
+<p>Now restart <tt class="docutils literal"><span class="pre">p1</span></tt> and you’ll see <tt class="docutils literal"><span class="pre">/var/cache/lxc</span></tt> in there, showing the same thing as you have on the host. Note that if you want the container to only be able to read the data, you can simply add <tt class="docutils literal"><span class="pre">ro</span></tt> as a mount flag in the fstab.</p>
+</div>
+<div class="section" id="container-nesting">
+<h2>4.2. Container nesting</h2>
+<p>One pretty cool feature of LXC (though admittedly not very useful to most people) is support for nesting. That is, you can run LXC within LXC with pretty much no overhead.</p>
+<p>By default this is blocked in Ubuntu as allowing this at the moment requires letting the container mount cgroupfs which will let it escape any cgroup restrictions that’s applied to it. It’s not an issue in most environment, but if you don’t trust your containers at all, then you shouldn’t be using nesting at this point.</p>
+<p>So to enable nesting for our <tt class="docutils literal"><span class="pre">p1</span></tt> container, edit <tt class="docutils literal"><span class="pre">/var/lib/lxc/p1/config</span></tt> and add:</p>
+<div class="code highlight-python"><pre>lxc.aa_profile = lxc-container-default-with-nesting</pre>
+</div>
+<p>And then restart <tt class="docutils literal"><span class="pre">p1</span></tt>. Once that’s done, install lxc inside the container. I usually recommend using the same version as the host, though that’s not strictly required.</p>
+<p>Once LXC is installed in the container, run:</p>
+<div class="code highlight-python"><pre>sudo lxc-create -t ubuntu -n p1</pre>
+</div>
+<p>As you’ve previously bind-mounted <tt class="docutils literal"><span class="pre">/var/cache/lxc</span></tt> inside the container, this should be very quick (it shouldn’t rebootstrap the whole environment). Then start that new container as usual.</p>
+<p>At that point, you may now run <tt class="docutils literal"><span class="pre">lxc-ls</span></tt> on the host in nesting mode to see exactly what’s running on your system:</p>
+<div class="code highlight-python"><pre>stgraber@castiana:~$ sudo lxc-ls --fancy --nesting
+NAME    STATE    IPV4                 IPV6   AUTOSTART
+------------------------------------------------------
+p1      RUNNING  10.0.3.82, 10.0.4.1  -      NO
+ \_ p1  RUNNING  10.0.4.7             -      NO
+p2      RUNNING  10.0.3.128           -      NO</pre>
+</div>
+<p>There’s no real limit to the number of level you can go, though as fun as it may be, it’s hard to imagine why 10 levels of nesting would be of much use to anyone :)</p>
+</div>
+<div class="section" id="raw-network-access">
+<h2>4.3. Raw network access</h2>
+<p>In the previous post I mentioned passing raw devices from the host inside the container. One such container I use relatively often is when working with a remote network over a VPN. That network uses OpenVPN and a raw ethernet tap device.</p>
+<p>I needed to have a completely isolated system access that VPN so I wouldn’t get mixed routes and it’d appear just like any other machine to the machines on the remote site.</p>
+<p>All I had to do to make this work was set my container’s network configuration to:</p>
+<div class="code highlight-python"><pre>lxc.network.type = phys
+lxc.network.hwaddr = 00:16:3e:c6:0e:04
+lxc.network.flags = up
+lxc.network.link = tap0
+lxc.network.name = eth0</pre>
+</div>
+<p>Then all I have to do is start OpenVPN on my host which will connect and setup <tt class="docutils literal"><span class="pre">tap0</span></tt>, then start the container which will steal that interface and use it as its own <tt class="docutils literal"><span class="pre">eth0</span></tt>.The container will then use DHCP to grab an IP and will behave just like if it was a physical machine connect directly in the remote network.</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

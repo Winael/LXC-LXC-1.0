@@ -1,0 +1,177 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. 4. Some more advanced container usage</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-container-storage.html" title="6. 5. Container storage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-advanced-container-usage.html" title="4. 3. Advanced container usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="some-more-advanced-container-usage">
+<h1>5. 4. Some more advanced container usage</h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Date:</th><td class="field-body">2013/12/23</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Stéphane Graber</td>
+</tr>
+</tbody>
+</table>
+<p>This is post 4 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
+<div class="section" id="running-foreign-architectures">
+<h2>5.1. Running foreign architectures</h2>
+<p>By default LXC will only let you run containers of one of the architectures supported by the host. That makes sense since after all, your CPU doesn’t know what to do with anything else.</p>
+<p>Except that we have this convenient package called <tt class="docutils literal"><span class="pre">qemu-user-static</span></tt> which contains a whole bunch of emulators for quite a few interesting architectures. The most common and useful of those is qemu-arm-static which will let you run most armv7 binaries directly on x86.</p>
+<p>The <tt class="docutils literal"><span class="pre">ubuntu</span></tt> template knows how to make use of <tt class="docutils literal"><span class="pre">qemu-user-static</span></tt>, so you can simply check that you have the <tt class="docutils literal"><span class="pre">qemu-user-static</span></tt> package installed, then run:</p>
+<div class="code highlight-python"><pre>sudo lxc-create -t ubuntu -n p3 -- -a armhf</pre>
+</div>
+<p>After a rather long bootstrap, you’ll get a new <tt class="docutils literal"><span class="pre">p3</span></tt> container which will be mostly running Ubuntu armhf. I’m saying mostly because the qemu emulation comes with a few limitations, the biggest of which is that any piece of software using the <tt class="docutils literal"><span class="pre">ptrace()</span></tt> syscall will fail and so will anything using netlink. As a result, LXC will install the host architecture version of upstart and a few of the networking tools so that the containers can boot properly.</p>
+<div class="code highlight-python"><pre>stgraber@castiana:~$ file /bin/ls
+/bin/ls: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV),
+dynamically linked (uses shared libs), for GNU/Linux 2.6.24,
+""BuildID[sha1]"" =e50e0a5dadb8a7f4eaa2fd715cacb9842e157dc7, stripped
+stgraber@castiana:~$ sudo lxc-start -n p3 -d
+stgraber@castiana:~$ sudo lxc-attach -n p3
+root@p3:/# file /bin/ls
+/bin/ls: ELF 32-bit LSB  executable, ARM, EABI5 version 1 (SYSV),
+dynamically linked (uses shared libs), for GNU/Linux 2.6.32,
+""BuildID[sha1]"" =88ff013a8fd9389747fb1fea1c898547fb0f650a, stripped
+root@p3:/# exit
+stgraber@castiana:~$ sudo lxc-stop -n p3
+stgraber@castiana:~$</pre>
+</div>
+</div>
+<div class="section" id="hooks">
+<h2>5.2. Hooks</h2>
+<p>As we know people like to script their containers and that our configuration can’t always accommodate every single use case, we’ve introduced a set of hooks which you may use.</p>
+<p>Those hooks are simple paths to an executable file which LXC will run at some specific time in the lifetime of the container. Those executables will also be passed a set of useful environment variables so they can easily know what container invoked them and what to do.</p>
+<p>The currently available hooks are (details in <a href="#id1"><span class="problematic" id="id2">`lxc.conf(5)`_</span></a>):</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">lxc.hook.pre-start</span></tt> (called before any initialization is done)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.hook.pre-mount</span></tt> (called after creating the mount namespace but before mounting anything)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.hook.mount</span></tt> (called after the mounts but before pivot_root)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.hook.autodev</span></tt> (identical to mount but only called if using <tt class="docutils literal"><span class="pre">autodev</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.hook.start</span></tt> (called in the container right before <tt class="docutils literal"><span class="pre">/sbin/init</span></tt>)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.hook.post-stop</span></tt> (run after the container has been shutdown)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.hook.clone</span></tt> (called when cloning a container into a new one)</li>
+</ul>
+<p>Additionally each network section may also define two additional hooks:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">lxc.network.script.up</span></tt> (called in the network namespace after the interface was created)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.network.script.down</span></tt> (called in the network namespace before destroying the interface)</li>
+</ul>
+<p>All of those hooks may be specified as many times as you want in the configuration so you can use each hooking point multiple times.</p>
+<p>As a simple example, let’s add the following to our <tt class="docutils literal"><span class="pre">p1</span></tt> container:</p>
+<div class="code highlight-python"><pre>lxc.hook.pre-start = /var/lib/lxc/p1/pre-start.sh</pre>
+</div>
+<p>And create the hook itself at <tt class="docutils literal"><span class="pre">/var/lib/lxc/p1/pre-start.sh</span></tt>:</p>
+<div class="code highlight-python"><pre>#!/bin/sh
+echo "arguments: $*" &gt; /tmp/test
+echo "environment:" &gt;&gt; /tmp/test
+env | grep LXC &gt;&gt; /tmp/test</pre>
+</div>
+<p>Make it executable (<tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">755</span></tt>) and then start the container.
+Checking <tt class="docutils literal"><span class="pre">/tmp/test</span></tt> you should see:</p>
+<div class="code highlight-python"><pre>arguments: p1 lxc pre-start
+environment:
+LXC_ROOTFS_MOUNT=/usr/lib/x86_64-linux-gnu/lxc
+LXC_CONFIG_FILE=/var/lib/lxc/p1/config
+LXC_ROOTFS_PATH=/var/lib/lxc/p1/rootfs
+LXC_NAME=p1</pre>
+</div>
+</div>
+<div class="section" id="android-containers">
+<h2>5.3. Android containers</h2>
+<p>I’ve often been asked whether it was possible to run Android in an LXC container. Well, the short answer is yes. However it’s not very simple and it really depends on what you want to do with it.</p>
+<p>The first thing you’ll need if you want to do this is get your machine to run an Android kernel, you’ll need to have any modules needed by Android built and loaded before you can start the container.</p>
+<p>Once you have that, you’ll need to create a new container by hand.
+Let’s put it in <tt class="docutils literal"><span class="pre">/var/lib/lxc/android/</span></tt>, in there, you need a configuration file similar to this one:</p>
+<div class="code highlight-python"><pre>lxc.rootfs = /var/lib/lxc/android/rootfs
+lxc.utsname = armhf
+
+lxc.network.type = none
+
+lxc.devttydir = lxc
+lxc.tty = 4
+lxc.pts = 1024
+lxc.arch = armhf
+lxc.cap.drop = mac_admin mac_override
+lxc.pivotdir = lxc_putold
+
+lxc.hook.pre-start = /var/lib/lxc/android/pre-start.sh
+
+lxc.aa_profile = unconfined</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">/var/lib/lxc/android/pre-start.sh</span></tt> is where the interesting bits happen. It needs to be an executable shell script, containing something along the lines of:</p>
+<div class="code highlight-python"><pre>#!/bin/sh
+mkdir -p $LXC_ROOTFS_PATH
+mount -n -t tmpfs tmpfs $LXC_ROOTFS_PATH
+
+cd $LXC_ROOTFS_PATH
+cat /var/lib/lxc/android/initrd.gz | gzip -d | cpio -i
+
+# Create /dev/pts if missing
+mkdir -p $LXC_ROOTFS_PATH/dev/pts</pre>
+</div>
+<p>Then get the initrd for your device and place it in <tt class="docutils literal"><span class="pre">/var/lib/lxc/android/initrd.gz</span></tt>.</p>
+<p>At that point, when starting the LXC container, the Android initrd will be unpacked on a tmpfs (similar to Android’s ramfs) and Android’s init will be started which in turn should mount any partition that Android requires and then start all of the usual services.</p>
+<p>Because there are no apparmor, cgroup or even network configuration applied to it, the container will have a lot of rights and will typically completely crash the machine. You unfortunately have to be familiar with the way Android works and not be afraid to modify its init scripts if not even its init process to only start the bits you actually want.</p>
+<p>I can’t provide a generic recipe there as it completely depends on what you’re interested on, what version of Android and what device you’re using. But it’s clearly possible to do and you may want to look at Ubuntu Touch to see how we’re doing it by default there.</p>
+<p>One last note, Android’s init script isn’t in <tt class="docutils literal"><span class="pre">/sbin/init</span></tt>, so you need to tell LXC where to load it with:</p>
+<div class="code highlight-python"><pre>lxc-start -n android -- /init</pre>
+</div>
+</div>
+<div class="section" id="lxc-on-android-devices">
+<h2>5.4. LXC on Android devices</h2>
+<p>So now that we’ve seen how to run Android in LXC, let’s talk about running Ubuntu on Android in LXC.</p>
+<p>LXC has been ported to bionic (Android’s C library) and while not feature-equivalent with its glibc build, it’s still good enough to be used.</p>
+<p>Unfortunately due to the kind of low level access LXC requires and the fact that our primary focus isn’t Android, installation could be easier…You won’t be finding LXC on the Google PlayStore and we won’t provide you with a .apk that you can install.</p>
+<p>Instead every time something changes in the upstream git branch, we produce a new tarball which can be downloaded here: <a class="reference external" href="http://qa.linuxcontainers.org/master/current/android-armel/lxc-android.tar.gz">http://qa.linuxcontainers.org/master/current/android-armel/lxc-android.tar.gz</a></p>
+<p>This build is known to work with Android &gt;= 4.2 but will quite likely work on older versions too.</p>
+<p>For this to work, you’ll need to grab your device’s kernel configuration and run <tt class="docutils literal"><span class="pre">lxc-checkconfig</span></tt> against it to see whether it’s compatible with LXC or not. Unfortunately it’s very likely that it won’t be… In that case, you’ll need to go hunt for the kernel source for your device, add the missing feature flags, rebuild it and update your device to boot your updated kernel.</p>
+<p>As scary as this may sound, it’s usually not that difficult as long as your device is unlocked and you’re already using an alternate ROM like Cyanogen which usually make their kernel git tree easily available.</p>
+<p>Once your device has a working kernel, all you need to do is unpack our tarball as root in your device’s <tt class="docutils literal"><span class="pre">/</span></tt> directory, copy an arm container to <tt class="docutils literal"><span class="pre">/data/lxc/containers/&lt;container</span> <span class="pre">name&gt;</span></tt>, get into <tt class="docutils literal"><span class="pre">/data/lxc</span></tt> and run <tt class="docutils literal"><span class="pre">./run-lxc</span> <span class="pre">lxc-start</span> <span class="pre">-n</span> <span class="pre">&lt;container</span> <span class="pre">name&gt;”</span></tt>.
+A few seconds later you’ll be greeted by a login prompt.</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

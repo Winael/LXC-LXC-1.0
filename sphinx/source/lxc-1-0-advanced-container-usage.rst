@@ -1,0 +1,97 @@
+.. -*- coding: utf-8 -*-
+
+-----------------------------
+ 3. Advanced container usage
+-----------------------------
+
+:Date: 2013/12/21
+:Author: Stéphane Graber
+
+This is post 3 out of 10 in the `LXC 1.0 blog post series`_.
+
+Exchanging data with a container
+++++++++++++++++++++++++++++++++
+
+Because containers directly share their filesystem with the host, there’s a lot of things that can be done to pass data into a container or to get stuff out.
+
+The first obvious one is that you can access the container’s root at:
+``/var/lib/lxc/<container name>/rootfs/``
+
+That’s great, but sometimes you need to access data that’s in the container and on a filesystem which was mounted by the container itself (such as a tmpfs). In those cases, you can use this trick:
+
+.. code::
+
+   sudo ls -lh /proc/$(sudo lxc-info -n p1 -p -H)/root/run/
+
+Which will show you what’s in ``/run`` of the running container ``p1``.
+
+Now, that’s great to have access from the host to the container, but what about having the container access and write data to the host?
+Well, let’s say we want to have our host’s ``/var/cache/lxc`` shared with ``p1``, we can edit ``/var/lib/lxc/p1/fstab`` and append:
+
+.. code::
+
+   /var/cache/lxc var/cache/lxc none bind,create=dir
+
+This line means, mount ``/var/cache/lxc`` from the host as ``/var/cache/lxc`` (the lack of initial / makes it relative to the container’s root), mount it as a bind-mount (``none`` fstype and ``bind`` option) and create any directory that’s missing in the container (``create=dir``).
+
+Now restart ``p1`` and you’ll see ``/var/cache/lxc`` in there, showing the same thing as you have on the host. Note that if you want the container to only be able to read the data, you can simply add ``ro`` as a mount flag in the fstab.
+
+Container nesting
++++++++++++++++++
+
+One pretty cool feature of LXC (though admittedly not very useful to most people) is support for nesting. That is, you can run LXC within LXC with pretty much no overhead.
+
+By default this is blocked in Ubuntu as allowing this at the moment requires letting the container mount cgroupfs which will let it escape any cgroup restrictions that’s applied to it. It’s not an issue in most environment, but if you don’t trust your containers at all, then you shouldn’t be using nesting at this point.
+
+So to enable nesting for our ``p1`` container, edit ``/var/lib/lxc/p1/config`` and add:
+
+.. code::
+
+   lxc.aa_profile = lxc-container-default-with-nesting
+
+And then restart ``p1``. Once that’s done, install lxc inside the container. I usually recommend using the same version as the host, though that’s not strictly required.
+
+Once LXC is installed in the container, run:
+
+.. code::
+
+   sudo lxc-create -t ubuntu -n p1
+
+As you’ve previously bind-mounted ``/var/cache/lxc`` inside the container, this should be very quick (it shouldn’t rebootstrap the whole environment). Then start that new container as usual.
+
+At that point, you may now run ``lxc-ls`` on the host in nesting mode to see exactly what’s running on your system:
+
+.. code::
+
+   stgraber@castiana:~$ sudo lxc-ls --fancy --nesting
+   NAME    STATE    IPV4                 IPV6   AUTOSTART  
+   ------------------------------------------------------
+   p1      RUNNING  10.0.3.82, 10.0.4.1  -      NO       
+    \_ p1  RUNNING  10.0.4.7             -      NO       
+   p2      RUNNING  10.0.3.128           -      NO
+
+There’s no real limit to the number of level you can go, though as fun as it may be, it’s hard to imagine why 10 levels of nesting would be of much use to anyone :)
+
+Raw network access
+++++++++++++++++++
+
+In the previous post I mentioned passing raw devices from the host inside the container. One such container I use relatively often is when working with a remote network over a VPN. That network uses OpenVPN and a raw ethernet tap device.
+
+I needed to have a completely isolated system access that VPN so I wouldn’t get mixed routes and it’d appear just like any other machine to the machines on the remote site.
+
+All I had to do to make this work was set my container’s network configuration to:
+
+.. code::
+
+   lxc.network.type = phys
+   lxc.network.hwaddr = 00:16:3e:c6:0e:04
+   lxc.network.flags = up
+   lxc.network.link = tap0
+   lxc.network.name = eth0
+
+Then all I have to do is start OpenVPN on my host which will connect and setup ``tap0``, then start the container which will steal that interface and use it as its own ``eth0``.The container will then use DHCP to grab an IP and will behave just like if it was a physical machine connect directly in the remote network.
+
+
+
+
+.. _LXC 1.0 blog post series: ../../_build/en/index.html#intro-blog-post-series

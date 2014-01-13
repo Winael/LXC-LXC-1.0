@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+  <head>
+    <meta name="dtb:uid" content="unknown"/>
+    <meta name="dtb:depth" content="3"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>LXC 1.0 - Quickstart</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="navPoint1" playOrder="1">
+      <navLabel>
+        <text>Welcome to LXC 1.0 - Quickstart&#39;s documentation!</text>
+      </navLabel>
+      <content src="index.html" />
+    </navPoint>
+    <navPoint id="navPoint2" playOrder="2">
+      <navLabel>
+        <text>Intro.  Blog post series</text>
+      </navLabel>
+      <content src="lxc-1-0-blog-post-series.html" />
+    </navPoint>
+    <navPoint id="navPoint3" playOrder="3">
+      <navLabel>
+        <text>1. Your first Ubuntu container</text>
+      </navLabel>
+      <content src="lxc-1-0-your-first-ubuntu-container.html" />
+      <navPoint id="navPoint3" playOrder="3">
+        <navLabel>
+          <text>1. Your first Ubuntu container</text>
+        </navLabel>
+        <content src="lxc-1-0-your-first-ubuntu-container.html" />
+      </navPoint>
+      <navPoint id="navPoint4" playOrder="4">
+        <navLabel>
+          <text>So what’s LXC ?</text>
+        </navLabel>
+        <content src="lxc-1-0-your-first-ubuntu-container.html#so-whats-lxc" />
+      </navPoint>
+      <navPoint id="navPoint5" playOrder="5">
+        <navLabel>
+          <text>LXC 1.0</text>
+        </navLabel>
+        <content src="lxc-1-0-your-first-ubuntu-container.html#lxc-1-0" />
+      </navPoint>
+      <navPoint id="navPoint6" playOrder="6">
+        <navLabel>
+          <text>How to get it ?</text>
+        </navLabel>
+        <content src="lxc-1-0-your-first-ubuntu-container.html#how-to-get-it" />
+      </navPoint>
+      <navPoint id="navPoint7" playOrder="7">
+        <navLabel>
+          <text>What about that first container ?</text>
+        </navLabel>
+        <content src="lxc-1-0-your-first-ubuntu-container.html#what-about-that-first-container" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint8" playOrder="8">
+      <navLabel>
+        <text>2. Your second container</text>
+      </navLabel>
+      <content src="lxc-1-0-your-second-container.html" />
+      <navPoint id="navPoint8" playOrder="8">
+        <navLabel>
+          <text>2. Your second container</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html" />
+      </navPoint>
+      <navPoint id="navPoint9" playOrder="9">
+        <navLabel>
+          <text>More templates</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html#more-templates" />
+      </navPoint>
+      <navPoint id="navPoint10" playOrder="10">
+        <navLabel>
+          <text>Auto-start</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html#auto-start" />
+      </navPoint>
+      <navPoint id="navPoint11" playOrder="11">
+        <navLabel>
+          <text>Freezing your containers</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html#freezing-your-containers" />
+      </navPoint>
+      <navPoint id="navPoint12" playOrder="12">
+        <navLabel>
+          <text>Networking</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html#networking" />
+      </navPoint>
+      <navPoint id="navPoint13" playOrder="13">
+        <navLabel>
+          <text>Attach</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html#attach" />
+      </navPoint>
+      <navPoint id="navPoint14" playOrder="14">
+        <navLabel>
+          <text>Passing devices to a running container</text>
+        </navLabel>
+        <content src="lxc-1-0-your-second-container.html#passing-devices-to-a-running-container" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint15" playOrder="15">
+      <navLabel>
+        <text>3. Advanced container usage</text>
+      </navLabel>
+      <content src="lxc-1-0-advanced-container-usage.html" />
+      <navPoint id="navPoint15" playOrder="15">
+        <navLabel>
+          <text>3. Advanced container usage</text>
+        </navLabel>
+        <content src="lxc-1-0-advanced-container-usage.html" />
+      </navPoint>
+      <navPoint id="navPoint16" playOrder="16">
+        <navLabel>
+          <text>Exchanging data with a container</text>
+        </navLabel>
+        <content src="lxc-1-0-advanced-container-usage.html#exchanging-data-with-a-container" />
+      </navPoint>
+      <navPoint id="navPoint17" playOrder="17">
+        <navLabel>
+          <text>Container nesting</text>
+        </navLabel>
+        <content src="lxc-1-0-advanced-container-usage.html#container-nesting" />
+      </navPoint>
+      <navPoint id="navPoint18" playOrder="18">
+        <navLabel>
+          <text>Raw network access</text>
+        </navLabel>
+        <content src="lxc-1-0-advanced-container-usage.html#raw-network-access" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint19" playOrder="19">
+      <navLabel>
+        <text>4. Some more advanced container usage</text>
+      </navLabel>
+      <content src="lxc-1-0-some-more-advanced-container-usage.html" />
+      <navPoint id="navPoint19" playOrder="19">
+        <navLabel>
+          <text>4. Some more advanced container usage</text>
+        </navLabel>
+        <content src="lxc-1-0-some-more-advanced-container-usage.html" />
+      </navPoint>
+      <navPoint id="navPoint20" playOrder="20">
+        <navLabel>
+          <text>Running foreign architectures</text>
+        </navLabel>
+        <content src="lxc-1-0-some-more-advanced-container-usage.html#running-foreign-architectures" />
+      </navPoint>
+      <navPoint id="navPoint21" playOrder="21">
+        <navLabel>
+          <text>Hooks</text>
+        </navLabel>
+        <content src="lxc-1-0-some-more-advanced-container-usage.html#hooks" />
+      </navPoint>
+      <navPoint id="navPoint22" playOrder="22">
+        <navLabel>
+          <text>Android containers</text>
+        </navLabel>
+        <content src="lxc-1-0-some-more-advanced-container-usage.html#android-containers" />
+      </navPoint>
+      <navPoint id="navPoint23" playOrder="23">
+        <navLabel>
+          <text>LXC on Android devices</text>
+        </navLabel>
+        <content src="lxc-1-0-some-more-advanced-container-usage.html#lxc-on-android-devices" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint24" playOrder="24">
+      <navLabel>
+        <text>5. Container storage</text>
+      </navLabel>
+      <content src="lxc-1-0-container-storage.html" />
+      <navPoint id="navPoint24" playOrder="24">
+        <navLabel>
+          <text>5. Container storage</text>
+        </navLabel>
+        <content src="lxc-1-0-container-storage.html" />
+      </navPoint>
+      <navPoint id="navPoint25" playOrder="25">
+        <navLabel>
+          <text>Storage backingstores</text>
+        </navLabel>
+        <content src="lxc-1-0-container-storage.html#storage-backingstores" />
+        <navPoint id="navPoint25" playOrder="25">
+          <navLabel>
+            <text>Storage backingstores</text>
+          </navLabel>
+          <content src="lxc-1-0-container-storage.html#storage-backingstores" />
+        </navPoint>
+        <navPoint id="navPoint26" playOrder="26">
+          <navLabel>
+            <text>directory based storage (none and dir)</text>
+          </navLabel>
+          <content src="lxc-1-0-container-storage.html#directory-based-storage-none-and-dir" />
+        </navPoint>
+        <navPoint id="navPoint27" playOrder="27">
+          <navLabel>
+            <text>btrfs</text>
+          </navLabel>
+          <content src="lxc-1-0-container-storage.html#btrfs" />
+        </navPoint>
+        <navPoint id="navPoint28" playOrder="28">
+          <navLabel>
+            <text>lvm</text>
+          </navLabel>
+          <content src="lxc-1-0-container-storage.html#lvm" />
+        </navPoint>
+        <navPoint id="navPoint29" playOrder="29">
+          <navLabel>
+            <text>overlayfs</text>
+          </navLabel>
+          <content src="lxc-1-0-container-storage.html#overlayfs" />
+        </navPoint>
+        <navPoint id="navPoint30" playOrder="30">
+          <navLabel>
+            <text>zfs</text>
+          </navLabel>
+          <content src="lxc-1-0-container-storage.html#zfs" />
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint31" playOrder="31">
+        <navLabel>
+          <text>Standard paths</text>
+        </navLabel>
+        <content src="lxc-1-0-container-storage.html#standard-paths" />
+      </navPoint>
+      <navPoint id="navPoint32" playOrder="32">
+        <navLabel>
+          <text>Cloning containers</text>
+        </navLabel>
+        <content src="lxc-1-0-container-storage.html#cloning-containers" />
+      </navPoint>
+      <navPoint id="navPoint33" playOrder="33">
+        <navLabel>
+          <text>Snapshotting</text>
+        </navLabel>
+        <content src="lxc-1-0-container-storage.html#snapshotting" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint34" playOrder="34">
+      <navLabel>
+        <text>Security features</text>
+      </navLabel>
+      <content src="lxc-1-0-security-features.html" />
+      <navPoint id="navPoint34" playOrder="34">
+        <navLabel>
+          <text>Security features</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html" />
+      </navPoint>
+      <navPoint id="navPoint35" playOrder="35">
+        <navLabel>
+          <text>Capabilities</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html#capabilities" />
+      </navPoint>
+      <navPoint id="navPoint36" playOrder="36">
+        <navLabel>
+          <text>Control groups</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html#control-groups" />
+      </navPoint>
+    </navPoint>
+  </navMap>
+</ncx>

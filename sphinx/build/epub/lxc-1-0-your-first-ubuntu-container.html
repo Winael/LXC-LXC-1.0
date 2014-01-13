@@ -1,0 +1,130 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. 1. Your first Ubuntu container</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-your-second-container.html" title="3. 2. Your second container"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-blog-post-series.html" title="1. Intro. Blog post series"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="your-first-ubuntu-container">
+<h1>2. 1. Your first Ubuntu container</h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Date:</th><td class="field-body">2013/12/20</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Stéphane Graber</td>
+</tr>
+</tbody>
+</table>
+<p>This is post 1 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
+<div class="section" id="so-whats-lxc">
+<h2>2.1. So what’s LXC ?</h2>
+<p>Most of you probably already know the answer to that one, but here it goes:</p>
+<blockquote class="epigraph">
+<div><em>“LXC is a userspace interface for the Linux kernel containment features.</em>
+<em>Through a powerful API and simple tools, it lets Linux users easily create and manage system or application containers.”</em></div></blockquote>
+<p>I’m one of the two upstream maintainers of LXC along with Serge Hallyn.</p>
+<p>The project is quite actively developed with milestones every month and a stable release coming up in February. It’s so far been developed by 67 contributors from a wide range of backgrounds and companies.</p>
+<p>The project is mostly developed on github: <a class="reference external" href="http://github.com/lxc">http://github.com/lxc</a></p>
+<p>We have a website at: <a class="reference external" href="http://linuxcontainers.org">http://linuxcontainers.org</a></p>
+<p>And mailing lists at: <a class="reference external" href="http://lists.linuxcontainers.org">http://lists.linuxcontainers.org</a></p>
+</div>
+<div class="section" id="lxc-1-0">
+<h2>2.2. LXC 1.0</h2>
+<p>So what’s that 1.0 release all about?</p>
+<p>Well, simply put it’s going to be the first real stable release of LXC and the first we’ll be supporting for 5 years with bugfix releases. It’s also the one which will be included in Ubuntu 14.04 LTS to be released in April 2014.</p>
+<p>It’s also going to come with a stable API and a set of bindings, quite a few interesting new features which will be detailed in the next few posts and support for a wide range of host and guest distributions (including Android).</p>
+</div>
+<div class="section" id="how-to-get-it">
+<h2>2.3. How to get it ?</h2>
+<p>I’m assuming most of you will be using Ubuntu. For the next few posts, I’ll myself be using the current upstream daily builds on Ubuntu 14.04 but we maintain daily builds on 12.04, 12.10, 13.04, 13.10 and 14.04, so if you want the latest upstream code, you can use <a class="reference external" href="https://launchpad.net/~ubuntu-lxc/+archive/daily">our PPA</a><span class="link-target"> [https://launchpad.net/~ubuntu-lxc/+archive/daily]</span>.</p>
+<p>Alternatively, LXC is also directly in Ubuntu and quite usable since Ubuntu 12.04 LTS. You can choose to use the version which comes with whatever release you are on, or you can use one the backported version we maintain.</p>
+<p>If you want to build it yourself, you can do (not recommended when you can simply use the packages for your distribution):</p>
+<div class="code highlight-python"><pre>git clone git://github.com/lxc/lxc
+cd lxc
+sh autogen.sh
+# You will probably want to run the configure script with --help and then set the paths
+./configure
+make
+sudo make install</pre>
+</div>
+</div>
+<div class="section" id="what-about-that-first-container">
+<h2>2.4. What about that first container ?</h2>
+<p>Oh right, that was actually the goal of this post wasn’t it?</p>
+<p>Ok, so now that you have LXC installed, hopefully using the Ubuntu packages, it’s really as simple as:</p>
+<div class="code highlight-python"><pre># Create a "p1" container using the "ubuntu" template and the same version of Ubuntu
+# and architecture as the host. Pass "-- --help" to list all available options.
+sudo lxc-create -t ubuntu -n p1
+
+# Start the container (in the background)
+sudo lxc-start -n p1 -d
+
+# Enter the container in one of those ways
+## Attach to the container's console (ctrl-a + q to detach)
+sudo lxc-console -n p1
+
+## Spawn bash directly in the container (bypassing the console login),
+## requires a &gt;= 3.8 kernel
+sudo lxc-attach -n p1
+
+## SSH into it
+sudo lxc-info -n p1
+ssh ubuntu@&lt;ip from lxc-info&gt;
+
+# Stop the container in one of those ways
+## Stop it from within
+sudo poweroff
+
+## Stop it cleanly from the outside
+sudo lxc-stop -n p1
+
+## Kill it from the outside
+sudo lxc-stop -n p1 -k</pre>
+</div>
+<p>And there you go, that’s your first container. You’ll note that everything usually just works on Ubuntu. Our kernels have support for all the features that LXC may use and our packages setup a bridge and a DHCP server that the containers will use by default.
+All of that is obviously configurable and will be covered in the coming posts.</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
