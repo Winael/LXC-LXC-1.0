@@ -1,0 +1,235 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7. Security features &mdash; LXC 1.0 - Quickstart 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LXC 1.0 - Quickstart 1.0 documentation" href="index.html" />
+    <link rel="next" title="8. Unprivileged containers" href="lxc-1-0-unprivileged-containers.html" />
+    <link rel="prev" title="6. Container storage" href="lxc-1-0-container-storage.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-unprivileged-containers.html" title="8. Unprivileged containers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-container-storage.html" title="6. Container storage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">7. Security features</a><ul>
+<li><a class="reference internal" href="#capabilities">7.1. Capabilities</a></li>
+<li><a class="reference internal" href="#control-groups">7.2. Control groups</a></li>
+<li><a class="reference internal" href="#apparmor">7.3. Apparmor</a></li>
+<li><a class="reference internal" href="#selinux">7.4. SELinux</a></li>
+<li><a class="reference internal" href="#seccomp">7.5. Seccomp</a></li>
+<li><a class="reference internal" href="#user-namespace">7.6. User namespace</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lxc-1-0-container-storage.html"
+                        title="previous chapter">6. Container storage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lxc-1-0-unprivileged-containers.html"
+                        title="next chapter">8. Unprivileged containers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lxc-1-0-security-features.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="security-features">
+<span id="lxc-1-0-security-features"></span><h1>7. Security features<a class="headerlink" href="#security-features" title="Permalink to this headline">¶</a></h1>
+<p>When talking about container security most people either consider containers as inherently insecure or inherently secure. The reality isn’t so black and white and LXC supports a variety of technologies to mitigate most security concerns.</p>
+<p>One thing to clarify right from the start is that you won’t hear any of the LXC maintainers tell you that LXC is secure so long as you use privileged containers. However, at least in Ubuntu, our default containers ship with what we think is a pretty good configuration of both the cgroup access and an extensive apparmor profile which prevents all attacks that we are aware of.</p>
+<p>Below I’ll be covering the various technologies LXC supports to let you restrict what a container may do. Just keep in mind that unless you are using unprivileged containers, you shouldn’t give root access to a container to someone whom you’d mind having root access to your host.</p>
+<div class="section" id="capabilities">
+<h2>7.1. Capabilities<a class="headerlink" href="#capabilities" title="Permalink to this headline">¶</a></h2>
+<p>The first security feature which was added to LXC was Linux capabilities support. With that feature you can set a list of capabilities that you want LXC to drop before starting the container or a full list of capabilities to retain (all others will be dropped).</p>
+<p>The two relevant configurations options are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">lxc.cap.drop</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">lxc.cap.keep</span></tt></li>
+</ul>
+<p>Both are lists of capability names as listed in <a class="reference external" href="http://man7.org/linux/man-pages/man7/capabilities.7.html">capabilities(7)</a>.</p>
+<p>This may sound like a great way to make containers safe and for very specific cases it may be, however if running a system container, you’ll soon notice that dropping sys_admin and net_admin isn’t very practical and short of dropping those, you won’t make your container much safer (as root in the container will be able to re-grant itself any dropped capability).</p>
+<p>In Ubuntu we use <tt class="docutils literal"><span class="pre">lxc.cap.drop</span></tt> to drop <tt class="docutils literal"><span class="pre">sys_module</span></tt>, <tt class="docutils literal"><span class="pre">mac_admin</span></tt>, <tt class="docutils literal"><span class="pre">mac_override</span></tt>, <tt class="docutils literal"><span class="pre">sys_time</span></tt> which prevent some known problems at container boot time.</p>
+</div>
+<div class="section" id="control-groups">
+<h2>7.2. Control groups<a class="headerlink" href="#control-groups" title="Permalink to this headline">¶</a></h2>
+<p>Control groups are interesting because they achieve multiple things which while interconnected are still pretty different:</p>
+<ul class="simple">
+<li>Resource bean counting</li>
+<li>Resource quotas</li>
+<li>Access restrictions</li>
+</ul>
+<p>The first two aren’t really security related, though resource quotas will let you avoid some obvious DoS of the host (by setting memory, cpu and I/O limits).</p>
+<p>The last is mostly about the devices cgroup which lets you define which character and block devices a container may access and what it can do with them (you can restrict creation, read access and write access for each major/minor combination).</p>
+<p>In LXC, configuring cgroups is done with the <tt class="docutils literal"><span class="pre">lxc.cgroup.*</span></tt> options which can roughly be defined as:</p>
+<div class="code highlight-python"><pre>lxc.cgroup.&lt;controller&gt;.&lt;key&gt; = &lt;value&gt;</pre>
+</div>
+<p>For example to set a memory limit on <tt class="docutils literal"><span class="pre">p1</span></tt> you’d add the following to its configuration:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span class="n">lxc</span><span class="o">.</span><span class="n">cgroup</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">limit_in_bytes</span> <span class="o">=</span> <span class="mi">134217728</span>
+</pre></div>
+</div>
+<p>This will set a memory limit of 128MB (the value is in bytes) and will be the equivalent to writing that same value to <tt class="docutils literal"><span class="pre">/sys/fs/cgroup/memory/lxc/p1/memory.limit_in_bytes</span></tt></p>
+<p>Most LXC templates only set a few devices controller entries by default:</p>
+<div class="code highlight-python"><pre># Default cgroup limits
+lxc.cgroup.devices.deny = a
+## Allow any mknod (but not using the node)
+lxc.cgroup.devices.allow = c *:* m
+lxc.cgroup.devices.allow = b *:* m
+## /dev/null and zero
+lxc.cgroup.devices.allow = c 1:3 rwm
+lxc.cgroup.devices.allow = c 1:5 rwm
+## consoles
+lxc.cgroup.devices.allow = c 5:0 rwm
+lxc.cgroup.devices.allow = c 5:1 rwm
+## /dev/{,u}random
+lxc.cgroup.devices.allow = c 1:8 rwm
+lxc.cgroup.devices.allow = c 1:9 rwm
+## /dev/pts/*
+lxc.cgroup.devices.allow = c 5:2 rwm
+lxc.cgroup.devices.allow = c 136:* rwm
+## rtc
+lxc.cgroup.devices.allow = c 254:0 rm
+## fuse
+lxc.cgroup.devices.allow = c 10:229 rwm
+## tun
+lxc.cgroup.devices.allow = c 10:200 rwm
+## full
+lxc.cgroup.devices.allow = c 1:7 rwm
+## hpet
+lxc.cgroup.devices.allow = c 10:228 rwm
+## kvm
+lxc.cgroup.devices.allow = c 10:232 rwm</pre>
+</div>
+<p>This configuration allows the container (usually <tt class="docutils literal"><span class="pre">udev</span></tt>) to create any device it wishes (that’s the wildcard <tt class="docutils literal"><span class="pre">m</span></tt> above) but block everything else (the <tt class="docutils literal"><span class="pre">a</span></tt> deny entry) unless it’s listed in one of the allow entries below. This covers everything a container will typically need to function.</p>
+<p>You will find reasonably up to date documentation about the available controllers, control files and supported values at:
+<a class="reference external" href="https://www.kernel.org/doc/Documentation/cgroups/">https://www.kernel.org/doc/Documentation/cgroups/</a></p>
+</div>
+<div class="section" id="apparmor">
+<h2>7.3. Apparmor<a class="headerlink" href="#apparmor" title="Permalink to this headline">¶</a></h2>
+<p>A little while back we added Apparmor profiles support to LXC.</p>
+<p>The Apparmor support is rather simple, there’s one configuration option <tt class="docutils literal"><span class="pre">lxc.aa_profile</span></tt> which sets what apparmor profile to use for the container.</p>
+<p>LXC will then setup the container and ask apparmor to switch it to that profile right before starting the container. Ubuntu’s LXC profile is rather complex as it aims to prevent any of the known ways of escaping a container or cause harm to the host.</p>
+<p>As things are today, Ubuntu ships with 3 apparmor profiles meaning that the supported values for <tt class="docutils literal"><span class="pre">lxc.aa_profile</span></tt> are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">lxc-container-default</span></tt> (default value if <tt class="docutils literal"><span class="pre">lxc.aa_profile</span></tt> isn’t set)</li>
+<li><tt class="docutils literal"><span class="pre">lxc-container-default-with-nesting</span></tt> (same as default but allows some needed bits for nested containers)</li>
+<li><tt class="docutils literal"><span class="pre">lxc-container-default-with-mounting</span></tt> (same as default but allows mounting ext*, xfs and btrfs file systems).</li>
+<li><tt class="docutils literal"><span class="pre">unconfined</span></tt> (a special value which will disable apparmor support for the container)</li>
+</ul>
+<p>You can also define your own by copying one of the ones in <tt class="docutils literal"><span class="pre">/etc/apparmor.d/lxc/</span></tt>, adding the bits you want, giving it a unique name, then reloading apparmor with <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">/etc/init.d/apparmor</span> <span class="pre">reload</span></tt> and finally setting <tt class="docutils literal"><span class="pre">lxc.aa_profile</span></tt> to the new profile’s name.</p>
+</div>
+<div class="section" id="selinux">
+<h2>7.4. SELinux<a class="headerlink" href="#selinux" title="Permalink to this headline">¶</a></h2>
+<p>The SELinux support is very similar to Apparmor’s. An SELinux context can be set using <tt class="docutils literal"><span class="pre">lxc.se_context</span></tt>.</p>
+<p>An example would be:</p>
+<div class="code highlight-python"><pre>lxc.se_context = unconfined_u:unconfined_r:lxc_t:s0-s0:c0.c1023</pre>
+</div>
+<p>Similarly to Apparmor, LXC will switch to the new SELinux context right before starting init in the container. As far as I know, no distributions are setting a default SELinux context at this time, however most distributions build LXC with SELinux support (including Ubuntu, should someone choose to boot their host with SELinux rather than Apparmor).</p>
+</div>
+<div class="section" id="seccomp">
+<h2>7.5. Seccomp<a class="headerlink" href="#seccomp" title="Permalink to this headline">¶</a></h2>
+<p>Seccomp is a fairly recent kernel mechanism which allows for filtering of system calls.</p>
+<p>As a user you can write a seccomp policy file and set it using <tt class="docutils literal"><span class="pre">lxc.seccomp</span></tt> in the container’s configuration. As always, this policy will only be applied to the running container and will allow or reject syscalls with a pre-defined return value.</p>
+<p>An example (though limited and useless) of a seccomp policy file would be:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span class="mi">1</span>
+<span class="n">whitelist</span>
+<span class="mi">103</span>
+</pre></div>
+</div>
+<p>Which would only allow <tt class="docutils literal"><span class="pre">syscall</span> <span class="pre">#103</span></tt> (syslog) in the container and reject everything else.</p>
+<p>Note that seccomp is a rather low level feature and only useful for some very specific use cases. All syscalls have to be referred by their ID instead of their name and those may change between architectures. Also, as things are today, if your host is 64bit and you load a seccomp policy file, all 32bit syscalls will be rejected. We’d need per-personality seccomp profiles to solve that but it’s not been a high priority so far.</p>
+</div>
+<div class="section" id="user-namespace">
+<h2>7.6. User namespace<a class="headerlink" href="#user-namespace" title="Permalink to this headline">¶</a></h2>
+<p>And last but not least, what’s probably the only way of making a container actually safe. LXC now has support for user namespaces. I’ll go into more details on how to use that feature in a later blog post but simply put, LXC is no longer running as root so even if an attacker manages to escape the container, he’d find himself having the privileges of a regular user on the host.</p>
+<p>All this is achieved by assigning ranges of uids and gids to existing users. Those users on the host will then be allowed to clone a new user namespace in which all uids/gids are mapped to uids/gids that are part of the user’s range.</p>
+<p>This obviously means that you need to allocate a rather silly amount of uids and gids to each user who’ll be using LXC in that way. In a perfect world, you’d allocate 65536 uids and gids per container and per user. As this would likely exhaust the whole uid/gid range rather quickly on some systems, I tend to go with “just” 65536 uids and gids per user that’ll use LXC and then have the same range shared by all containers.</p>
+<p>Anyway, that’s enough details about user namespaces for now. I’ll cover how to actually set that up and use those unprivileged containers in the next post.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-unprivileged-containers.html" title="8. Unprivileged containers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-container-storage.html" title="6. Container storage"
+             >previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>9. Scripting with the api</title>
+    
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-unprivileged-containers.html" title="8. Unprivileged containers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body">
+            
+  <div class="section" id="scripting-with-the-api">
+<span id="lxc-1-0-scripting-with-the-api"></span><h1>9. Scripting with the api</h1>
+<div class="section" id="the-api">
+<h2>9.1. The API</h2>
+<p>The first version of liblxc was introduced in LXC 0.9 but it was very much at an experimental state. LXC 1.0 however will ship with a much more complete API, covering all of LXC’s features. We’ve actually been rebasing all of our tools (lxc-<a href="#id1"><span class="problematic" id="id2">*</span></a>) to using that API rather than doing direct calls to the internal functions.</p>
+<p>The API also comes with a whole set of tests which we run as part of our continuous integration setup and before distro uploads.</p>
+<p>There are also quite a few bindings for those who don’t feel like writing C, we have lua and python3 bindings in-tree upstream and there are official out-of-tree bindings for Go and ruby.</p>
+<p>The API documentation can be found at:
+<a class="reference external" href="https://qa.linuxcontainers.org/master/current/doc/api/">https://qa.linuxcontainers.org/master/current/doc/api/</a></p>
+<p>It’s not necessarily the most readable API documentation ever and certainly could do with some examples, especially for the bindings, but it does cover all functions that are exported over the API. Any help improving our API documentation is very much welcome!</p>
+</div>
+<div class="section" id="the-basics">
+<h2>9.2. The basics</h2>
+<p>So let’s start with a very simple example of the LXC API using C, the following example will create a new container struct called “apicontainer”, create a root filesystem using the new download template, start the container, print its state and PID number, then attempt a clean shutdown before killing it.</p>
+<pre class="code c literal-block">
+<span class="ln"> 1 </span><span class="comment preproc">#include &lt;stdio.h&gt;
+</span><span class="ln"> 2 </span><span class="comment preproc"></span>
+<span class="ln"> 3 </span><span class="comment preproc">#include &lt;lxc/lxccontainer.h&gt;
+</span><span class="ln"> 4 </span><span class="comment preproc"></span>
+<span class="ln"> 5 </span><span class="keyword type">int</span> <span class="name function">main</span><span class="punctuation">()</span> <span class="punctuation">{</span>
+<span class="ln"> 6 </span>    <span class="keyword">struct</span> <span class="name">lxc_container</span> <span class="operator">*</span><span class="name">c</span><span class="punctuation">;</span>
+<span class="ln"> 7 </span>    <span class="keyword type">int</span> <span class="name">ret</span> <span class="operator">=</span> <span class="literal number integer">1</span><span class="punctuation">;</span>
+<span class="ln"> 8 </span>
+<span class="ln"> 9 </span>    <span class="comment multiline">/* Setup container struct */</span>
+<span class="ln">10 </span>    <span class="name">c</span> <span class="operator">=</span> <span class="name">lxc_container_new</span><span class="punctuation">(</span><span class="literal string">&quot;apicontainer&quot;</span><span class="punctuation">,</span> <span class="name builtin">NULL</span><span class="punctuation">);</span>
+<span class="ln">11 </span>    <span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span><span class="name">c</span><span class="punctuation">)</span> <span class="punctuation">{</span>
+<span class="ln">12 </span>        <span class="name">fprintf</span><span class="punctuation">(</span><span class="name">stderr</span><span class="punctuation">,</span> <span class="literal string">&quot;Failed to setup lxc_container struct</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">13 </span>        <span class="keyword">goto</span> <span class="name">out</span><span class="punctuation">;</span>
+<span class="ln">14 </span>    <span class="punctuation">}</span>
+<span class="ln">15 </span>
+<span class="ln">16 </span>    <span class="keyword">if</span> <span class="punctuation">(</span><span class="name">c</span><span class="operator">-&gt;</span><span class="name">is_defined</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">))</span> <span class="punctuation">{</span>
+<span class="ln">17 </span>        <span class="name">fprintf</span><span class="punctuation">(</span><span class="name">stderr</span><span class="punctuation">,</span> <span class="literal string">&quot;Container already exists</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">18 </span>        <span class="keyword">goto</span> <span class="name">out</span><span class="punctuation">;</span>
+<span class="ln">19 </span>    <span class="punctuation">}</span>
+<span class="ln">20 </span>
+<span class="ln">21 </span>    <span class="comment multiline">/* Create the container */</span>
+<span class="ln">22 </span>    <span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span><span class="name">c</span><span class="operator">-&gt;</span><span class="name">createl</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">,</span> <span class="literal string">&quot;download&quot;</span><span class="punctuation">,</span> <span class="name builtin">NULL</span><span class="punctuation">,</span> <span class="name builtin">NULL</span><span class="punctuation">,</span> <span class="name">LXC_CREATE_QUIET</span><span class="punctuation">,</span>
+<span class="ln">23 </span>                    <span class="literal string">&quot;-d&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;ubuntu&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;-r&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;trusty&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;-a&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;i386&quot;</span><span class="punctuation">,</span> <span class="name builtin">NULL</span><span class="punctuation">))</span> <span class="punctuation">{</span>
+<span class="ln">24 </span>        <span class="name">fprintf</span><span class="punctuation">(</span><span class="name">stderr</span><span class="punctuation">,</span> <span class="literal string">&quot;Failed to create container rootfs</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">25 </span>        <span class="keyword">goto</span> <span class="name">out</span><span class="punctuation">;</span>
+<span class="ln">26 </span>    <span class="punctuation">}</span>
+<span class="ln">27 </span>
+<span class="ln">28 </span>    <span class="comment multiline">/* Start the container */</span>
+<span class="ln">29 </span>    <span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span><span class="name">c</span><span class="operator">-&gt;</span><span class="name">start</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">,</span> <span class="literal number integer">0</span><span class="punctuation">,</span> <span class="name builtin">NULL</span><span class="punctuation">))</span> <span class="punctuation">{</span>
+<span class="ln">30 </span>        <span class="name">fprintf</span><span class="punctuation">(</span><span class="name">stderr</span><span class="punctuation">,</span> <span class="literal string">&quot;Failed to start the container</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">31 </span>        <span class="keyword">goto</span> <span class="name">out</span><span class="punctuation">;</span>
+<span class="ln">32 </span>    <span class="punctuation">}</span>
+<span class="ln">33 </span>
+<span class="ln">34 </span>    <span class="comment multiline">/* Query some information */</span>
+<span class="ln">35 </span>    <span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Container state: %s</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span> <span class="name">c</span><span class="operator">-&gt;</span><span class="name">state</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">));</span>
+<span class="ln">36 </span>    <span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Container PID: %d</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">,</span> <span class="name">c</span><span class="operator">-&gt;</span><span class="name">init_pid</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">));</span>
+<span class="ln">37 </span>
+<span class="ln">38 </span>    <span class="comment multiline">/* Stop the container */</span>
+<span class="ln">39 </span>    <span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span><span class="name">c</span><span class="operator">-&gt;</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">,</span> <span class="literal number integer">30</span><span class="punctuation">))</span> <span class="punctuation">{</span>
+<span class="ln">40 </span>        <span class="name">printf</span><span class="punctuation">(</span><span class="literal string">&quot;Failed to cleanly shutdown the container, forcing.</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">41 </span>        <span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span><span class="name">c</span><span class="operator">-&gt;</span><span class="name">stop</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">))</span> <span class="punctuation">{</span>
+<span class="ln">42 </span>            <span class="name">fprintf</span><span class="punctuation">(</span><span class="name">stderr</span><span class="punctuation">,</span> <span class="literal string">&quot;Failed to kill the container.</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">43 </span>            <span class="keyword">goto</span> <span class="name">out</span><span class="punctuation">;</span>
+<span class="ln">44 </span>        <span class="punctuation">}</span>
+<span class="ln">45 </span>    <span class="punctuation">}</span>
+<span class="ln">46 </span>
+<span class="ln">47 </span>    <span class="comment multiline">/* Destroy the container */</span>
+<span class="ln">48 </span>    <span class="keyword">if</span> <span class="punctuation">(</span><span class="operator">!</span><span class="name">c</span><span class="operator">-&gt;</span><span class="name">destroy</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">))</span> <span class="punctuation">{</span>
+<span class="ln">49 </span>        <span class="name">fprintf</span><span class="punctuation">(</span><span class="name">stderr</span><span class="punctuation">,</span> <span class="literal string">&quot;Failed to destroy the container.</span><span class="literal string escape">\n</span><span class="literal string">&quot;</span><span class="punctuation">);</span>
+<span class="ln">50 </span>        <span class="keyword">goto</span> <span class="name">out</span><span class="punctuation">;</span>
+<span class="ln">51 </span>    <span class="punctuation">}</span>
+<span class="ln">52 </span>
+<span class="ln">53 </span>    <span class="name">ret</span> <span class="operator">=</span> <span class="literal number integer">0</span><span class="punctuation">;</span>
+<span class="ln">54 </span><span class="name label">out:</span>
+<span class="ln">55 </span>    <span class="name">lxc_container_put</span><span class="punctuation">(</span><span class="name">c</span><span class="punctuation">);</span>
+<span class="ln">56 </span>    <span class="keyword">return</span> <span class="name">ret</span><span class="punctuation">;</span>
+<span class="ln">57 </span><span class="punctuation">}</span>
+</pre>
+<p>So as you can see, it’s not very difficult to use, most functions are fairly straightforward and error checking is pretty simple (most calls are boolean and errors are printed to stderr by LXC depending on the loglevel).</p>
+</div>
+<div class="section" id="python3-scripting">
+<h2>9.3. Python3 scripting</h2>
+<p>As much fun as C may be, I usually like to script my containers and C isn’t really the best language for that. That’s why I wrote and maintain the official python3 binding.</p>
+<p>The equivalent to the example above in python3 would be:</p>
+<pre class="code python literal-block">
+<span class="ln"> 1 </span><span class="keyword namespace">import</span> <span class="name namespace">lxc</span>
+<span class="ln"> 2 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln"> 3 </span>
+<span class="ln"> 4 </span><span class="comment"># Setup the container object</span>
+<span class="ln"> 5 </span><span class="name">c</span> <span class="operator">=</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">Container</span><span class="punctuation">(</span><span class="literal string">&quot;apicontainer&quot;</span><span class="punctuation">)</span>
+<span class="ln"> 6 </span><span class="keyword">if</span> <span class="name">c</span><span class="operator">.</span><span class="name">defined</span><span class="punctuation">:</span>
+<span class="ln"> 7 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Container already exists&quot;</span><span class="punctuation">,</span> <span class="name builtin">file</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">stderr</span><span class="punctuation">)</span>
+<span class="ln"> 8 </span>    <span class="name">sys</span><span class="operator">.</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span>
+<span class="ln"> 9 </span>
+<span class="ln">10 </span><span class="comment"># Create the container rootfs</span>
+<span class="ln">11 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">create</span><span class="punctuation">(</span><span class="literal string">&quot;download&quot;</span><span class="punctuation">,</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">LXC_CREATE_QUIET</span><span class="punctuation">,</span> <span class="punctuation">{</span><span class="literal string">&quot;dist&quot;</span><span class="punctuation">:</span> <span class="literal string">&quot;ubuntu&quot;</span><span class="punctuation">,</span>
+<span class="ln">12 </span>                                                   <span class="literal string">&quot;release&quot;</span><span class="punctuation">:</span> <span class="literal string">&quot;trusty&quot;</span><span class="punctuation">,</span>
+<span class="ln">13 </span>                                                   <span class="literal string">&quot;arch&quot;</span><span class="punctuation">:</span> <span class="literal string">&quot;i386&quot;</span><span class="punctuation">}):</span>
+<span class="ln">14 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Failed to create the container rootfs&quot;</span><span class="punctuation">,</span> <span class="name builtin">file</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">stderr</span><span class="punctuation">)</span>
+<span class="ln">15 </span>    <span class="name">sys</span><span class="operator">.</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span>
+<span class="ln">16 </span>
+<span class="ln">17 </span><span class="comment"># Start the container</span>
+<span class="ln">18 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">():</span>
+<span class="ln">19 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Failed to start the container&quot;</span><span class="punctuation">,</span> <span class="name builtin">file</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">stderr</span><span class="punctuation">)</span>
+<span class="ln">20 </span>    <span class="name">sys</span><span class="operator">.</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span>
+<span class="ln">21 </span>
+<span class="ln">22 </span><span class="comment"># Query some information</span>
+<span class="ln">23 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Container state: </span><span class="literal string interpol">%s</span><span class="literal string">&quot;</span> <span class="operator">%</span> <span class="name">c</span><span class="operator">.</span><span class="name">state</span><span class="punctuation">)</span>
+<span class="ln">24 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Container PID: </span><span class="literal string interpol">%s</span><span class="literal string">&quot;</span> <span class="operator">%</span> <span class="name">c</span><span class="operator">.</span><span class="name">init_pid</span><span class="punctuation">)</span>
+<span class="ln">25 </span>
+<span class="ln">26 </span><span class="comment"># Stop the container</span>
+<span class="ln">27 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">28 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Failed to cleanly shutdown the container, forcing.&quot;</span><span class="punctuation">)</span>
+<span class="ln">29 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">stop</span><span class="punctuation">():</span>
+<span class="ln">30 </span>        <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Failed to kill the container&quot;</span><span class="punctuation">,</span> <span class="name builtin">file</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">stderr</span><span class="punctuation">)</span>
+<span class="ln">31 </span>        <span class="name">sys</span><span class="operator">.</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span>
+<span class="ln">32 </span>
+<span class="ln">33 </span><span class="comment"># Destroy the container</span>
+<span class="ln">34 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">destroy</span><span class="punctuation">():</span>
+<span class="ln">35 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Failed to destroy the container.&quot;</span><span class="punctuation">,</span> <span class="name builtin">file</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">stderr</span><span class="punctuation">)</span>
+<span class="ln">36 </span>    <span class="name">sys</span><span class="operator">.</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span>
+</pre>
+<p>Now for that specific example, python3 isn’t that much simpler than the C equivalent.</p>
+<p>But what if we wanted to do something slightly more tricky, like iterating through all existing containers, start them (if they’re not already started), wait for them to have network connectivity, then run updates and shut them down?</p>
+<pre class="code python literal-block">
+<span class="ln"> 1 </span><span class="keyword namespace">import</span> <span class="name namespace">lxc</span>
+<span class="ln"> 2 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln"> 3 </span>
+<span class="ln"> 4 </span><span class="keyword">for</span> <span class="name">container</span> <span class="operator word">in</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">list_containers</span><span class="punctuation">(</span><span class="name">as_object</span><span class="operator">=</span><span class="name builtin pseudo">True</span><span class="punctuation">):</span>
+<span class="ln"> 5 </span>    <span class="comment"># Start the container (if not started)</span>
+<span class="ln"> 6 </span>    <span class="name">started</span><span class="operator">=</span><span class="name builtin pseudo">False</span>
+<span class="ln"> 7 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">container</span><span class="operator">.</span><span class="name">running</span><span class="punctuation">:</span>
+<span class="ln"> 8 </span>        <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">container</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">():</span>
+<span class="ln"> 9 </span>            <span class="keyword">continue</span>
+<span class="ln">10 </span>        <span class="name">started</span><span class="operator">=</span><span class="name builtin pseudo">True</span>
+<span class="ln">11 </span>
+<span class="ln">12 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">container</span><span class="operator">.</span><span class="name">state</span> <span class="operator">==</span> <span class="literal string">&quot;RUNNING&quot;</span><span class="punctuation">:</span>
+<span class="ln">13 </span>        <span class="keyword">continue</span>
+<span class="ln">14 </span>
+<span class="ln">15 </span>    <span class="comment"># Wait for connectivity</span>
+<span class="ln">16 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">container</span><span class="operator">.</span><span class="name">get_ips</span><span class="punctuation">(</span><span class="name">timeout</span><span class="operator">=</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">17 </span>        <span class="keyword">continue</span>
+<span class="ln">18 </span>
+<span class="ln">19 </span>    <span class="comment"># Run the updates</span>
+<span class="ln">20 </span>    <span class="name">container</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">lxc</span><span class="operator">.</span><span class="name">attach_run_command</span><span class="punctuation">,</span>
+<span class="ln">21 </span>                          <span class="punctuation">[</span><span class="literal string">&quot;apt-get&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;update&quot;</span><span class="punctuation">])</span>
+<span class="ln">22 </span>    <span class="name">container</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">lxc</span><span class="operator">.</span><span class="name">attach_run_command</span><span class="punctuation">,</span>
+<span class="ln">23 </span>                          <span class="punctuation">[</span><span class="literal string">&quot;apt-get&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;dist-upgrade&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;-y&quot;</span><span class="punctuation">])</span>
+<span class="ln">24 </span>
+<span class="ln">25 </span>    <span class="comment"># Shutdown the container</span>
+<span class="ln">26 </span>    <span class="keyword">if</span> <span class="name">started</span><span class="punctuation">:</span>
+<span class="ln">27 </span>        <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">container</span><span class="operator">.</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">28 </span>            <span class="name">container</span><span class="operator">.</span><span class="name">stop</span><span class="punctuation">()</span>
+</pre>
+<p>The most interesting bit in the example above is the <tt class="docutils literal"><span class="pre">attach_wait</span></tt> command, which basically lets your run a standard python function in the container’s namespaces, here’s a more obvious example:</p>
+<pre class="code python literal-block">
+<span class="ln"> 1 </span><span class="keyword namespace">import</span> <span class="name namespace">lxc</span>
+<span class="ln"> 2 </span>
+<span class="ln"> 3 </span><span class="name">c</span> <span class="operator">=</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">Container</span><span class="punctuation">(</span><span class="literal string">&quot;p1&quot;</span><span class="punctuation">)</span>
+<span class="ln"> 4 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">running</span><span class="punctuation">:</span>
+<span class="ln"> 5 </span>    <span class="name">c</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span>
+<span class="ln"> 6 </span>
+<span class="ln"> 7 </span><span class="keyword">def</span> <span class="name function">print_hostname</span><span class="punctuation">():</span>
+<span class="ln"> 8 </span>    <span class="keyword">with</span> <span class="name builtin">open</span><span class="punctuation">(</span><span class="literal string">&quot;/etc/hostname&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;r&quot;</span><span class="punctuation">)</span> <span class="keyword">as</span> <span class="name">fd</span><span class="punctuation">:</span>
+<span class="ln"> 9 </span>        <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Hostname: </span><span class="literal string interpol">%s</span><span class="literal string">&quot;</span> <span class="operator">%</span> <span class="name">fd</span><span class="operator">.</span><span class="name">read</span><span class="punctuation">()</span><span class="operator">.</span><span class="name">strip</span><span class="punctuation">())</span>
+<span class="ln">10 </span>
+<span class="ln">11 </span><span class="comment"># First run on the host</span>
+<span class="ln">12 </span><span class="name">print_hostname</span><span class="punctuation">()</span>
+<span class="ln">13 </span>
+<span class="ln">14 </span><span class="comment"># Then on the container</span>
+<span class="ln">15 </span><span class="name">c</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">print_hostname</span><span class="punctuation">)</span>
+<span class="ln">16 </span>
+<span class="ln">17 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">c</span><span class="operator">.</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">18 </span>    <span class="name">c</span><span class="operator">.</span><span class="name">stop</span><span class="punctuation">()</span>
+</pre>
+<p>And the output of running the above:</p>
+<div class="code highlight-python"><pre>stgraber@castiana:~$ python3 lxc-api.py
+/home/stgraber/&lt;frozen&gt;:313: Warning: The python-lxc API isn't yet stable and may change at any point in the future.
+Hostname: castiana
+Hostname: p1</pre>
+</div>
+<p>It may take you a little while to wrap your head around the possibilities offered by that function, especially as it also takes quite a few flags (look for <tt class="docutils literal"><span class="pre">LXC_ATTACH_*</span></tt> in the C API) which lets you control which namespaces to attach to, whether to have the function contained by apparmor, whether to bypass cgroup restrictions, …</p>
+<p>That kind of flexibility is something you’ll never get with a virtual machine and the way it’s supported through our bindings makes it easier than ever to use by anyone who wants to automate custom workloads.</p>
+<p>You can also use the API to script cloning containers and using snapshots (though for that example to work, you need current upstream master due to a small bug I found while writing this…):</p>
+<pre class="code python literal-block">
+<span class="ln"> 1 </span><span class="keyword namespace">import</span> <span class="name namespace">lxc</span>
+<span class="ln"> 2 </span><span class="keyword namespace">import</span> <span class="name namespace">os</span>
+<span class="ln"> 3 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln"> 4 </span>
+<span class="ln"> 5 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">os</span><span class="operator">.</span><span class="name">geteuid</span><span class="punctuation">()</span> <span class="operator">==</span> <span class="literal number integer">0</span><span class="punctuation">:</span>
+<span class="ln"> 6 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;The use of overlayfs requires privileged containers.&quot;</span><span class="punctuation">)</span>
+<span class="ln"> 7 </span>    <span class="name">sys</span><span class="operator">.</span><span class="name">exit</span><span class="punctuation">(</span><span class="literal number integer">1</span><span class="punctuation">)</span>
+<span class="ln"> 8 </span>
+<span class="ln"> 9 </span><span class="comment"># Create a base container (if missing) using an Ubuntu 14.04 image</span>
+<span class="ln">10 </span><span class="name">base</span> <span class="operator">=</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">Container</span><span class="punctuation">(</span><span class="literal string">&quot;base&quot;</span><span class="punctuation">)</span>
+<span class="ln">11 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">base</span><span class="operator">.</span><span class="name">defined</span><span class="punctuation">:</span>
+<span class="ln">12 </span>    <span class="name">base</span><span class="operator">.</span><span class="name">create</span><span class="punctuation">(</span><span class="literal string">&quot;download&quot;</span><span class="punctuation">,</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">LXC_CREATE_QUIET</span><span class="punctuation">,</span> <span class="punctuation">{</span><span class="literal string">&quot;dist&quot;</span><span class="punctuation">:</span> <span class="literal string">&quot;ubuntu&quot;</span><span class="punctuation">,</span>
+<span class="ln">13 </span>                                                   <span class="literal string">&quot;release&quot;</span><span class="punctuation">:</span> <span class="literal string">&quot;precise&quot;</span><span class="punctuation">,</span>
+<span class="ln">14 </span>                                                   <span class="literal string">&quot;arch&quot;</span><span class="punctuation">:</span> <span class="literal string">&quot;i386&quot;</span><span class="punctuation">})</span>
+<span class="ln">15 </span>
+<span class="ln">16 </span>    <span class="comment"># Customize it a bit</span>
+<span class="ln">17 </span>    <span class="name">base</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span>
+<span class="ln">18 </span>    <span class="name">base</span><span class="operator">.</span><span class="name">get_ips</span><span class="punctuation">(</span><span class="name">timeout</span><span class="operator">=</span><span class="literal number integer">30</span><span class="punctuation">)</span>
+<span class="ln">19 </span>    <span class="name">base</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">lxc</span><span class="operator">.</span><span class="name">attach_run_command</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="literal string">&quot;apt-get&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;update&quot;</span><span class="punctuation">])</span>
+<span class="ln">20 </span>    <span class="name">base</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">lxc</span><span class="operator">.</span><span class="name">attach_run_command</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="literal string">&quot;apt-get&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;dist-upgrade&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;-y&quot;</span><span class="punctuation">])</span>
+<span class="ln">21 </span>
+<span class="ln">22 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">base</span><span class="operator">.</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">23 </span>        <span class="name">base</span><span class="operator">.</span><span class="name">stop</span><span class="punctuation">()</span>
+<span class="ln">24 </span>
+<span class="ln">25 </span><span class="comment"># Clone it as web (if not already existing)</span>
+<span class="ln">26 </span><span class="name">web</span> <span class="operator">=</span> <span class="name">lxc</span><span class="operator">.</span><span class="name">Container</span><span class="punctuation">(</span><span class="literal string">&quot;web&quot;</span><span class="punctuation">)</span>
+<span class="ln">27 </span><span class="keyword">if</span> <span class="operator word">not</span> <span class="name">web</span><span class="operator">.</span><span class="name">defined</span><span class="punctuation">:</span>
+<span class="ln">28 </span>    <span class="comment"># Clone base using an overlayfs overlay</span>
+<span class="ln">29 </span>    <span class="name">web</span> <span class="operator">=</span> <span class="name">base</span><span class="operator">.</span><span class="name">clone</span><span class="punctuation">(</span><span class="literal string">&quot;web&quot;</span><span class="punctuation">,</span> <span class="name">bdevtype</span><span class="operator">=</span><span class="literal string">&quot;overlayfs&quot;</span><span class="punctuation">,</span>
+<span class="ln">30 </span>                     <span class="name">flags</span><span class="operator">=</span><span class="name">lxc</span><span class="operator">.</span><span class="name">LXC_CLONE_SNAPSHOT</span><span class="punctuation">)</span>
+<span class="ln">31 </span>
+<span class="ln">32 </span>    <span class="comment"># Install apache</span>
+<span class="ln">33 </span>    <span class="name">web</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span>
+<span class="ln">34 </span>    <span class="name">web</span><span class="operator">.</span><span class="name">get_ips</span><span class="punctuation">(</span><span class="name">timeout</span><span class="operator">=</span><span class="literal number integer">30</span><span class="punctuation">)</span>
+<span class="ln">35 </span>    <span class="name">web</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">lxc</span><span class="operator">.</span><span class="name">attach_run_command</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="literal string">&quot;apt-get&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;update&quot;</span><span class="punctuation">])</span>
+<span class="ln">36 </span>    <span class="name">web</span><span class="operator">.</span><span class="name">attach_wait</span><span class="punctuation">(</span><span class="name">lxc</span><span class="operator">.</span><span class="name">attach_run_command</span><span class="punctuation">,</span> <span class="punctuation">[</span><span class="literal string">&quot;apt-get&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;install&quot;</span><span class="punctuation">,</span>
+<span class="ln">37 </span>                                             <span class="literal string">&quot;apache2&quot;</span><span class="punctuation">,</span> <span class="literal string">&quot;-y&quot;</span><span class="punctuation">])</span>
+<span class="ln">38 </span>
+<span class="ln">39 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">web</span><span class="operator">.</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">40 </span>        <span class="name">web</span><span class="operator">.</span><span class="name">stop</span><span class="punctuation">()</span>
+<span class="ln">41 </span>
+<span class="ln">42 </span><span class="comment"># Create a website container based on the web container</span>
+<span class="ln">43 </span><span class="name">mysite</span> <span class="operator">=</span> <span class="name">web</span><span class="operator">.</span><span class="name">clone</span><span class="punctuation">(</span><span class="literal string">&quot;mysite&quot;</span><span class="punctuation">,</span> <span class="name">bdevtype</span><span class="operator">=</span><span class="literal string">&quot;overlayfs&quot;</span><span class="punctuation">,</span>
+<span class="ln">44 </span>                   <span class="name">flags</span><span class="operator">=</span><span class="name">lxc</span><span class="operator">.</span><span class="name">LXC_CLONE_SNAPSHOT</span><span class="punctuation">)</span>
+<span class="ln">45 </span><span class="name">mysite</span><span class="operator">.</span><span class="name">start</span><span class="punctuation">()</span>
+<span class="ln">46 </span><span class="name">ips</span> <span class="operator">=</span> <span class="name">mysite</span><span class="operator">.</span><span class="name">get_ips</span><span class="punctuation">(</span><span class="name">family</span><span class="operator">=</span><span class="literal string">&quot;inet&quot;</span><span class="punctuation">,</span> <span class="name">timeout</span><span class="operator">=</span><span class="literal number integer">30</span><span class="punctuation">)</span>
+<span class="ln">47 </span><span class="keyword">if</span> <span class="name">ips</span><span class="punctuation">:</span>
+<span class="ln">48 </span>    <span class="keyword">print</span><span class="punctuation">(</span><span class="literal string">&quot;Website running at: http://</span><span class="literal string interpol">%s</span><span class="literal string">&quot;</span> <span class="operator">%</span> <span class="name">ips</span><span class="punctuation">[</span><span class="literal number integer">0</span><span class="punctuation">])</span>
+<span class="ln">49 </span><span class="keyword">else</span><span class="punctuation">:</span>
+<span class="ln">50 </span>    <span class="keyword">if</span> <span class="operator word">not</span> <span class="name">mysite</span><span class="operator">.</span><span class="name">shutdown</span><span class="punctuation">(</span><span class="literal number integer">30</span><span class="punctuation">):</span>
+<span class="ln">51 </span>        <span class="name">mysite</span><span class="operator">.</span><span class="name">stop</span><span class="punctuation">()</span>
+</pre>
+<p>The above will create a base container using a downloaded image, then clone it using an overlayfs based overlay, add apache2 to it, then clone that resulting container into yet another one called <tt class="docutils literal"><span class="pre">mysite</span></tt>. So <tt class="docutils literal"><span class="pre">mysite</span></tt> is effectively an overlay clone of <tt class="docutils literal"><span class="pre">web</span></tt> which is itself an overlay clone of <tt class="docutils literal"><span class="pre">base</span></tt>.</p>
+<p>So there you go, I tried to cover most of the interesting bits of our API with the examples above, though there’s much more available, for example, I didn’t cover the snapshot API (currently restricted to system containers) outside of the specific overlayfs case above and only scratched the surface of what’s possible to do with the attach function.</p>
+<p>LXC 1.0 will release with a stable version of the API, we’ll be doing additions in the next few 1.x versions (while doing bugfix only updates to 1.0.x) and hope not to have to break the whole API for quite a while (though we’ll certainly be adding more stuff to it).</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

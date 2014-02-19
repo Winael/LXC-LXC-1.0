@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>8. Unprivileged containers &mdash; LXC 1.0 - Quickstart 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LXC 1.0 - Quickstart 1.0 documentation" href="index.html" />
+    <link rel="next" title="9. Scripting with the api" href="lxc-1-0-scripting-with-the-api.html" />
+    <link rel="prev" title="7. Security features" href="lxc-1-0-security-features.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-scripting-with-the-api.html" title="9. Scripting with the api"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-security-features.html" title="7. Security features"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">8. Unprivileged containers</a><ul>
+<li><a class="reference internal" href="#introduction-to-unprivileged-containers">8.1. Introduction to unprivileged containers</a></li>
+<li><a class="reference internal" href="#pre-requirements">8.2. Pre-requirements</a></li>
+<li><a class="reference internal" href="#lxc-pre-built-containers">8.3. LXC pre-built containers</a></li>
+<li><a class="reference internal" href="#using-unprivileged-lxc">8.4. Using unprivileged LXC</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lxc-1-0-security-features.html"
+                        title="previous chapter">7. Security features</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lxc-1-0-scripting-with-the-api.html"
+                        title="next chapter">9. Scripting with the api</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lxc-1-0-unprivileged-containers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="unprivileged-containers">
+<span id="lxc-1-0-unprivileged-containers"></span><h1>8. Unprivileged containers<a class="headerlink" href="#unprivileged-containers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction-to-unprivileged-containers">
+<h2>8.1. Introduction to unprivileged containers<a class="headerlink" href="#introduction-to-unprivileged-containers" title="Permalink to this headline">¶</a></h2>
+<p>The support of unprivileged containers is in my opinion one of the most important new features of LXC 1.0.</p>
+<p>You may remember from previous posts that I mentioned that LXC should be considered unsafe because while running in a separate namespace, <tt class="docutils literal"><span class="pre">uid</span> <span class="pre">0</span></tt> in your container is still equal to <tt class="docutils literal"><span class="pre">uid</span> <span class="pre">0</span></tt> outside of the container, meaning that if you somehow get access to any host resource through proc, sys or some random syscalls, you can potentially escape the container and then you’ll be root on the host.</p>
+<p>That’s what user namespaces were designed for and implemented. It was a multi-year effort to think them through and slowly push the hundreds of patches required into the upstream kernel, but finally with 3.12 we got to a point where we can start a full system container entirely as a user.</p>
+<p>So how do those user namespaces work ? Well, simply put, each user that’s allowed to use them on the system gets assigned a range of unused uids and gids, ideally a whole 65536 of them. You can then use those uids and gids with two standard tools called <tt class="docutils literal"><span class="pre">newuidmap</span></tt> and <tt class="docutils literal"><span class="pre">newgidmap</span></tt> which will let you map any of those uids and gids to virtual uids and gids in a user namespace.</p>
+<p>That means you can create a container with the following configuration:</p>
+<div class="code highlight-python"><pre>lxc.id_map = u 0 100000 65536
+lxc.id_map = g 0 100000 65536</pre>
+</div>
+<p>The above means that I have one uid map and one gid map defined for my container which will map uids and gids 0 through 65536 in the container to uids and gids 100000 through 165536 on the host.</p>
+<p>For this to be allowed, I need to have those ranges assigned to my user at the system level with:</p>
+<div class="code highlight-python"><pre>stgraber@castiana:~$ grep stgraber /etc/sub* 2&gt;/dev/null
+/etc/subgid:stgraber:100000:65536
+/etc/subuid:stgraber:100000:65536</pre>
+</div>
+<p>LXC has now been updated so that all the tools are aware of those unprivileged containers. The standard paths also have their unprivileged equivalents:</p>
+<div class="code highlight-python"><pre>/etc/lxc/lxc.conf =&gt; ~/.config/lxc/lxc.conf
+/etc/lxc/default.conf =&gt; ~/.config/lxc/default.conf
+/var/lib/lxc =&gt; ~/.local/share/lxc
+/var/lib/lxcsnaps =&gt; ~/.local/share/lxcsnaps
+/var/cache/lxc =&gt; ~/.cache/lxc</pre>
+</div>
+<p>Your user, while it can create new user namespaces in which it’ll be <tt class="docutils literal"><span class="pre">uid</span> <span class="pre">0</span></tt> and will have some of root’s privileges against resources tied to that namespace will obviously not be granted any extra privilege on the host.</p>
+<p>One such thing is creating new network devices on the host or changing bridge configuration. To workaround that, we wrote a tool called <tt class="docutils literal"><span class="pre">lxc-user-nic</span></tt> which is the only <tt class="docutils literal"><span class="pre">SETUID</span></tt> binary part of LXC 1.0 and which performs one simple task.
+It parses a configuration file and based on its content will create network devices for the user and bridge them. To prevent abuse, you can restrict the number of devices a user can request and to what bridge they may be added.</p>
+<p>An example is my own <tt class="docutils literal"><span class="pre">/etc/lxc/lxc-usernet</span></tt> file:</p>
+<div class="code highlight-python"><pre>stgraber veth lxcbr0 10</pre>
+</div>
+<p>This declares that the user <tt class="docutils literal"><span class="pre">stgraber</span></tt> is allowed up to 10 veth type devices to be created and added to the bridge called <tt class="docutils literal"><span class="pre">lxcbr0</span></tt>.</p>
+<p>Between what’s offered by the user namespace in the kernel and that setuid tool, we’ve got all that’s needed to run most distributions unprivileged.</p>
+</div>
+<div class="section" id="pre-requirements">
+<h2>8.2. Pre-requirements<a class="headerlink" href="#pre-requirements" title="Permalink to this headline">¶</a></h2>
+<p>All examples and instructions I’ll be giving below are expecting that you are running a perfectly up to date version of Ubuntu 14.04 (codename trusty). That’s a pre-release of Ubuntu so you may want to run it in a VM or on a spare machine rather than upgrading your production computer.</p>
+<p>The reason to want something that recent is because the rough requirements for well working unprivileged containers are:</p>
+<ul class="simple">
+<li>Kernel: 3.13 + a couple of staging patches (which Ubuntu has in its kernel)</li>
+<li>User namespaces enabled in the kernel</li>
+<li>A very recent version of shadow that supports subuid/subgid</li>
+<li>Per-user cgroups on all controllers (which I turned on a couple of weeks ago)</li>
+<li>LXC 1.0 beta2 or higher (released two days ago)</li>
+<li>A version of PAM with a loginuid patch that’s yet to be in any released version</li>
+</ul>
+<p>Those requirements happen to all be true of the current development release of Ubuntu as of two days ago.</p>
+</div>
+<div class="section" id="lxc-pre-built-containers">
+<h2>8.3. LXC pre-built containers<a class="headerlink" href="#lxc-pre-built-containers" title="Permalink to this headline">¶</a></h2>
+<p>User namespaces come with quite a few obvious limitations. For example in a user namespace you won’t be allowed to use mknod to create a block or character device as being allowed to do so would let you access anything on the host. Same thing goes with some filesystems, you won’t for example be allowed to do loop mounts or mount an ext partition, even if you can access the block device.</p>
+<p>Those limitations while not necessarily world ending in day to day use are a big problem during the initial bootstrap of a container as tools like debootstrap, yum, … usually try to do some of those restricted actions and will fail pretty badly.</p>
+<p>Some templates may be tweaked to work and workaround such as a modified fakeroot could be used to bypass some of those limitations but the goal of the LXC project isn’t to require all of our users to be distro engineers, so we came up with a much simpler solution.</p>
+<p>I wrote a new template called “download” which instead of assembling the rootfs and configuration locally will instead contact a server which contains daily pre-built rootfs and configuration for most common templates.</p>
+<p>Those images are built from our Jenkins server using a few machines I have on my home network (a set of powerful x86 builders and a quadcore ARM board). The actual build process is pretty straightforward, a basic chroot is assembled, then the current git master is downloaded, built and the standard templates are run with the right release and architecture, the resulting rootfs is compressed, a basic config and metadata (expiry, files to template, …) is saved, the result is pulled by our main server, signed with a dedicated GPG key and published on the public web server.</p>
+<p>The client side is a simple template which contacts the server over https (the domain is also DNSSEC enabled and available over IPv6), grabs signed indexes of all the available images, checks if the requested combination of distribution, release and architecture is supported and if it is, grabs the rootfs and metadata tarballs, validates their signature and stores them in a local cache. Any container creation after that point is done using that cache until the time the cache entries expires at which point it’ll grab a new copy from the server.</p>
+<p>The current list of images is (as can be requested by passing <tt class="docutils literal"><span class="pre">-list</span></tt>):</p>
+<div class="code highlight-python"><pre>---
+DIST      RELEASE   ARCH    VARIANT    BUILD
+---
+debian    wheezy    amd64   default    20140116_22:43
+debian    wheezy    armel   default    20140116_22:43
+debian    wheezy    armhf   default    20140116_22:43
+debian    wheezy    i386    default    20140116_22:43
+debian    jessie    amd64   default    20140116_22:43
+debian    jessie    armel   default    20140116_22:43
+debian    jessie    armhf   default    20140116_22:43
+debian    jessie    i386    default    20140116_22:43
+debian    sid       amd64   default    20140116_22:43
+debian    sid       armel   default    20140116_22:43
+debian    sid       armhf   default    20140116_22:43
+debian    sid       i386    default    20140116_22:43
+oracle    6.5       amd64   default    20140117_11:41
+oracle    6.5       i386    default    20140117_11:41
+plamo     5.x       amd64   default    20140116_21:37
+plamo     5.x       i386    default    20140116_21:37
+ubuntu    lucid     amd64   default    20140117_03:50
+ubuntu    lucid     i386    default    20140117_03:50
+ubuntu    precise   amd64   default    20140117_03:50
+ubuntu    precise   armel   default    20140117_03:50
+ubuntu    precise   armhf   default    20140117_03:50
+ubuntu    precise   i386    default    20140117_03:50
+ubuntu    quantal   amd64   default    20140117_03:50
+ubuntu    quantal   armel   default    20140117_03:50
+ubuntu    quantal   armhf   default    20140117_03:50
+ubuntu    quantal   i386    default    20140117_03:50
+ubuntu    raring    amd64   default    20140117_03:50
+ubuntu    raring    armhf   default    20140117_03:50
+ubuntu    raring    i386    default    20140117_03:50
+ubuntu    saucy     amd64   default    20140117_03:50
+ubuntu    saucy     armhf   default    20140117_03:50
+ubuntu    saucy     i386    default    20140117_03:50
+ubuntu    trusty    amd64   default    20140117_03:50
+ubuntu    trusty    armhf   default    20140117_03:50
+ubuntu    trusty    i386    default    20140117_03:50</pre>
+</div>
+<p>The template has been carefully written to work on any system that has a POSIX compliant shell with wget. gpg is recommended but can be disabled if your host doesn’t have it (at your own risks).</p>
+<p>The same template can be used against your own server, which I hope will be very useful for enterprise deployments to build templates in a central location and have them pulled by all the hosts automatically using our expiry mechanism to keep them fresh.</p>
+<p>While the template was designed to workaround limitations of unprivileged containers, it works just as well with system containers, so even on a system that doesn’t support unprivileged containers you can do:</p>
+<div class="code highlight-python"><pre>lxc-create -t download -n p1 -- -d ubuntu -r trusty -a amd64</pre>
+</div>
+<p>And you’ll get a new container running the latest build of Ubuntu 14.04 amd64.</p>
+</div>
+<div class="section" id="using-unprivileged-lxc">
+<h2>8.4. Using unprivileged LXC<a class="headerlink" href="#using-unprivileged-lxc" title="Permalink to this headline">¶</a></h2>
+<p>Right, so let’s get you started, as I already mentioned, all the instructions below have only been tested on a very recent Ubuntu 14.04 (trusty) installation.</p>
+<p>You may want to grab a daily build and run it in a VM.</p>
+<p>Install the required packages:</p>
+<div class="code highlight-python"><pre>sudo apt-get update
+sudo apt-get dist-upgrade
+sudo apt-get install lxc systemd-services uidmap</pre>
+</div>
+<p>Now a quick workaround while we wait to have our new cgroup manager in Ubuntu, put the following into <tt class="docutils literal"><span class="pre">/etc/init/lxc-unpriv-cgroup.conf</span></tt>:</p>
+<div class="code highlight-python"><pre>start on starting systemd-logind and started cgroup-lite
+
+script
+    set +e
+
+    echo 1 &gt; /sys/fs/cgroup/memory/memory.use_hierarchy
+
+    for entry in /sys/fs/cgroup/*/cgroup.clone_children; do
+        echo 1 &gt; $entry
+    done
+
+    exit 0
+end script</pre>
+</div>
+<p>This trick is required because logind doesn’t configure use_hierarchy or clone_children the way LXC needs them.</p>
+<p>Now, reboot your machine for those cgroups to get properly reconfigured.</p>
+<p>Then, assign yourself a set of uids and gids with:</p>
+<div class="code highlight-python"><pre>sudo usermod –add-subuids 100000-165536 $USER
+sudo usermod –add-subgids 100000-165536 $USER</pre>
+</div>
+<p>Now create <tt class="docutils literal"><span class="pre">~/.config/lxc/default.conf</span></tt> with the following content:</p>
+<div class="code highlight-python"><pre>lxc.network.type = veth
+lxc.network.link = lxcbr0
+lxc.network.flags = up
+lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+lxc.id_map = u 0 100000 65536
+lxc.id_map = g 0 100000 65536</pre>
+</div>
+<p>And <tt class="docutils literal"><span class="pre">/etc/lxc/lxc-usernet</span></tt> with:</p>
+<div class="code highlight-python"><pre>&lt;your username&gt; veth lxcbr0 10</pre>
+</div>
+<p>And that’s all you need. Now let’s create our first unprivileged container with:</p>
+<p>You should see the following output from the download template:</p>
+<div class="code highlight-python"><pre>Setting up the GPG keyring
+Downloading the image index
+Downloading the rootfs
+Downloading the metadata
+The image cache is now ready
+Unpacking the rootfs
+
+---
+You just created an Ubuntu container (release=trusty, arch=amd64).
+The default username/password is: ubuntu / ubuntu
+To gain root privileges, please use sudo.</pre>
+</div>
+<p>So looks like your first container was created successfully, now let’s see if it starts:</p>
+<div class="code highlight-python"><pre>ubuntu@trusty-daily:~$ lxc-start -n p1 -d
+ubuntu@trusty-daily:~$ lxc-ls --fancy
+NAME  STATE    IPV4     IPV6     AUTOSTART
+------------------------------------------
+p1    RUNNING  UNKNOWN  UNKNOWN  NO</pre>
+</div>
+<p>It’s running! At this point, you can get a console using <tt class="docutils literal"><span class="pre">lxc-console</span></tt> or can SSH to it by looking for its IP in the ARP table (<tt class="docutils literal"><span class="pre">arp</span> <span class="pre">-n</span></tt>).</p>
+<p>One thing you probably noticed above is that the IP addresses for the container aren’t listed, that’s because unfortunately LXC currently can’t attach to an unprivileged container’s namespaces. That also means that some fields of <tt class="docutils literal"><span class="pre">lxc-info</span></tt> will be empty and that you can’t use <cite>̀`lxc-attach`</cite>. However we’re looking into ways to get that sorted in the near future.</p>
+<p>There are also a few problems with job control in the kernel and with PAM, so doing a non-detached <tt class="docutils literal"><span class="pre">lxc-start</span></tt> will probably result in a rather weird console where things like sudo will most likely fail. SSH may also fail on some distros. A patch has been sent upstream for this, but I just noticed that it doesn’t actually cover all cases and even if it did, it’s not in any released version yet.</p>
+<p>Quite a few more improvements to unprivileged containers are to come until the final 1.0 release next month and while we certainly don’t expect all workloads to be possible with unprivileged containers, it’s still a huge improvement on what we had before and a very good building block for a lot more interesting use cases.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-scripting-with-the-api.html" title="9. Scripting with the api"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-security-features.html" title="7. Security features"
+             >previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

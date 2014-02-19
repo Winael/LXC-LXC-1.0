@@ -1,0 +1,108 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2014, Stéphane Graber
+# This file is distributed under the same license as the LXC 1.0 - Quickstart package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-30 01:31\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-blog-post-series.rst:7
+# a7efce419b8b41b4ab9642879b94afa3
+msgid "Intro.  Blog post series"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:9
+# 964b5571eb694ec89901738b0186545c
+msgid "2013/12/20"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:10
+# 78e003fbac31409d8a7c8f26a468634a
+msgid "Stéphane Graber"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:12
+# d8ed68be6f1c41809a0fe1f87d5a4e3f
+msgid "So it’s almost the end of the year, I’ve got about 10 days of vacation for the holidays and a bit of time on my hands."
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:14
+# 6b85b41c20394bba81c547a72d2c676d
+msgid "Since I’ve been doing quite a bit of work on LXC lately in prevision for the LXC_ 1.0 release early next year, I thought that it’d be a good use of some of that extra time to blog about the current state of LXC."
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:18
+# 245b2fa947b44717831c963da9cd0c41
+msgid "As a result, I’m preparing a series of 10 blog posts covering what I think are some of the most exciting features of LXC. The planned structure is:"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:20
+# e48083e2167d49f7b840cff166fa1d4d
+msgid ":ref:`your-first-ubuntu-container`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:21
+# b97c5c4a1e194552a97fb4a365725da6
+msgid ":ref:`your-second-container`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:22
+# 211c5f8ccb614e129f9aca92c1ea13a5
+msgid ":ref:`advanced-container-usage`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:23
+# 1bf75e66e23a4a9f97be73ab2ff52e9e
+msgid ":ref:`some-more-advanced-container-usage`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:24
+# 41554c988765427aa37494462f3c1e4d
+msgid ":ref:`container-storage`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:25
+# 622cc5bd25af415988589cb42fb5a147
+msgid ":ref:`security-features`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:26
+# dccc2bd17d7a4ca3989643416eda9c94
+msgid ":ref:`unprivileged-containers`"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:27
+# f3ad7ce3ba934f94a13c7da84c86d716
+msgid "LXC 1.0: Scripting with the API [8/10]"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:28
+# b0ec8541c9e4483eb09c82a9205452db
+msgid "LXC 1.0: GUI in containers [9/10]"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:29
+# 732673f0aa654a67915ecb9b0fbf74f7
+msgid "LXC 1.0: Troubleshooting and debugging [10/10]"
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:31
+# be3f9ec0226746c3a534f48ad30854d2
+msgid "While they are all titled LXC 1.0, most of the things I’ll be showing will work just as well on older LXC. However some of the features will need a very very recent version of LXC (as in, current upstream git). I’ll try to make that clear and will explain how to use our `stable backports in Ubuntu <https://launchpad.net/ubuntu/+source/lxc>`_ or `current upstream snapshots from our PPA <https://launchpad.net/~ubuntu-lxc/+archive/daily>`_."
+msgstr ""
+
+#: ../../source/lxc-1-0-blog-post-series.rst:33
+# 8bd265478ce049f5834ffe7e80f20b5c
+msgid "I’ll be updating this first blog post with links to all of the posts in the series. So if you want to bookmark or refer to these, please use this post."
+msgstr ""
+

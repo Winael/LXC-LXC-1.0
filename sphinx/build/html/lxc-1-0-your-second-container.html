@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Your second container &mdash; LXC 1.0 - Quickstart 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LXC 1.0 - Quickstart 1.0 documentation" href="index.html" />
+    <link rel="next" title="4. Advanced container usage" href="lxc-1-0-advanced-container-usage.html" />
+    <link rel="prev" title="2. Your first Ubuntu container" href="lxc-1-0-your-first-ubuntu-container.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-advanced-container-usage.html" title="4. Advanced container usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-your-first-ubuntu-container.html" title="2. Your first Ubuntu container"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Your second container</a><ul>
+<li><a class="reference internal" href="#more-templates">3.1. More templates</a></li>
+<li><a class="reference internal" href="#auto-start">3.2. Auto-start</a></li>
+<li><a class="reference internal" href="#freezing-your-containers">3.3. Freezing your containers</a></li>
+<li><a class="reference internal" href="#networking">3.4. Networking</a></li>
+<li><a class="reference internal" href="#attach">3.5. Attach</a></li>
+<li><a class="reference internal" href="#passing-devices-to-a-running-container">3.6. Passing devices to a running container</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lxc-1-0-your-first-ubuntu-container.html"
+                        title="previous chapter">2. Your first Ubuntu container</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lxc-1-0-advanced-container-usage.html"
+                        title="next chapter">4. Advanced container usage</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lxc-1-0-your-second-container.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="your-second-container">
+<span id="lxc-1-0-your-second-container"></span><h1>3. Your second container<a class="headerlink" href="#your-second-container" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="more-templates">
+<h2>3.1. More templates<a class="headerlink" href="#more-templates" title="Permalink to this headline">¶</a></h2>
+<p>So at this point you should have a working Ubuntu container that’s called <tt class="docutils literal"><span class="pre">p1</span></tt> and was created using the default template called simply enough <tt class="docutils literal"><span class="pre">ubuntu</span></tt>.</p>
+<p>But LXC supports much more than just standard Ubuntu. In fact, in <a class="reference external" href="https://github.com/lxc/lxc/tree/master/templates">current upstream git</a> (and daily PPA), we support Alpine Linux, Alt Linux, Arch Linux, busybox, CentOS, Cirros, Debian, Fedora, OpenMandriva, OpenSUSE, Oracle, Plamo, sshd, Ubuntu Cloud and Ubuntu.</p>
+<p>All of those can usually be found in /usr/share/lxc/templates. They also all typically have extra advanced options which you can get to by passing <tt class="docutils literal"><span class="pre">--help</span></tt> after the <tt class="docutils literal"><span class="pre">lxc-create</span></tt> call (the <tt class="docutils literal"><span class="pre">--</span></tt> is required to split <tt class="docutils literal"><span class="pre">lxc-create</span></tt> options from the template’s).</p>
+<p>Writing extra templates isn’t too difficult, they basically are executables (all shell scripts but that’s not a requirement) which take a set of standard arguments and are expected to produce a working rootfs in the path that’s passed to them.</p>
+<p>One thing to be aware of is that due to missing tools not all distros can be bootstrapped on all distros. It’s usually best to just try. We’re always interested in making those work on more distros even if that means using some rather weird tricks (like is done in the fedora template) so if you have a specific combination which doesn’t work at the moment, patches are definitely welcome!</p>
+<p>Anyway, enough talking for now, let’s go ahead and create an Oracle Linux container that we’ll force to be 32bit.</p>
+<div class="code highlight-python"><pre>sudo lxc-create -t oracle -n p2 -- -a i386</pre>
+</div>
+<p>On most systems, this will initially fail, telling you to install the “rpm” package first which is needed for bootstrap reasons. So install it and “yum” and then try again.</p>
+<p>After some time downloading RPMs, the container will be created, then it’s just a:</p>
+<div class="code highlight-python"><pre>sudo lxc-start -n p2</pre>
+</div>
+<p>And you’ll be greated by the Oracle Linux login prompt (root / root).</p>
+<p>At that point since you started the container without passing “-d” to “lxc-start”, you’ll have to shut it down to get your shell back (you can’t detach from a container which wasn’t started initially in the background).</p>
+<p>Now if you are wondering why Ubuntu has two templates. The Ubuntu template which I’ve been using so far does a local bootstrap using “debootstrap” basically building your container from scratch, whereas the Ubuntu Cloud template (ubuntu-cloud) downloads a pre-generated cloud image (identical to what you’d get on EC2 or other cloud services) and starts it. That image also includes cloud-init and supports the standard cloud metadata.</p>
+<p>It’s a matter of personal choice which you like best. I personally have a local mirror so the “ubuntu” template is much faster for me and I also trust it more since I know everything was downloaded from the archive in front of me and assembled locally on my machine.</p>
+<p>One last note on templates. Most of them use a local cache, so the initial bootstrap of a container for a given arch will be slow, any subsequent one will just be a local copy from the cache and will be much faster.</p>
+</div>
+<div class="section" id="auto-start">
+<h2>3.2. Auto-start<a class="headerlink" href="#auto-start" title="Permalink to this headline">¶</a></h2>
+<p>So what if you want to start a container automatically at boot time?</p>
+<p>Well, that’s been supported for a long time in Ubuntu and other distros by using some init scripts and symlinks in /etc, but very recently (two days ago), this has now been implemented cleanly upstream.</p>
+<p>So here’s how auto-started containers work nowadays:</p>
+<p>As you may know, each container has a configuration file typically under
+<tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container</span> <span class="pre">name&gt;/config</span></tt></p>
+<p>That file is key = value with the list of valid keys being specified in <a class="reference external" href="http://qa.linuxcontainers.org/master/current/doc/man/lxc.conf.5.html">lxc.conf(5)</a>.</p>
+<p>The startup related values that are available are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">lxc.start.auto</span> <span class="pre">=</span> <span class="pre">0</span></tt> (disabled) or 1 (enabled)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.start.delay</span> <span class="pre">=</span> <span class="pre">0</span></tt> (delay in second to wait after starting the container)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.start.order</span> <span class="pre">=</span> <span class="pre">0</span></tt> (priority of the container, higher value means starts earlier)</li>
+<li><tt class="docutils literal"><span class="pre">lxc.group</span> <span class="pre">=</span> <span class="pre">group1,group2,group3,…</span></tt> (groups the container is a member of)</li>
+</ul>
+<p>When your machine starts, an init script will ask <tt class="docutils literal"><span class="pre">lxc-autostart</span></tt> to start all containers of a given group (by default, all containers which aren’t in any) in the right order and waiting the specified time between them.</p>
+<p>To illustrate that, edit <tt class="docutils literal"><span class="pre">/var/lib/lxc/p1/config</span></tt> and append those lines to the file:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span class="n">lxc</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">auto</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">lxc</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">ubuntu</span>
+</pre></div>
+</div>
+<p>And <tt class="docutils literal"><span class="pre">/var/lib/lxc/p2/config</span></tt> and append those lines:</p>
+<div class="code highlight-python"><div class="highlight"><pre><span class="n">lxc</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">auto</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">lxc</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">delay</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">lxc</span><span class="o">.</span><span class="n">start</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>Doing that means that only the p2 container will be started at boot time (since only those without a group are by default), the order value won’t matter since it’s alone and the init script will wait 5s before moving on.</p>
+<p>You may check what containers are automatically started using <tt class="docutils literal"><span class="pre">lxc-ls</span></tt>:</p>
+<div class="code highlight-python"><pre>stgraber@castiana:~$ sudo lxc-ls --fancy
+NAME    STATE    IPV4        IPV6                                    AUTOSTART
+---------------------------------------------------------------------------------
+p1      RUNNING  10.0.3.128  2607:f2c0:f00f:2751:216:3eff:feb1:4c7f  YES (ubuntu)
+p2      RUNNING  10.0.3.165  2607:f2c0:f00f:2751:216:3eff:fe3a:f1c1  YES</pre>
+</div>
+<p>Now you can also manually play with those containers using the <tt class="docutils literal"><span class="pre">lxc-autostart</span></tt> command which let’s you start/stop/kill/reboot any container marked with <tt class="docutils literal"><span class="pre">lxc.start.auto=1</span></tt>.</p>
+<p>For example, you could do:</p>
+<div class="code highlight-python"><pre>sudo lxc-autostart -a</pre>
+</div>
+<p>Which will start any container that has <tt class="docutils literal"><span class="pre">lxc.start.auto=1</span></tt> (ignoring the lxc.group value) which in our case means it’ll first start p2 (because of order = 100), then wait 5s (because of delay = 5) and then start p1 and return immediately afterwards.</p>
+<p>If at that point you want to reboot all containers that are in the <tt class="docutils literal"><span class="pre">ubuntu</span></tt> group, you may do:</p>
+<div class="code highlight-python"><pre>sudo lxc-autostart -r -g ubuntu</pre>
+</div>
+<p>You can also pass <tt class="docutils literal"><span class="pre">-L</span></tt> with any of those commands which will simply print which containers would be affected and what the delays would be but won’t actually do anything (useful to integrate with other scripts).</p>
+</div>
+<div class="section" id="freezing-your-containers">
+<h2>3.3. Freezing your containers<a class="headerlink" href="#freezing-your-containers" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes containers may be running daemons that take time to shutdown or restart, yet you don’t want to run the container because you’re not actively using it at the time.</p>
+<p>In such cases, <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">lxc-freeze</span> <span class="pre">-n</span> <span class="pre">&lt;container</span> <span class="pre">name&gt;</span></tt> can be used. That very simply freezes all the processes in the container so they won’t get any time allocated by the scheduler. However the processes will still exist and will still use whatever memory they used to.</p>
+<p>Once you need the service again, just call <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">lxc-unfreeze</span> <span class="pre">-n</span> <span class="pre">&lt;container</span> <span class="pre">name&gt;</span></tt> and all the processes will be restarted.</p>
+</div>
+<div class="section" id="networking">
+<h2>3.4. Networking<a class="headerlink" href="#networking" title="Permalink to this headline">¶</a></h2>
+<p>As you may have noticed in the configuration file while you were setting the auto-start settings, LXC has a relatively flexible network configuration.
+By default in Ubuntu we allocate one <tt class="docutils literal"><span class="pre">veth</span></tt> device per container which is bridged into a <tt class="docutils literal"><span class="pre">lxcbr0</span></tt> bridge on the host on which we run a minimal dnsmasq dhcp server.</p>
+<p>While that’s usually good enough for most people. You may want something slightly more complex, such as multiple network interfaces in the container or passing through physical network interfaces, … The details of all of those options are listed in <a class="reference external" href="http://qa.linuxcontainers.org/master/current/doc/man/lxc.conf.5.html">lxc.conf(5)</a> so I won’t repeat them here, however here’s a quick example of what can be done.</p>
+<div class="code highlight-python"><pre>lxc.network.type = veth
+lxc.network.hwaddr = 00:16:3e:3a:f1:c1
+lxc.network.flags = up
+lxc.network.link = lxcbr0
+lxc.network.name = eth0
+
+lxc.network.type = veth
+lxc.network.link = virbr0
+lxc.network.name = virt0
+
+lxc.network.type = phys
+lxc.network.link = eth2
+lxc.network.name = eth1</pre>
+</div>
+<p>With this setup my container will have 3 interfaces, <tt class="docutils literal"><span class="pre">eth0</span></tt> will be the usual veth device in the <tt class="docutils literal"><span class="pre">lxcbr0</span></tt> bridge, <tt class="docutils literal"><span class="pre">eth1</span></tt> will be the host’s <tt class="docutils literal"><span class="pre">eth2</span></tt> moved inside the container (it’ll disappear from the host while the container is running) and <tt class="docutils literal"><span class="pre">virt0</span></tt> will be another veth device in the <tt class="docutils literal"><span class="pre">virbr0</span></tt> bridge on the host.</p>
+<p>Those last two interfaces don’t have a mac address or network flags set, so they’ll get a random mac address at boot time (non-persistent) and it’ll be up to the container to bring the link up.</p>
+</div>
+<div class="section" id="attach">
+<h2>3.5. Attach<a class="headerlink" href="#attach" title="Permalink to this headline">¶</a></h2>
+<p>Provided you are running a sufficiently recent kernel, that is 3.8 or higher, you may use the <tt class="docutils literal"><span class="pre">lxc-attach</span></tt> tool. It’s most basic feature is to give you a standard shell inside a running container:</p>
+<div class="code highlight-python"><pre>sudo lxc-attach -n p1</pre>
+</div>
+<p>You may also use it from scripts to run actions in the container, such as:</p>
+<div class="code highlight-python"><pre>sudo lxc-attach -n p1 -- restart ssh</pre>
+</div>
+<p>But it’s a lot more powerful than that. For example, take:</p>
+<div class="code highlight-python"><pre>sudo lxc-attach -n p1 -e -s 'NETWORK|UTSNAME'</pre>
+</div>
+<p>In that case, you’ll get a shell that says <tt class="docutils literal"><span class="pre">root&#64;p1</span></tt> (thanks to <tt class="docutils literal"><span class="pre">UTSNAME</span></tt>), running <tt class="docutils literal"><span class="pre">ifconfig</span> <span class="pre">-a</span></tt> from there will list the container’s network interfaces. But everything else will be that of the host. Also passing <tt class="docutils literal"><span class="pre">-e</span></tt> means that the cgroup, apparmor, … restrictions won’t apply to any processes started from that shell.</p>
+<p>This can be very useful at times to spawn a software located on the host but inside the container’s network or pid namespace.</p>
+</div>
+<div class="section" id="passing-devices-to-a-running-container">
+<h2>3.6. Passing devices to a running container<a class="headerlink" href="#passing-devices-to-a-running-container" title="Permalink to this headline">¶</a></h2>
+<p>It’s great being able to enter and leave the container at will, but what about accessing some random devices on your host?</p>
+<p>By default LXC will prevent any such access using the devices cgroup as a filtering mechanism. You could edit the container configuration to allow the right additional devices and then restart the container.</p>
+<p>But for one-off things, there’s also a very convenient tool called <tt class="docutils literal"><span class="pre">lxc-device</span></tt>.
+With it, you can simply do:</p>
+<div class="code highlight-python"><pre>sudo lxc-device add -n p1 /dev/ttyUSB0 /dev/ttyS0</pre>
+</div>
+<p>Which will add (mknod) <tt class="docutils literal"><span class="pre">/dev/ttyS0</span></tt> in the container with the same type/major/minor as <tt class="docutils literal"><span class="pre">/dev/ttyUSB0</span></tt> and then add the matching cgroup entry allowing access from the container.</p>
+<p>The same tool also allows moving network devices from the host to within the container.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-advanced-container-usage.html" title="4. Advanced container usage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-your-first-ubuntu-container.html" title="2. Your first Ubuntu container"
+             >previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

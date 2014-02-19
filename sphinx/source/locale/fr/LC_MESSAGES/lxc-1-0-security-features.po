@@ -1,0 +1,323 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-28 07:23\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-security-features.rst:7
+msgid "Security features"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:9
+msgid ""
+"When talking about container security most people either consider containers"
+" as inherently insecure or inherently secure. The reality isn’t so black and"
+" white and LXC supports a variety of technologies to mitigate most security "
+"concerns."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:11
+msgid ""
+"One thing to clarify right from the start is that you won’t hear any of the "
+"LXC maintainers tell you that LXC is secure so long as you use privileged "
+"containers. However, at least in Ubuntu, our default containers ship with "
+"what we think is a pretty good configuration of both the cgroup access and "
+"an extensive apparmor profile which prevents all attacks that we are aware "
+"of."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:13
+msgid ""
+"Below I’ll be covering the various technologies LXC supports to let you "
+"restrict what a container may do. Just keep in mind that unless you are "
+"using unprivileged containers, you shouldn’t give root access to a container"
+" to someone whom you’d mind having root access to your host."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:16
+msgid "Capabilities"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:18
+msgid ""
+"The first security feature which was added to LXC was Linux capabilities "
+"support. With that feature you can set a list of capabilities that you want "
+"LXC to drop before starting the container or a full list of capabilities to "
+"retain (all others will be dropped)."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:20
+msgid "The two relevant configurations options are:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:22
+msgid "``lxc.cap.drop``"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:23
+msgid "``lxc.cap.keep``"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:25
+msgid "Both are lists of capability names as listed in `capabilities(7)`_."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:29
+msgid ""
+"This may sound like a great way to make containers safe and for very "
+"specific cases it may be, however if running a system container, you’ll soon"
+" notice that dropping sys_admin and net_admin isn’t very practical and short"
+" of dropping those, you won’t make your container much safer (as root in the"
+" container will be able to re-grant itself any dropped capability)."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:31
+msgid ""
+"In Ubuntu we use ``lxc.cap.drop`` to drop ``sys_module``, ``mac_admin``, "
+"``mac_override``, ``sys_time`` which prevent some known problems at "
+"container boot time."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:34
+msgid "Control groups"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:36
+msgid ""
+"Control groups are interesting because they achieve multiple things which "
+"while interconnected are still pretty different:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:38
+msgid "Resource bean counting"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:39
+msgid "Resource quotas"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:40
+msgid "Access restrictions"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:42
+msgid ""
+"The first two aren’t really security related, though resource quotas will "
+"let you avoid some obvious DoS of the host (by setting memory, cpu and I/O "
+"limits)."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:44
+msgid ""
+"The last is mostly about the devices cgroup which lets you define which "
+"character and block devices a container may access and what it can do with "
+"them (you can restrict creation, read access and write access for each "
+"major/minor combination)."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:46
+msgid ""
+"In LXC, configuring cgroups is done with the ``lxc.cgroup.*`` options which "
+"can roughly be defined as:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:52
+msgid ""
+"For example to set a memory limit on ``p1`` you’d add the following to its "
+"configuration:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:58
+msgid ""
+"This will set a memory limit of 128MB (the value is in bytes) and will be "
+"the equivalent to writing that same value to "
+"``/sys/fs/cgroup/memory/lxc/p1/memory.limit_in_bytes``"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:60
+msgid ""
+"Most LXC templates only set a few devices controller entries by default:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:94
+msgid ""
+"This configuration allows the container (usually ``udev``) to create any "
+"device it wishes (that’s the wildcard ``m`` above) but block everything else"
+" (the ``a`` deny entry) unless it’s listed in one of the allow entries "
+"below. This covers everything a container will typically need to function."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:96
+msgid ""
+"You will find reasonably up to date documentation about the available "
+"controllers, control files and supported values at: "
+"https://www.kernel.org/doc/Documentation/cgroups/"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:100
+msgid "Apparmor"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:102
+msgid "A little while back we added Apparmor profiles support to LXC."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:104
+msgid ""
+"The Apparmor support is rather simple, there’s one configuration option "
+"``lxc.aa_profile`` which sets what apparmor profile to use for the "
+"container."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:106
+msgid ""
+"LXC will then setup the container and ask apparmor to switch it to that "
+"profile right before starting the container. Ubuntu’s LXC profile is rather "
+"complex as it aims to prevent any of the known ways of escaping a container "
+"or cause harm to the host."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:108
+msgid ""
+"As things are today, Ubuntu ships with 3 apparmor profiles meaning that the "
+"supported values for ``lxc.aa_profile`` are:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:110
+msgid ""
+"``lxc-container-default`` (default value if ``lxc.aa_profile`` isn’t set)"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:111
+msgid ""
+"``lxc-container-default-with-nesting`` (same as default but allows some "
+"needed bits for nested containers)"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:112
+msgid ""
+"``lxc-container-default-with-mounting`` (same as default but allows mounting"
+" ext*, xfs and btrfs file systems)."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:113
+msgid ""
+"``unconfined`` (a special value which will disable apparmor support for the "
+"container)"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:115
+msgid ""
+"You can also define your own by copying one of the ones in "
+"``/etc/apparmor.d/lxc/``, adding the bits you want, giving it a unique name,"
+" then reloading apparmor with ``sudo /etc/init.d/apparmor reload`` and "
+"finally setting ``lxc.aa_profile`` to the new profile’s name."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:118
+msgid "SELinux"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:120
+msgid ""
+"The SELinux support is very similar to Apparmor’s. An SELinux context can be"
+" set using ``lxc.se_context``."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:122
+msgid "An example would be:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:128
+msgid ""
+"Similarly to Apparmor, LXC will switch to the new SELinux context right "
+"before starting init in the container. As far as I know, no distributions "
+"are setting a default SELinux context at this time, however most "
+"distributions build LXC with SELinux support (including Ubuntu, should "
+"someone choose to boot their host with SELinux rather than Apparmor)."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:131
+msgid "Seccomp"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:133
+msgid ""
+"Seccomp is a fairly recent kernel mechanism which allows for filtering of "
+"system calls."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:135
+msgid ""
+"As a user you can write a seccomp policy file and set it using "
+"``lxc.seccomp`` in the container’s configuration. As always, this policy "
+"will only be applied to the running container and will allow or reject "
+"syscalls with a pre-defined return value."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:137
+msgid ""
+"An example (though limited and useless) of a seccomp policy file would be:"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:145
+msgid ""
+"Which would only allow ``syscall #103`` (syslog) in the container and reject"
+" everything else."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:147
+msgid ""
+"Note that seccomp is a rather low level feature and only useful for some "
+"very specific use cases. All syscalls have to be referred by their ID "
+"instead of their name and those may change between architectures. Also, as "
+"things are today, if your host is 64bit and you load a seccomp policy file, "
+"all 32bit syscalls will be rejected. We’d need per-personality seccomp "
+"profiles to solve that but it’s not been a high priority so far."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:150
+msgid "User namespace"
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:152
+msgid ""
+"And last but not least, what’s probably the only way of making a container "
+"actually safe. LXC now has support for user namespaces. I’ll go into more "
+"details on how to use that feature in a later blog post but simply put, LXC "
+"is no longer running as root so even if an attacker manages to escape the "
+"container, he’d find himself having the privileges of a regular user on the "
+"host."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:154
+msgid ""
+"All this is achieved by assigning ranges of uids and gids to existing users."
+" Those users on the host will then be allowed to clone a new user namespace "
+"in which all uids/gids are mapped to uids/gids that are part of the user’s "
+"range."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:156
+msgid ""
+"This obviously means that you need to allocate a rather silly amount of uids"
+" and gids to each user who’ll be using LXC in that way. In a perfect world, "
+"you’d allocate 65536 uids and gids per container and per user. As this would"
+" likely exhaust the whole uid/gid range rather quickly on some systems, I "
+"tend to go with “just” 65536 uids and gids per user that’ll use LXC and then"
+" have the same range shared by all containers."
+msgstr ""
+
+#: ../../source/lxc-1-0-security-features.rst:158
+msgid ""
+"Anyway, that’s enough details about user namespaces for now. I’ll cover how "
+"to actually set that up and use those unprivileged containers in the next "
+"post."
+msgstr ""

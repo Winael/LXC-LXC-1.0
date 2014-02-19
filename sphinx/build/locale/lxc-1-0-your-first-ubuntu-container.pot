@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2014, Stéphane Graber
+# This file is distributed under the same license as the LXC 1.0 - Quickstart package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-30 01:31\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:7
+# 286936957c4040968c62b4d71d19d16d
+msgid "Your first Ubuntu container"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:10
+# ffe76113e0754038a941248ca07a021f
+msgid "So what’s LXC ?"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:12
+# 2a099453feb841468b579e714fe4af21
+msgid "Most of you probably already know the answer to that one, but here it goes:"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:16
+# 87d0917cd63b4928a12413c9012f43ae
+msgid "*“LXC is a userspace interface for the Linux kernel containment features.* *Through a powerful API and simple tools, it lets Linux users easily create and manage system or application containers.”*"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:19
+# 66171558295c443c8944987c7152b4ae
+msgid "I’m one of the two upstream maintainers of LXC along with Serge Hallyn."
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:21
+# 2e39dcb89e6a4b02a28fe23e22689597
+msgid "The project is quite actively developed with milestones every month and a stable release coming up in February. It’s so far been developed by 67 contributors from a wide range of backgrounds and companies."
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:23
+# 23824cd0156647a78532c253fff35474
+msgid "The project is mostly developed on github: http://github.com/lxc"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:25
+# a1c956f60dcf4a369daffde58fd09196
+msgid "We have a website at: http://linuxcontainers.org"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:27
+# 92e473df8cb941fe970e6dad7b28a26f
+msgid "And mailing lists at: http://lists.linuxcontainers.org"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:30
+# d0fa8de33a32465d9ce4342404367cb1
+msgid "LXC 1.0"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:32
+# 77de13341f324a6386ee3e124c191396
+msgid "So what’s that 1.0 release all about?"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:34
+# 1c74f682cd2c4d9fa180649c40117462
+msgid "Well, simply put it’s going to be the first real stable release of LXC and the first we’ll be supporting for 5 years with bugfix releases. It’s also the one which will be included in Ubuntu 14.04 LTS to be released in April 2014."
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:36
+# eedf0a596423409cafba2d6ae4f58571
+msgid "It’s also going to come with a stable API and a set of bindings, quite a few interesting new features which will be detailed in the next few posts and support for a wide range of host and guest distributions (including Android)."
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:39
+# 167430d64b7341d1a343491a12e3047d
+msgid "How to get it ?"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:41
+# ffdf2481d8e04f91aae9045220411f8e
+msgid "I’m assuming most of you will be using Ubuntu. For the next few posts, I’ll myself be using the current upstream daily builds on Ubuntu 14.04 but we maintain daily builds on 12.04, 12.10, 13.04, 13.10 and 14.04, so if you want the latest upstream code, you can use `our PPA`_."
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:45
+# 5778f7a993db44b5b1a60a3df2554917
+msgid "Alternatively, LXC is also directly in Ubuntu and quite usable since Ubuntu 12.04 LTS. You can choose to use the version which comes with whatever release you are on, or you can use one the backported version we maintain."
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:47
+# 633cd9e38551410e8aba664da7464ce6
+msgid "If you want to build it yourself, you can do (not recommended when you can simply use the packages for your distribution):"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:60
+# cec8a0f3c8504d878000fcff1f7373ba
+msgid "What about that first container ?"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:62
+# 5f1493906bf9401d912599bb65b50c05
+msgid "Oh right, that was actually the goal of this post wasn’t it?"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:64
+# a9e800c9ae45456e8704971bd0bd1f96
+msgid "Ok, so now that you have LXC installed, hopefully using the Ubuntu packages, it’s really as simple as:"
+msgstr ""
+
+#: ../../source/lxc-1-0-your-first-ubuntu-container.rst:97
+# 6c7b910b54c54155a90cdc81fb6cb060
+msgid "And there you go, that’s your first container. You’ll note that everything usually just works on Ubuntu. Our kernels have support for all the features that LXC may use and our packages setup a bridge and a DHCP server that the containers will use by default. All of that is obviously configurable and will be covered in the coming posts."
+msgstr ""
+

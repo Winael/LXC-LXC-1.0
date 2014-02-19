@@ -1,0 +1,133 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2014, Stéphane Graber
+# This file is distributed under the same license as the LXC 1.0 - Quickstart package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-30 01:31\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:7
+# 2076a095d4274b0dbdaab046ab76740f
+msgid "Advanced container usage"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:10
+# 1e482c9c7ba040acb6978e94053ecc04
+msgid "Exchanging data with a container"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:12
+# 98fe05770537497c9affb68769cdecad
+msgid "Because containers directly share their filesystem with the host, there’s a lot of things that can be done to pass data into a container or to get stuff out."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:14
+# 9b1713da1d3b45dba502a5a00584e52b
+msgid "The first obvious one is that you can access the container’s root at: ``/var/lib/lxc/<container name>/rootfs/``"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:17
+# f043ec122de047d09e5aab0bc6cf868b
+msgid "That’s great, but sometimes you need to access data that’s in the container and on a filesystem which was mounted by the container itself (such as a tmpfs). In those cases, you can use this trick:"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:23
+# c104b261da8c4249bda1dc2024af2d2b
+msgid "Which will show you what’s in ``/run`` of the running container ``p1``."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:25
+# 6d88992b27634c969bc5a06bf44fc732
+msgid "Now, that’s great to have access from the host to the container, but what about having the container access and write data to the host? Well, let’s say we want to have our host’s ``/var/cache/lxc`` shared with ``p1``, we can edit ``/var/lib/lxc/p1/fstab`` and append:"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:32
+# cce0e79b25974e828863b248e47f2c0f
+msgid "This line means, mount ``/var/cache/lxc`` from the host as ``/var/cache/lxc`` (the lack of initial / makes it relative to the container’s root), mount it as a bind-mount (``none`` fstype and ``bind`` option) and create any directory that’s missing in the container (``create=dir``)."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:34
+# 35352fb4db71444a86150626d29b4089
+msgid "Now restart ``p1`` and you’ll see ``/var/cache/lxc`` in there, showing the same thing as you have on the host. Note that if you want the container to only be able to read the data, you can simply add ``ro`` as a mount flag in the fstab."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:37
+# a527c7487cbf4d35bc97011ae2d22f31
+msgid "Container nesting"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:39
+# 06f0d6bfbb87416da59e0570d517879a
+msgid "One pretty cool feature of LXC (though admittedly not very useful to most people) is support for nesting. That is, you can run LXC within LXC with pretty much no overhead."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:41
+# cf2241ecdbba404c936b4afa7e698262
+msgid "By default this is blocked in Ubuntu as allowing this at the moment requires letting the container mount cgroupfs which will let it escape any cgroup restrictions that’s applied to it. It’s not an issue in most environment, but if you don’t trust your containers at all, then you shouldn’t be using nesting at this point."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:43
+# 2bb2358a25ad411e8b0f4e08173b22e1
+msgid "So to enable nesting for our ``p1`` container, edit ``/var/lib/lxc/p1/config`` and add:"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:49
+# 45eff7b4d7e245a6b82ba16de89cd442
+msgid "And then restart ``p1``. Once that’s done, install lxc inside the container. I usually recommend using the same version as the host, though that’s not strictly required."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:51
+# 37a1f658544a41b8ad4e09e1a63ecef5
+msgid "Once LXC is installed in the container, run:"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:57
+# 65afd4fdfccb4f64bff3579903ef47ad
+msgid "As you’ve previously bind-mounted ``/var/cache/lxc`` inside the container, this should be very quick (it shouldn’t rebootstrap the whole environment). Then start that new container as usual."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:59
+# b2ede10dabcf424598e86b9d23b6d3a5
+msgid "At that point, you may now run ``lxc-ls`` on the host in nesting mode to see exactly what’s running on your system:"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:70
+# 9db6365d361b45a3b4aeaeeb8a4ae5df
+msgid "There’s no real limit to the number of level you can go, though as fun as it may be, it’s hard to imagine why 10 levels of nesting would be of much use to anyone :)"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:73
+# 07a8c00f69a34198a59bce8da0f6bbf1
+msgid "Raw network access"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:75
+# 04e359e5d9bb4737b734c9baa69e56dc
+msgid "In the previous post I mentioned passing raw devices from the host inside the container. One such container I use relatively often is when working with a remote network over a VPN. That network uses OpenVPN and a raw ethernet tap device."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:77
+# 5a22cdc5dca746eb94677c613091f68c
+msgid "I needed to have a completely isolated system access that VPN so I wouldn’t get mixed routes and it’d appear just like any other machine to the machines on the remote site."
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:79
+# dc621350f742421ebf429ea14b64b402
+msgid "All I had to do to make this work was set my container’s network configuration to:"
+msgstr ""
+
+#: ../../source/lxc-1-0-advanced-container-usage.rst:89
+# 872d25457be74378a5a2c4019f33585e
+msgid "Then all I have to do is start OpenVPN on my host which will connect and setup ``tap0``, then start the container which will steal that interface and use it as its own ``eth0``.The container will then use DHCP to grab an IP and will behave just like if it was a physical machine connect directly in the remote network."
+msgstr ""
+

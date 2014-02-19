@@ -9,7 +9,7 @@
     <dc:publisher>Stéphane Graber</dc:publisher>
     <dc:rights>2014, Stéphane Graber</dc:rights>
     <dc:identifier id="unknown" opf:scheme="unknown">unknown</dc:identifier>
-    <dc:date>2014-01-07</dc:date>
+    <dc:date>2014-02-19</dc:date>
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
@@ -24,6 +24,12 @@
           media-type="application/xhtml+xml" />
     <item id="lxc-1-0-some-more-advanced-container-usage.html"
           href="lxc-1-0-some-more-advanced-container-usage.html"
+          media-type="application/xhtml+xml" />
+    <item id="lxc-1-0-scripting-with-the-api.html"
+          href="lxc-1-0-scripting-with-the-api.html"
+          media-type="application/xhtml+xml" />
+    <item id="lxc-1-0-unprivileged-containers.html"
+          href="lxc-1-0-unprivileged-containers.html"
           media-type="application/xhtml+xml" />
     <item id="lxc-1-0-your-first-ubuntu-container.html"
           href="lxc-1-0-your-first-ubuntu-container.html"
@@ -52,6 +58,9 @@
     <item id="_static_up-pressed.png"
           href="_static/up-pressed.png"
           media-type="image/png" />
+    <item id="_static_ubuntu.css"
+          href="_static/ubuntu.css"
+          media-type="text/css" />
     <item id="_static_down-pressed.png"
           href="_static/down-pressed.png"
           media-type="image/png" />
@@ -95,6 +104,8 @@
     <itemref idref="lxc-1-0-some-more-advanced-container-usage.html" />
     <itemref idref="lxc-1-0-container-storage.html" />
     <itemref idref="lxc-1-0-security-features.html" />
+    <itemref idref="lxc-1-0-unprivileged-containers.html" />
+    <itemref idref="lxc-1-0-scripting-with-the-api.html" />
     <itemref idref="genindex.html" />
   </spine>
 </package>

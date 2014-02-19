@@ -1,0 +1,223 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2014, Stéphane Graber
+# This file is distributed under the same license as the LXC 1.0 - Quickstart package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-30 01:31\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-container-storage.rst:7
+# 225d0f69a68a441c99a228dede7a5531
+msgid "Container storage"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:10
+# dcbf7e6aada44142a0dacf6c76849bcd
+msgid "Storage backingstores"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:12
+# 18796f3126924de996a08f7b26c4cd74
+msgid "LXC supports a variety of storage backends (also referred to as backingstore). It defaults to none which simply stores the rootfs under ``/var/lib/lxc/<container>/rootfs`` but you can specify something else to ``lxc-create`` or ``lxc-clone`` with the ``-B`` option."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:18
+# 2816ab04fb624906843cddbcca7ad83a
+msgid "Currently supported values are:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:22
+# 5f8e3481ace5462b8113bbdbebe2bc23
+msgid "directory based storage (none and dir)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:24
+# 166b545b9cf24635aae50c40bf8f9165
+msgid "This is the default backingstore, the container rootfs is stored under ``/var/lib/lxc/<container>/rootfs``"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:27
+# bb7c7f0174334c2885f593dbdb7e9bc6
+msgid "The ``--dir`` option (when using dir) can be used to override the path."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:31
+# 191c7cf6e75c4b088986841134164182
+msgid "btrfs"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:33
+# d31dea4558fb4e33b47453df9366fb53
+msgid "With this backingstore LXC will setup a new subvolume for the container which makes snapshotting much easier."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:38
+# 634e01e565ef4d4fa56a5ea85506f6ce
+msgid "lvm"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:40
+# bfcb138b330c4f7fa70b1b06b30358b6
+msgid "This one will use a new logical volume for the container. The LV can be set with ``--lvname`` (the default is the container name). The VG can be set with ``--vgname`` (the default is lxc). The filesystem can be set with ``--fstype`` (the default is ext4). The size can be set with ``--fssize`` (the default is 1G). You can also use LVM thinpools with ``--thinpool``"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:49
+# e4e55a387c39462b80a4351929c4d28b
+msgid "overlayfs"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:51
+# 2fa631eca4cf4336be5d841c203150c3
+msgid "This one is mostly used when cloning containers to create a container based on another one and storing any changes in an overlay."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:54
+# d3f07923fa8b4b09a4c0e0dedf94bf98
+msgid "When used with ``lxc-create`` it'll create a container where any change done after its initial creation will be stored in a delta0 directory next to the containers rootfs."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:60
+# 76e8f1e73c25438a88c4ff6a68719a95
+msgid "zfs"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:62
+# bfcd3a54ec2d469ca5355b3d117caab3
+msgid "Very similar to btrfs, as Ive not used either of those myself I cant say much about them besides that it should also create some kind of subvolume for the container and make snapshots and clones faster and more space efficient."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:69
+# 40ad96d64d0b4376ab302039daaf322c
+msgid "Standard paths"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:71
+# 495dd4ee57da4787bdbefe0316e37e90
+msgid "One quick word with the way LXC usually works and where its storing its files:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:75
+# 3dbe8d52688d45498b5c9b433783dbfd
+msgid "``/var/lib/lxc`` (default location for containers)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:76
+# f174f82ab7b5497eb2e9076da393253c
+msgid "``/var/lib/lxcsnap`` (default location for snapshots)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:77
+# 85834080fa014dc099a6efad33134892
+msgid "``/var/cache/lxc`` (default location for the template cache)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:78
+# 38374624622947148f288cfac94098c3
+msgid "``$HOME/.local/share/lxc`` (default location for unprivileged containers)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:80
+# 009763a1212a4a27a186074bfff7bc67
+msgid "``$HOME/.local/share/lxcsnap`` (default location for unprivileged snapshots)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:82
+# b292aae4da9444f7b3abf2a2c93eb543
+msgid "``$HOME/.cache/lxc`` (default location for unprivileged template cache)"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:85
+# 18edb0b59d724587a85449f8491a6f02
+msgid "The default path, also called ``lxcpath`` can be overridden on the command line with the ``-P`` option or once and for all by setting ``lxcpath = /new/path`` in ``/etc/lxc/lxc.conf`` (or ``$HOME/.config/lxc/lxc.conf`` for unprivileged containers)."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:90
+# f540dbb6da684473a6f8cee7d2ec6dd9
+msgid "The snapshot directory is always snap appended to lxcpath so it'll magically follow ``lxcpath``. The template cache is unfortunately hardcoded and cant easily be moved short of relying on bind-mounts or symlinks."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:95
+# 632c20ec897e448c9865256ff893f613
+msgid "The default configuration used for all containers at creation time is taken from ``/etc/lxc/default.conf`` (no unprivileged equivalent yet). The templates themselves are stored in ``/usr/share/lxc/templates``."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:102
+# a4e87651cd0045aba874de7c29f7aa78
+msgid "Cloning containers"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:104
+# 0f25cd74e4c249ef920d5d75e77cdf3e
+msgid "All those backingstores only really shine once you start cloning containers. For example, lets take our good old ``p1 Ubuntu`` container and lets say you want to make a usable copy of it called ``p4``, you can simply do:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:113
+# aa1e8e80855546469cfa8490a0271c53
+msgid "And there you go, youve got a working ``p4`` container thatll be a simple copy of ``p1`` but with a new mac address and its hostname properly set."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:116
+# ed36abda39cb4169ac91879cda9908ba
+msgid "Now lets say you want to do a quick test against ``p1`` but dont want to alter that container itself, yet you dont want to wait the time needed for a full copy, you can simply do:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:124
+# 79caf54e6df0491da16aa98c4ab24992
+msgid "And there you go, youve got a new p1-test container which is entirely based on the ``p1`` rootfs and where any change will be stored in the ``delta0`` directory of ``p1-test``. The same ``-s`` option also works with lvm and btrfs (possibly zfs too) containers and tells ``lxc-clone`` to use a snapshot rather than copy the whole rootfs across."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:133
+# f5b7be938c704219a0ac475e8e19a683
+msgid "Snapshotting"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:135
+# 1c28225923194bb2934d135740c346f3
+msgid "So cloning is nice and convenient, great for things like development environments where you want throw away containers. But in production, snapshots tend to be a whole lot more useful for things like backup or just before you do possibly risky changes."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:140
+# 8232d13a8a814dbd9ca506bedd7a0c85
+msgid "In LXC we have a ``lxc-snapshot`` tool which will let you create, list, restore and destroy snapshots of your containers. Before I show you how it works, please note that ``lxc-snapshot`` currently doesnt appear to work with directory based containers. With those it produces an empty snapshot, this should be fixed by the time LXC 1.0 is actually released."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:147
+# eb961b6ef43a4a13a0673873ac9d5f83
+msgid "So, lets say we want to backup our p1-lvm container before installing apache2 into it, simply run:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:155
+# 015d08a4069a4f9792092ed228f25e4d
+msgid "At which point, you can confirm the snapshot was created with:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:161
+# b3fa145456dc4342adb4b8544576709c
+msgid "Now you can go ahead and install apache2 in the container."
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:163
+# f3e2de34619c47c09d7f594899793861
+msgid "If you want to revert the container at a later point, simply use:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:170
+# 69197bb2872b482282b71abb70f4e540
+msgid "Or if you want to restore a snapshot as its own container, you can use:"
+msgstr ""
+
+#: ../../source/lxc-1-0-container-storage.rst:177
+# 240e2499d0c440cf93e8441dd366278a
+msgid "And youll get a new ``p1-lvm-snap0`` container which will contain a working copy of ``p1-lvm`` as it was at ``snap0``."
+msgstr ""
+

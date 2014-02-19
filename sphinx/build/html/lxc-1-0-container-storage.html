@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6. Container storage &mdash; LXC 1.0 - Quickstart 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LXC 1.0 - Quickstart 1.0 documentation" href="index.html" />
+    <link rel="next" title="7. Security features" href="lxc-1-0-security-features.html" />
+    <link rel="prev" title="5. Some more advanced container usage" href="lxc-1-0-some-more-advanced-container-usage.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-security-features.html" title="7. Security features"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-some-more-advanced-container-usage.html" title="5. Some more advanced container usage"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6. Container storage</a><ul>
+<li><a class="reference internal" href="#storage-backingstores">6.1. Storage backingstores</a><ul>
+<li><a class="reference internal" href="#directory-based-storage-none-and-dir">6.1.1. directory based storage (none and dir)</a></li>
+<li><a class="reference internal" href="#btrfs">6.1.2. btrfs</a></li>
+<li><a class="reference internal" href="#lvm">6.1.3. lvm</a></li>
+<li><a class="reference internal" href="#overlayfs">6.1.4. overlayfs</a></li>
+<li><a class="reference internal" href="#zfs">6.1.5. zfs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#standard-paths">6.2. Standard paths</a></li>
+<li><a class="reference internal" href="#cloning-containers">6.3. Cloning containers</a></li>
+<li><a class="reference internal" href="#snapshotting">6.4. Snapshotting</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lxc-1-0-some-more-advanced-container-usage.html"
+                        title="previous chapter">5. Some more advanced container usage</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lxc-1-0-security-features.html"
+                        title="next chapter">7. Security features</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lxc-1-0-container-storage.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="container-storage">
+<span id="lxc-1-0-container-storage"></span><h1>6. Container storage<a class="headerlink" href="#container-storage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="storage-backingstores">
+<h2>6.1. Storage backingstores<a class="headerlink" href="#storage-backingstores" title="Permalink to this headline">¶</a></h2>
+<p>LXC supports a variety of storage backends (also referred to as
+backingstore).
+It defaults to none which simply stores the rootfs under
+<tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container&gt;/rootfs</span></tt> but you can specify something else to
+<tt class="docutils literal"><span class="pre">lxc-create</span></tt> or <tt class="docutils literal"><span class="pre">lxc-clone</span></tt> with the <tt class="docutils literal"><span class="pre">-B</span></tt> option.</p>
+<p>Currently supported values are:</p>
+<div class="section" id="directory-based-storage-none-and-dir">
+<h3>6.1.1. directory based storage (none and dir)<a class="headerlink" href="#directory-based-storage-none-and-dir" title="Permalink to this headline">¶</a></h3>
+<p>This is the default backingstore, the container rootfs is stored under
+<tt class="docutils literal"><span class="pre">/var/lib/lxc/&lt;container&gt;/rootfs</span></tt></p>
+<p>The <tt class="docutils literal"><span class="pre">--dir</span></tt> option (when using dir) can be used to override the path.</p>
+</div>
+<div class="section" id="btrfs">
+<h3>6.1.2. btrfs<a class="headerlink" href="#btrfs" title="Permalink to this headline">¶</a></h3>
+<p>With this backingstore LXC will setup a new subvolume for the
+container which makes snapshotting much easier.</p>
+</div>
+<div class="section" id="lvm">
+<h3>6.1.3. lvm<a class="headerlink" href="#lvm" title="Permalink to this headline">¶</a></h3>
+<p>This one will use a new logical volume for the container.
+The LV can be set with <tt class="docutils literal"><span class="pre">--lvname</span></tt> (the default is the container name).
+The VG can be set with <tt class="docutils literal"><span class="pre">--vgname</span></tt> (the default is lxc).
+The filesystem can be set with <tt class="docutils literal"><span class="pre">--fstype</span></tt> (the default is ext4).
+The size can be set with <tt class="docutils literal"><span class="pre">--fssize</span></tt> (the default is 1G).
+You can also use LVM thinpools with <tt class="docutils literal"><span class="pre">--thinpool</span></tt></p>
+</div>
+<div class="section" id="overlayfs">
+<h3>6.1.4. overlayfs<a class="headerlink" href="#overlayfs" title="Permalink to this headline">¶</a></h3>
+<p>This one is mostly used when cloning containers to create a container
+based on another one and storing any changes in an overlay.</p>
+<p>When used with <tt class="docutils literal"><span class="pre">lxc-create</span></tt> it&#8217;ll create a container where any change
+done after its initial creation will be stored in a delta0 directory
+next to the containers rootfs.</p>
+</div>
+<div class="section" id="zfs">
+<h3>6.1.5. zfs<a class="headerlink" href="#zfs" title="Permalink to this headline">¶</a></h3>
+<p>Very similar to btrfs, as Ive not used either of those myself I cant
+say much about them besides that it should also create some kind of
+subvolume for the container and make snapshots and clones faster and
+more space efficient.</p>
+</div>
+</div>
+<div class="section" id="standard-paths">
+<h2>6.2. Standard paths<a class="headerlink" href="#standard-paths" title="Permalink to this headline">¶</a></h2>
+<p>One quick word with the way LXC usually works and where its storing
+its files:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">/var/lib/lxc</span></tt> (default location for containers)</li>
+<li><tt class="docutils literal"><span class="pre">/var/lib/lxcsnap</span></tt> (default location for snapshots)</li>
+<li><tt class="docutils literal"><span class="pre">/var/cache/lxc</span></tt> (default location for the template cache)</li>
+<li><tt class="docutils literal"><span class="pre">$HOME/.local/share/lxc</span></tt> (default location for unprivileged
+containers)</li>
+<li><tt class="docutils literal"><span class="pre">$HOME/.local/share/lxcsnap</span></tt> (default location for unprivileged
+snapshots)</li>
+<li><tt class="docutils literal"><span class="pre">$HOME/.cache/lxc</span></tt> (default location for unprivileged template cache)</li>
+</ul>
+<p>The default path, also called <tt class="docutils literal"><span class="pre">lxcpath</span></tt> can be overridden on the command
+line with the <tt class="docutils literal"><span class="pre">-P</span></tt> option or once and for all by setting <tt class="docutils literal"><span class="pre">lxcpath</span> <span class="pre">=</span>
+<span class="pre">/new/path</span></tt> in <tt class="docutils literal"><span class="pre">/etc/lxc/lxc.conf</span></tt> (or <tt class="docutils literal"><span class="pre">$HOME/.config/lxc/lxc.conf</span></tt> for
+unprivileged containers).</p>
+<p>The snapshot directory is always snap appended to lxcpath so it&#8217;ll
+magically follow <tt class="docutils literal"><span class="pre">lxcpath</span></tt>. The template cache is unfortunately
+hardcoded and cant easily be moved short of relying on bind-mounts or
+symlinks.</p>
+<p>The default configuration used for all containers at creation time is
+taken from
+<tt class="docutils literal"><span class="pre">/etc/lxc/default.conf</span></tt> (no unprivileged equivalent yet).
+The templates themselves are stored in <tt class="docutils literal"><span class="pre">/usr/share/lxc/templates</span></tt>.</p>
+</div>
+<div class="section" id="cloning-containers">
+<h2>6.3. Cloning containers<a class="headerlink" href="#cloning-containers" title="Permalink to this headline">¶</a></h2>
+<p>All those backingstores only really shine once you start cloning
+containers.
+For example, lets take our good old <tt class="docutils literal"><span class="pre">p1</span> <span class="pre">Ubuntu</span></tt> container and lets say
+you want to make a usable copy of it called <tt class="docutils literal"><span class="pre">p4</span></tt>, you can simply do:</p>
+<div class="code highlight-python"><pre>sudo lxc-clone -o p1 -n p4</pre>
+</div>
+<p>And there you go, youve got a working <tt class="docutils literal"><span class="pre">p4</span></tt> container thatll be a simple
+copy of <tt class="docutils literal"><span class="pre">p1</span></tt> but with a new mac address and its hostname properly set.</p>
+<p>Now lets say you want to do a quick test against <tt class="docutils literal"><span class="pre">p1</span></tt> but dont want to
+alter that container itself, yet you dont want to wait the time needed
+for a full copy, you can simply do:</p>
+<div class="code highlight-python"><pre>sudo lxc-clone -o p1 -n p1-test -B overlayfs -s</pre>
+</div>
+<p>And there you go, youve got a new p1-test container which is entirely
+based on the <tt class="docutils literal"><span class="pre">p1</span></tt> rootfs and where any change will be stored in the
+<tt class="docutils literal"><span class="pre">delta0</span></tt> directory of <tt class="docutils literal"><span class="pre">p1-test</span></tt>.
+The same <tt class="docutils literal"><span class="pre">-s</span></tt> option also works with lvm and btrfs (possibly zfs too)
+containers and tells <tt class="docutils literal"><span class="pre">lxc-clone</span></tt> to use a snapshot rather than copy the
+whole rootfs across.</p>
+</div>
+<div class="section" id="snapshotting">
+<h2>6.4. Snapshotting<a class="headerlink" href="#snapshotting" title="Permalink to this headline">¶</a></h2>
+<p>So cloning is nice and convenient, great for things like development
+environments where you want throw away containers. But in production,
+snapshots tend to be a whole lot more useful for things like backup or
+just before you do possibly risky changes.</p>
+<p>In LXC we have a <tt class="docutils literal"><span class="pre">lxc-snapshot</span></tt> tool which will let you create, list,
+restore and destroy snapshots of your containers.
+Before I show you how it works, please note that <tt class="docutils literal"><span class="pre">lxc-snapshot</span></tt>
+currently doesnt appear to work with directory based containers. With
+those it produces an empty snapshot, this should be fixed by the time
+LXC 1.0 is actually released.</p>
+<p>So, lets say we want to backup our p1-lvm container before installing
+apache2 into it, simply run:</p>
+<div class="code highlight-python"><pre>echo "before installing apache2" &gt; snap-comment
+sudo lxc-snapshot -n p1-lvm -c snap-comment</pre>
+</div>
+<p>At which point, you can confirm the snapshot was created with:</p>
+<div class="code highlight-python"><pre>sudo lxc-snapshot -n p1-lvm -L -C</pre>
+</div>
+<p>Now you can go ahead and install apache2 in the container.</p>
+<p>If you want to revert the container at a later point, simply use:</p>
+<div class="code highlight-python"><pre>sudo lxc-snapshot -n p1-lvm -r snap0</pre>
+</div>
+<p>Or if you want to restore a snapshot as its own container, you can
+use:</p>
+<div class="code highlight-python"><pre>sudo lxc-snapshot -n p1-lvm -r snap0 p1-lvm-snap0</pre>
+</div>
+<p>And youll get a new <tt class="docutils literal"><span class="pre">p1-lvm-snap0</span></tt> container which will contain a
+working copy of <tt class="docutils literal"><span class="pre">p1-lvm</span></tt> as it was at <tt class="docutils literal"><span class="pre">snap0</span></tt>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-security-features.html" title="7. Security features"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lxc-1-0-some-more-advanced-container-usage.html" title="5. Some more advanced container usage"
+             >previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

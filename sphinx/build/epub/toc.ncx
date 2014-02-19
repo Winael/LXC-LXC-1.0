@@ -24,12 +24,12 @@
     </navPoint>
     <navPoint id="navPoint3" playOrder="3">
       <navLabel>
-        <text>1. Your first Ubuntu container</text>
+        <text>Your first Ubuntu container</text>
       </navLabel>
       <content src="lxc-1-0-your-first-ubuntu-container.html" />
       <navPoint id="navPoint3" playOrder="3">
         <navLabel>
-          <text>1. Your first Ubuntu container</text>
+          <text>Your first Ubuntu container</text>
         </navLabel>
         <content src="lxc-1-0-your-first-ubuntu-container.html" />
       </navPoint>
@@ -60,12 +60,12 @@
     </navPoint>
     <navPoint id="navPoint8" playOrder="8">
       <navLabel>
-        <text>2. Your second container</text>
+        <text>Your second container</text>
       </navLabel>
       <content src="lxc-1-0-your-second-container.html" />
       <navPoint id="navPoint8" playOrder="8">
         <navLabel>
-          <text>2. Your second container</text>
+          <text>Your second container</text>
         </navLabel>
         <content src="lxc-1-0-your-second-container.html" />
       </navPoint>
@@ -108,12 +108,12 @@
     </navPoint>
     <navPoint id="navPoint15" playOrder="15">
       <navLabel>
-        <text>3. Advanced container usage</text>
+        <text>Advanced container usage</text>
       </navLabel>
       <content src="lxc-1-0-advanced-container-usage.html" />
       <navPoint id="navPoint15" playOrder="15">
         <navLabel>
-          <text>3. Advanced container usage</text>
+          <text>Advanced container usage</text>
         </navLabel>
         <content src="lxc-1-0-advanced-container-usage.html" />
       </navPoint>
@@ -138,12 +138,12 @@
     </navPoint>
     <navPoint id="navPoint19" playOrder="19">
       <navLabel>
-        <text>4. Some more advanced container usage</text>
+        <text>Some more advanced container usage</text>
       </navLabel>
       <content src="lxc-1-0-some-more-advanced-container-usage.html" />
       <navPoint id="navPoint19" playOrder="19">
         <navLabel>
-          <text>4. Some more advanced container usage</text>
+          <text>Some more advanced container usage</text>
         </navLabel>
         <content src="lxc-1-0-some-more-advanced-container-usage.html" />
       </navPoint>
@@ -174,12 +174,12 @@
     </navPoint>
     <navPoint id="navPoint24" playOrder="24">
       <navLabel>
-        <text>5. Container storage</text>
+        <text>Container storage</text>
       </navLabel>
       <content src="lxc-1-0-container-storage.html" />
       <navPoint id="navPoint24" playOrder="24">
         <navLabel>
-          <text>5. Container storage</text>
+          <text>Container storage</text>
         </navLabel>
         <content src="lxc-1-0-container-storage.html" />
       </navPoint>
@@ -266,6 +266,96 @@
           <text>Control groups</text>
         </navLabel>
         <content src="lxc-1-0-security-features.html#control-groups" />
+      </navPoint>
+      <navPoint id="navPoint37" playOrder="37">
+        <navLabel>
+          <text>Apparmor</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html#apparmor" />
+      </navPoint>
+      <navPoint id="navPoint38" playOrder="38">
+        <navLabel>
+          <text>SELinux</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html#selinux" />
+      </navPoint>
+      <navPoint id="navPoint39" playOrder="39">
+        <navLabel>
+          <text>Seccomp</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html#seccomp" />
+      </navPoint>
+      <navPoint id="navPoint40" playOrder="40">
+        <navLabel>
+          <text>User namespace</text>
+        </navLabel>
+        <content src="lxc-1-0-security-features.html#user-namespace" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint41" playOrder="41">
+      <navLabel>
+        <text>Unprivileged containers</text>
+      </navLabel>
+      <content src="lxc-1-0-unprivileged-containers.html" />
+      <navPoint id="navPoint41" playOrder="41">
+        <navLabel>
+          <text>Unprivileged containers</text>
+        </navLabel>
+        <content src="lxc-1-0-unprivileged-containers.html" />
+      </navPoint>
+      <navPoint id="navPoint42" playOrder="42">
+        <navLabel>
+          <text>Introduction to unprivileged containers</text>
+        </navLabel>
+        <content src="lxc-1-0-unprivileged-containers.html#introduction-to-unprivileged-containers" />
+      </navPoint>
+      <navPoint id="navPoint43" playOrder="43">
+        <navLabel>
+          <text>Pre-requirements</text>
+        </navLabel>
+        <content src="lxc-1-0-unprivileged-containers.html#pre-requirements" />
+      </navPoint>
+      <navPoint id="navPoint44" playOrder="44">
+        <navLabel>
+          <text>LXC pre-built containers</text>
+        </navLabel>
+        <content src="lxc-1-0-unprivileged-containers.html#lxc-pre-built-containers" />
+      </navPoint>
+      <navPoint id="navPoint45" playOrder="45">
+        <navLabel>
+          <text>Using unprivileged LXC</text>
+        </navLabel>
+        <content src="lxc-1-0-unprivileged-containers.html#using-unprivileged-lxc" />
+      </navPoint>
+    </navPoint>
+    <navPoint id="navPoint46" playOrder="46">
+      <navLabel>
+        <text>Scripting with the api</text>
+      </navLabel>
+      <content src="lxc-1-0-scripting-with-the-api.html" />
+      <navPoint id="navPoint46" playOrder="46">
+        <navLabel>
+          <text>Scripting with the api</text>
+        </navLabel>
+        <content src="lxc-1-0-scripting-with-the-api.html" />
+      </navPoint>
+      <navPoint id="navPoint47" playOrder="47">
+        <navLabel>
+          <text>The API</text>
+        </navLabel>
+        <content src="lxc-1-0-scripting-with-the-api.html#the-api" />
+      </navPoint>
+      <navPoint id="navPoint48" playOrder="48">
+        <navLabel>
+          <text>The basics</text>
+        </navLabel>
+        <content src="lxc-1-0-scripting-with-the-api.html#the-basics" />
+      </navPoint>
+      <navPoint id="navPoint49" playOrder="49">
+        <navLabel>
+          <text>Python3 scripting</text>
+        </navLabel>
+        <content src="lxc-1-0-scripting-with-the-api.html#python3-scripting" />
       </navPoint>
     </navPoint>
   </navMap>

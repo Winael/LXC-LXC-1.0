@@ -1,0 +1,279 @@
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-28 07:23\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:7
+msgid "Some more advanced container usage"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:10
+msgid "Running foreign architectures"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:12
+msgid ""
+"By default LXC will only let you run containers of one of the architectures "
+"supported by the host. That makes sense since after all, your CPU doesn’t "
+"know what to do with anything else."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:14
+msgid ""
+"Except that we have this convenient package called ``qemu-user-static`` "
+"which contains a whole bunch of emulators for quite a few interesting "
+"architectures. The most common and useful of those is qemu-arm-static which "
+"will let you run most armv7 binaries directly on x86."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:16
+msgid ""
+"The ``ubuntu`` template knows how to make use of ``qemu-user-static``, so "
+"you can simply check that you have the ``qemu-user-static`` package "
+"installed, then run:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:22
+msgid ""
+"After a rather long bootstrap, you’ll get a new ``p3`` container which will "
+"be mostly running Ubuntu armhf. I’m saying mostly because the qemu emulation"
+" comes with a few limitations, the biggest of which is that any piece of "
+"software using the ``ptrace()`` syscall will fail and so will anything using"
+" netlink. As a result, LXC will install the host architecture version of "
+"upstart and a few of the networking tools so that the containers can boot "
+"properly."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:41
+msgid "Hooks"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:43
+msgid ""
+"As we know people like to script their containers and that our configuration"
+" can’t always accommodate every single use case, we’ve introduced a set of "
+"hooks which you may use."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:45
+msgid ""
+"Those hooks are simple paths to an executable file which LXC will run at "
+"some specific time in the lifetime of the container. Those executables will "
+"also be passed a set of useful environment variables so they can easily know"
+" what container invoked them and what to do."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:47
+msgid "The currently available hooks are (details in `lxc.conf(5)`_):"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:49
+msgid "``lxc.hook.pre-start`` (called before any initialization is done)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:50
+msgid ""
+"``lxc.hook.pre-mount`` (called after creating the mount namespace but before"
+" mounting anything)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:51
+msgid "``lxc.hook.mount`` (called after the mounts but before pivot_root)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:52
+msgid ""
+"``lxc.hook.autodev`` (identical to mount but only called if using "
+"``autodev``)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:53
+msgid ""
+"``lxc.hook.start`` (called in the container right before ``/sbin/init``)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:54
+msgid "``lxc.hook.post-stop`` (run after the container has been shutdown)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:55
+msgid "``lxc.hook.clone`` (called when cloning a container into a new one)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:57
+msgid ""
+"Additionally each network section may also define two additional hooks:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:59
+msgid ""
+"``lxc.network.script.up`` (called in the network namespace after the "
+"interface was created)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:60
+msgid ""
+"``lxc.network.script.down`` (called in the network namespace before "
+"destroying the interface)"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:62
+msgid ""
+"All of those hooks may be specified as many times as you want in the "
+"configuration so you can use each hooking point multiple times."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:64
+msgid "As a simple example, let’s add the following to our ``p1`` container:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:70
+msgid "And create the hook itself at ``/var/lib/lxc/p1/pre-start.sh``:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:79
+msgid ""
+"Make it executable (``chmod 755``) and then start the container. Checking "
+"``/tmp/test`` you should see:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:92
+msgid "Android containers"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:94
+msgid ""
+"I’ve often been asked whether it was possible to run Android in an LXC "
+"container. Well, the short answer is yes. However it’s not very simple and "
+"it really depends on what you want to do with it."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:96
+msgid ""
+"The first thing you’ll need if you want to do this is get your machine to "
+"run an Android kernel, you’ll need to have any modules needed by Android "
+"built and loaded before you can start the container."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:98
+msgid ""
+"Once you have that, you’ll need to create a new container by hand. Let’s put"
+" it in ``/var/lib/lxc/android/``, in there, you need a configuration file "
+"similar to this one:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:119
+msgid ""
+"``/var/lib/lxc/android/pre-start.sh`` is where the interesting bits happen. "
+"It needs to be an executable shell script, containing something along the "
+"lines of:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:133
+msgid ""
+"Then get the initrd for your device and place it in "
+"``/var/lib/lxc/android/initrd.gz``."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:135
+msgid ""
+"At that point, when starting the LXC container, the Android initrd will be "
+"unpacked on a tmpfs (similar to Android’s ramfs) and Android’s init will be "
+"started which in turn should mount any partition that Android requires and "
+"then start all of the usual services."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:137
+msgid ""
+"Because there are no apparmor, cgroup or even network configuration applied "
+"to it, the container will have a lot of rights and will typically completely"
+" crash the machine. You unfortunately have to be familiar with the way "
+"Android works and not be afraid to modify its init scripts if not even its "
+"init process to only start the bits you actually want."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:139
+msgid ""
+"I can’t provide a generic recipe there as it completely depends on what "
+"you’re interested on, what version of Android and what device you’re using. "
+"But it’s clearly possible to do and you may want to look at Ubuntu Touch to "
+"see how we’re doing it by default there."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:141
+msgid ""
+"One last note, Android’s init script isn’t in ``/sbin/init``, so you need to"
+" tell LXC where to load it with:"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:148
+msgid "LXC on Android devices"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:150
+msgid ""
+"So now that we’ve seen how to run Android in LXC, let’s talk about running "
+"Ubuntu on Android in LXC."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:152
+msgid ""
+"LXC has been ported to bionic (Android’s C library) and while not feature-"
+"equivalent with its glibc build, it’s still good enough to be used."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:154
+msgid ""
+"Unfortunately due to the kind of low level access LXC requires and the fact "
+"that our primary focus isn’t Android, installation could be easier…You won’t"
+" be finding LXC on the Google PlayStore and we won’t provide you with a .apk"
+" that you can install."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:156
+msgid ""
+"Instead every time something changes in the upstream git branch, we produce "
+"a new tarball which can be downloaded here: "
+"http://qa.linuxcontainers.org/master/current/android-armel/lxc-"
+"android.tar.gz"
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:158
+msgid ""
+"This build is known to work with Android >= 4.2 but will quite likely work "
+"on older versions too."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:160
+msgid ""
+"For this to work, you’ll need to grab your device’s kernel configuration and"
+" run ``lxc-checkconfig`` against it to see whether it’s compatible with LXC "
+"or not. Unfortunately it’s very likely that it won’t be… In that case, "
+"you’ll need to go hunt for the kernel source for your device, add the "
+"missing feature flags, rebuild it and update your device to boot your "
+"updated kernel."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:162
+msgid ""
+"As scary as this may sound, it’s usually not that difficult as long as your "
+"device is unlocked and you’re already using an alternate ROM like Cyanogen "
+"which usually make their kernel git tree easily available."
+msgstr ""
+
+#: ../../source/lxc-1-0-some-more-advanced-container-usage.rst:164
+msgid ""
+"Once your device has a working kernel, all you need to do is unpack our "
+"tarball as root in your device’s ``/`` directory, copy an arm container to "
+"``/data/lxc/containers/<container name>``, get into ``/data/lxc`` and run "
+"``./run-lxc lxc-start -n <container name>”``. A few seconds later you’ll be "
+"greeted by a login prompt."
+msgstr ""

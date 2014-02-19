@@ -1,0 +1,288 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2014, Stéphane Graber
+# This file is distributed under the same license as the LXC 1.0 - Quickstart package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LXC 1.0 - Quickstart 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-01-30 01:31\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:7
+# d8cd0c0c0791446fa19215cfadb07a0d
+msgid "Unprivileged containers"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:10
+# 745a1960443c4eb288ce31c0ba6f6064
+msgid "Introduction to unprivileged containers"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:12
+# 79493c84643844f18d6abb6ac5760295
+msgid "The support of unprivileged containers is in my opinion one of the most important new features of LXC 1.0."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:14
+# eb2569358f0e46109ed452a3400d6f8d
+msgid "You may remember from previous posts that I mentioned that LXC should be considered unsafe because while running in a separate namespace, ``uid 0`` in your container is still equal to ``uid 0`` outside of the container, meaning that if you somehow get access to any host resource through proc, sys or some random syscalls, you can potentially escape the container and then you’ll be root on the host."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:16
+# 6a7406e58db6409ca723af216e7e7fb3
+msgid "That’s what user namespaces were designed for and implemented. It was a multi-year effort to think them through and slowly push the hundreds of patches required into the upstream kernel, but finally with 3.12 we got to a point where we can start a full system container entirely as a user."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:18
+# e8562e946173419882ddecbef06ee616
+msgid "So how do those user namespaces work ? Well, simply put, each user that’s allowed to use them on the system gets assigned a range of unused uids and gids, ideally a whole 65536 of them. You can then use those uids and gids with two standard tools called ``newuidmap`` and ``newgidmap`` which will let you map any of those uids and gids to virtual uids and gids in a user namespace."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:20
+# 8c6e0742060e4d389d2c4f04fcc4972e
+msgid "That means you can create a container with the following configuration:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:27
+# ccf47f4b23994a5895591807c55c46eb
+msgid "The above means that I have one uid map and one gid map defined for my container which will map uids and gids 0 through 65536 in the container to uids and gids 100000 through 165536 on the host."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:29
+# 5b7390a6a32d41ee8c16be29cb397291
+msgid "For this to be allowed, I need to have those ranges assigned to my user at the system level with:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:37
+# 29e1cb3632d94ad5ae398e7a02cd6ef3
+msgid "LXC has now been updated so that all the tools are aware of those unprivileged containers. The standard paths also have their unprivileged equivalents:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:47
+# 9b19b684903342f88eb6948c74111636
+msgid "Your user, while it can create new user namespaces in which it’ll be ``uid 0`` and will have some of root’s privileges against resources tied to that namespace will obviously not be granted any extra privilege on the host."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:49
+# 2df338599ce743c78c2b315e42afb6c4
+msgid "One such thing is creating new network devices on the host or changing bridge configuration. To workaround that, we wrote a tool called ``lxc-user-nic`` which is the only ``SETUID`` binary part of LXC 1.0 and which performs one simple task. It parses a configuration file and based on its content will create network devices for the user and bridge them. To prevent abuse, you can restrict the number of devices a user can request and to what bridge they may be added."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:52
+# c87e2210d4ae4ad996ca79f5814b1c8d
+msgid "An example is my own ``/etc/lxc/lxc-usernet`` file:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:58
+# 56359ead82dc4d00bbcc8bdf74fb6d36
+msgid "This declares that the user ``stgraber`` is allowed up to 10 veth type devices to be created and added to the bridge called ``lxcbr0``."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:60
+# 23e31adeb0c8419d8c60ddc9fed3956f
+msgid "Between what’s offered by the user namespace in the kernel and that setuid tool, we’ve got all that’s needed to run most distributions unprivileged."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:63
+# 8379d1edd680474b98fac64842788223
+msgid "Pre-requirements"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:65
+# 5b70352633af4fb99d61119db459e81f
+msgid "All examples and instructions I’ll be giving below are expecting that you are running a perfectly up to date version of Ubuntu 14.04 (codename trusty). That’s a pre-release of Ubuntu so you may want to run it in a VM or on a spare machine rather than upgrading your production computer."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:67
+# 51be71407c7648758a6ea32607c01452
+msgid "The reason to want something that recent is because the rough requirements for well working unprivileged containers are:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:69
+# 7a3f27d53d0b4517b44ddc3f90e45e9c
+msgid "Kernel: 3.13 + a couple of staging patches (which Ubuntu has in its kernel)"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:70
+# 9d87ba8e6eaa4fdd8fafb7f4132c363b
+msgid "User namespaces enabled in the kernel"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:71
+# f1c28097969a4881bebbd8d64d47b68e
+msgid "A very recent version of shadow that supports subuid/subgid"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:72
+# 97fd5c13266446f4b0913104b3992827
+msgid "Per-user cgroups on all controllers (which I turned on a couple of weeks ago)"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:73
+# 37bafc2fbf3e4ff1b339ef1454f060be
+msgid "LXC 1.0 beta2 or higher (released two days ago)"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:74
+# 0fcf62968835405ea6a134027565450a
+msgid "A version of PAM with a loginuid patch that’s yet to be in any released version"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:76
+# 1475c68507dd43a893b570e8704ae867
+msgid "Those requirements happen to all be true of the current development release of Ubuntu as of two days ago."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:79
+# 1cadd9154efa4286a4348a65e0ff7093
+msgid "LXC pre-built containers"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:81
+# 5659d33ae8854e02b904f2e32dfdbcc2
+msgid "User namespaces come with quite a few obvious limitations. For example in a user namespace you won’t be allowed to use mknod to create a block or character device as being allowed to do so would let you access anything on the host. Same thing goes with some filesystems, you won’t for example be allowed to do loop mounts or mount an ext partition, even if you can access the block device."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:83
+# 8da84356b074418391b2c93d6050a38e
+msgid "Those limitations while not necessarily world ending in day to day use are a big problem during the initial bootstrap of a container as tools like debootstrap, yum, … usually try to do some of those restricted actions and will fail pretty badly."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:85
+# ddcda8cf0cae4a6598e5fbda9e62adaf
+msgid "Some templates may be tweaked to work and workaround such as a modified fakeroot could be used to bypass some of those limitations but the goal of the LXC project isn’t to require all of our users to be distro engineers, so we came up with a much simpler solution."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:87
+# 8113581962434f79b47813ab42c9916e
+msgid "I wrote a new template called “download” which instead of assembling the rootfs and configuration locally will instead contact a server which contains daily pre-built rootfs and configuration for most common templates."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:89
+# 544e129a30cc442a9f4c125320ea1322
+msgid "Those images are built from our Jenkins server using a few machines I have on my home network (a set of powerful x86 builders and a quadcore ARM board). The actual build process is pretty straightforward, a basic chroot is assembled, then the current git master is downloaded, built and the standard templates are run with the right release and architecture, the resulting rootfs is compressed, a basic config and metadata (expiry, files to template, …) is saved, the result is pulled by our main server, signed with a dedicated GPG key and published on the public web server."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:91
+# 517e19ac26d54da7876d8a110d4a704d
+msgid "The client side is a simple template which contacts the server over https (the domain is also DNSSEC enabled and available over IPv6), grabs signed indexes of all the available images, checks if the requested combination of distribution, release and architecture is supported and if it is, grabs the rootfs and metadata tarballs, validates their signature and stores them in a local cache. Any container creation after that point is done using that cache until the time the cache entries expires at which point it’ll grab a new copy from the server."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:93
+# 455b79bc33ab4bc7b090f4ab498429e5
+msgid "The current list of images is (as can be requested by passing ``-list``):"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:136
+# 3db7408bf4ef4169b0a6209a04e441a0
+msgid "The template has been carefully written to work on any system that has a POSIX compliant shell with wget. gpg is recommended but can be disabled if your host doesn’t have it (at your own risks)."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:138
+# cebcbea445dc439388bc0e9a4e5fd453
+msgid "The same template can be used against your own server, which I hope will be very useful for enterprise deployments to build templates in a central location and have them pulled by all the hosts automatically using our expiry mechanism to keep them fresh."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:140
+# d486e69a5e214612885a98a2b5af8b95
+msgid "While the template was designed to workaround limitations of unprivileged containers, it works just as well with system containers, so even on a system that doesn’t support unprivileged containers you can do:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:146
+# 06234e127ef54dad9db80f68dc672693
+msgid "And you’ll get a new container running the latest build of Ubuntu 14.04 amd64."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:149
+# 5104af5bcabe46efb4b8170fc6be0fd7
+msgid "Using unprivileged LXC"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:151
+# 74da39627f184e708a76edc68030818b
+msgid "Right, so let’s get you started, as I already mentioned, all the instructions below have only been tested on a very recent Ubuntu 14.04 (trusty) installation."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:153
+# 2489b7323b74449496a7d3190acf1da1
+msgid "You may want to grab a daily build and run it in a VM."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:155
+# 0135cf5f99ed48768f10e368128e7820
+msgid "Install the required packages:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:163
+# 9430917510874d61b398fc8cca786c91
+msgid "Now a quick workaround while we wait to have our new cgroup manager in Ubuntu, put the following into ``/etc/init/lxc-unpriv-cgroup.conf``:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:181
+# 15bf337fd2794ee0985282e83ecbe905
+msgid "This trick is required because logind doesn’t configure use_hierarchy or clone_children the way LXC needs them."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:183
+# 361e83954a5a478995bf5426d122329f
+msgid "Now, reboot your machine for those cgroups to get properly reconfigured."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:185
+# 6f996244c7854ed6b87c9b56f68c857a
+msgid "Then, assign yourself a set of uids and gids with:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:192
+# 7e5c591c068a498d943390f40866af7b
+msgid "Now create ``~/.config/lxc/default.conf`` with the following content:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:203
+# 54c068e6f92d4c1bb9cb97c9014164eb
+msgid "And ``/etc/lxc/lxc-usernet`` with:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:209
+# 9a46aad0c9fa47dca2ac83c1713c63a4
+msgid "And that’s all you need. Now let’s create our first unprivileged container with:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:215
+# a95191b1154b4efb9c753cf106f6724c
+msgid "You should see the following output from the download template:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:231
+# 69d26b2979004d9bb99c2b48a64716b7
+msgid "So looks like your first container was created successfully, now let’s see if it starts:"
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:241
+# 6efcea0fa04b499593238195f20c5002
+msgid "It’s running! At this point, you can get a console using ``lxc-console`` or can SSH to it by looking for its IP in the ARP table (``arp -n``)."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:243
+# f7f7be3c131947029e3f9f152e694c67
+msgid "One thing you probably noticed above is that the IP addresses for the container aren’t listed, that’s because unfortunately LXC currently can’t attach to an unprivileged container’s namespaces. That also means that some fields of ``lxc-info`` will be empty and that you can’t use `̀`lxc-attach``. However we’re looking into ways to get that sorted in the near future."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:245
+# 5705fc926bdc4d95a3894fdfcc6087e7
+msgid "There are also a few problems with job control in the kernel and with PAM, so doing a non-detached ``lxc-start`` will probably result in a rather weird console where things like sudo will most likely fail. SSH may also fail on some distros. A patch has been sent upstream for this, but I just noticed that it doesn’t actually cover all cases and even if it did, it’s not in any released version yet."
+msgstr ""
+
+#: ../../source/lxc-1-0-unprivileged-containers.rst:247
+# 9e834ed5f4bd448a9ef97f8404038b85
+msgid "Quite a few more improvements to unprivileged containers are to come until the final 1.0 release next month and while we certainly don’t expect all workloads to be possible with unprivileged containers, it’s still a huge improvement on what we had before and a very good building block for a lot more interesting use cases."
+msgstr ""
+

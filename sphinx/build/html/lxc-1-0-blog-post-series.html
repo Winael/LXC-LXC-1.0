@@ -1,0 +1,129 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Intro. Blog post series &mdash; LXC 1.0 - Quickstart 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LXC 1.0 - Quickstart 1.0 documentation" href="index.html" />
+    <link rel="next" title="2. Your first Ubuntu container" href="lxc-1-0-your-first-ubuntu-container.html" />
+    <link rel="prev" title="Welcome to LXC 1.0 - Quickstart’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-your-first-ubuntu-container.html" title="2. Your first Ubuntu container"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to LXC 1.0 - Quickstart’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to LXC 1.0 - Quickstart&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lxc-1-0-your-first-ubuntu-container.html"
+                        title="next chapter">2. Your first Ubuntu container</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lxc-1-0-blog-post-series.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="intro-blog-post-series">
+<span id="lxc-1-0-blog-post-series"></span><h1>1. Intro.  Blog post series<a class="headerlink" href="#intro-blog-post-series" title="Permalink to this headline">¶</a></h1>
+<p>So it’s almost the end of the year, I’ve got about 10 days of vacation for the holidays and a bit of time on my hands.</p>
+<p>Since I’ve been doing quite a bit of work on LXC lately in prevision for the <a class="reference external" href="http://linuxcontainers.org/">LXC</a> 1.0 release early next year, I thought that it’d be a good use of some of that extra time to blog about the current state of LXC.</p>
+<p>As a result, I’m preparing a series of 10 blog posts covering what I think are some of the most exciting features of LXC. The planned structure is:</p>
+<ul class="simple">
+<li><a class="reference internal" href="lxc-1-0-your-first-ubuntu-container.html#lxc-1-0-your-first-ubuntu-container"><em>Your first Ubuntu container</em></a></li>
+<li><a class="reference internal" href="lxc-1-0-your-second-container.html#lxc-1-0-your-second-container"><em>Your second container</em></a></li>
+<li><a class="reference internal" href="lxc-1-0-advanced-container-usage.html#lxc-1-0-advanced-container-usage"><em>Advanced container usage</em></a></li>
+<li><em class="xref std std-ref">lxc-1-0-some-more-advanced-container-usage</em></li>
+<li><a class="reference internal" href="lxc-1-0-container-storage.html#lxc-1-0-container-storage"><em>Container storage</em></a></li>
+<li><a class="reference internal" href="lxc-1-0-security-features.html#lxc-1-0-security-features"><em>Security features</em></a></li>
+<li><a class="reference internal" href="lxc-1-0-unprivileged-containers.html#lxc-1-0-unprivileged-containers"><em>Unprivileged containers</em></a></li>
+<li><a class="reference internal" href="lxc-1-0-scripting-with-the-api.html#lxc-1-0-scripting-with-the-api"><em>Scripting with the api</em></a></li>
+<li>LXC 1.0: GUI in containers [9/10]</li>
+<li>LXC 1.0: Troubleshooting and debugging [10/10]</li>
+</ul>
+<p>While they are all titled LXC 1.0, most of the things I’ll be showing will work just as well on older LXC. However some of the features will need a very very recent version of LXC (as in, current upstream git). I’ll try to make that clear and will explain how to use our <a class="reference external" href="https://launchpad.net/ubuntu/+source/lxc">stable backports in Ubuntu</a> or <a class="reference external" href="https://launchpad.net/~ubuntu-lxc/+archive/daily">current upstream snapshots from our PPA</a>.</p>
+<p>I’ll be updating this first blog post with links to all of the posts in the series. So if you want to bookmark or refer to these, please use this post.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-your-first-ubuntu-container.html" title="2. Your first Ubuntu container"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to LXC 1.0 - Quickstart’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Stéphane Graber.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

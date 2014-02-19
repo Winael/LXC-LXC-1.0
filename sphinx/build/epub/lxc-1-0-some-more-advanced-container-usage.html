@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. 4. Some more advanced container usage</title>
+    <title>5. Some more advanced container usage</title>
     
     <link rel="stylesheet" href="_static/epub.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
@@ -21,10 +21,10 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="lxc-1-0-container-storage.html" title="6. 5. Container storage"
+          <a href="lxc-1-0-container-storage.html" title="6. Container storage"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="lxc-1-0-advanced-container-usage.html" title="4. 3. Advanced container usage"
+          <a href="lxc-1-0-advanced-container-usage.html" title="4. Advanced container usage"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
       </ul>
@@ -35,18 +35,7 @@
           <div class="body">
             
   <div class="section" id="some-more-advanced-container-usage">
-<h1>5. 4. Some more advanced container usage</h1>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Date:</th><td class="field-body">2013/12/23</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Author:</th><td class="field-body">Stéphane Graber</td>
-</tr>
-</tbody>
-</table>
-<p>This is post 4 out of 10 in the <a class="reference external" href="../../_build/en/index.html#intro-blog-post-series">LXC 1.0 blog post series</a>.</p>
+<span id="id1"></span><h1>5. Some more advanced container usage</h1>
 <div class="section" id="running-foreign-architectures">
 <h2>5.1. Running foreign architectures</h2>
 <p>By default LXC will only let you run containers of one of the architectures supported by the host. That makes sense since after all, your CPU doesn’t know what to do with anything else.</p>
@@ -74,7 +63,7 @@ stgraber@castiana:~$</pre>
 <h2>5.2. Hooks</h2>
 <p>As we know people like to script their containers and that our configuration can’t always accommodate every single use case, we’ve introduced a set of hooks which you may use.</p>
 <p>Those hooks are simple paths to an executable file which LXC will run at some specific time in the lifetime of the container. Those executables will also be passed a set of useful environment variables so they can easily know what container invoked them and what to do.</p>
-<p>The currently available hooks are (details in <a href="#id1"><span class="problematic" id="id2">`lxc.conf(5)`_</span></a>):</p>
+<p>The currently available hooks are (details in <a href="#id2"><span class="problematic" id="id3">`lxc.conf(5)`_</span></a>):</p>
 <ul class="simple">
 <li><tt class="docutils literal"><span class="pre">lxc.hook.pre-start</span></tt> (called before any initialization is done)</li>
 <li><tt class="docutils literal"><span class="pre">lxc.hook.pre-mount</span></tt> (called after creating the mount namespace but before mounting anything)</li>
@@ -159,8 +148,8 @@ mkdir -p $LXC_ROOTFS_PATH/dev/pts</pre>
 <p>This build is known to work with Android &gt;= 4.2 but will quite likely work on older versions too.</p>
 <p>For this to work, you’ll need to grab your device’s kernel configuration and run <tt class="docutils literal"><span class="pre">lxc-checkconfig</span></tt> against it to see whether it’s compatible with LXC or not. Unfortunately it’s very likely that it won’t be… In that case, you’ll need to go hunt for the kernel source for your device, add the missing feature flags, rebuild it and update your device to boot your updated kernel.</p>
 <p>As scary as this may sound, it’s usually not that difficult as long as your device is unlocked and you’re already using an alternate ROM like Cyanogen which usually make their kernel git tree easily available.</p>
-<p>Once your device has a working kernel, all you need to do is unpack our tarball as root in your device’s <tt class="docutils literal"><span class="pre">/</span></tt> directory, copy an arm container to <tt class="docutils literal"><span class="pre">/data/lxc/containers/&lt;container</span> <span class="pre">name&gt;</span></tt>, get into <tt class="docutils literal"><span class="pre">/data/lxc</span></tt> and run <tt class="docutils literal"><span class="pre">./run-lxc</span> <span class="pre">lxc-start</span> <span class="pre">-n</span> <span class="pre">&lt;container</span> <span class="pre">name&gt;”</span></tt>.
-A few seconds later you’ll be greeted by a login prompt.</p>
+<p>Once your device has a working kernel, all you need to do is unpack our tarball as root in your device’s <tt class="docutils literal"><span class="pre">/</span></tt> directory, copy an arm container to <tt class="docutils literal"><span class="pre">/data/lxc/containers/&lt;container</span> <span class="pre">name&gt;</span></tt>, get into <tt class="docutils literal"><span class="pre">/data/lxc</span></tt> and run <tt class="docutils literal"><span class="pre">./run-lxc</span> <span class="pre">lxc-start</span> <span class="pre">-n</span> <span class="pre">&lt;container</span> <span class="pre">name&gt;”</span></tt>.</p>
+<p>A few seconds later you’ll be greeted by a login prompt.</p>
 </div>
 </div>
 

@@ -21,7 +21,8 @@
 {%- macro relbar() %}
 <div class="header-content">
     <div class="clearfix">
-  <div class="header-navigation-secondary">
+<!--  
+        <div class="header-navigation-secondary"> 
     <div>
           <nav role="navigation">
             <ul class="clearfix">
@@ -30,9 +31,9 @@
 	        href="{{ pathto(rellink[0]) }}" title="{{ rellink[1]|striptags|e }}"
 	        {{ accesskey(rellink[2]) }}>{{ rellink[3] }}</a></li>
         {%- endfor %}
-        {%- block rootrellink %}
+        {%- block rootrellink %} -->
         <!-- <li class="page_item"><a class="sub-nav-item" href="{{ pathto(master_doc) }}">{{ shorttitle|e }} {{ reldelim1 }}</a></li> -->
-        {%- endblock %}
+        <!--{%- endblock %}
         {%- for parent in parents %}
           <li class="page_item"><a class="sub-nav-item" href="{{ parent.link|e }}" {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }} {{ reldelim1 }}</a></li>
         {%- endfor %}
@@ -40,7 +41,7 @@
       </ul>
     </nav>
   </div>
-</div>
+</div> -->
 </div>
 </div>
 {%- endmacro %}
@@ -125,7 +126,7 @@
   <body class="home">
   <a name="top"></a>
 
-<div class="header-navigation">
+<!--<div class="header-navigation">
     <div>
       <nav role="navigation">
         <ul>
@@ -143,12 +144,12 @@
             </form>
           </li>
 -->          
-        </ul>
+        <!--</ul>
       </nav>
       <a class="logo-ubuntu" href="{{ pathto(master_doc) }}"><img src="http://developer.ubuntu.com/wp-content/themes/wordpress-theme-ubuntudeveloper/img/logo-ubuntu.png" width="119" height="27" alt="Ubuntu logo" /></a>
       <h2><a href="{{ pathto(master_doc) }}">Advocacy</a></h2>
     </div>
-  </div>
+  </div> -->
 
 {%- block relbar1 %}{{ relbar() }}{% endblock %}
 
