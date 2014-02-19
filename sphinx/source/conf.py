@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'LXC 1.0 - Quickstart'
-copyright = u'2014, Stéphane Graber'
+copyright = u'2014, CC-BY-NC-SA - Unless explicitly mentioned otherwise, the content of this blog is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Canada License, Stéphane Graber <http://www.stgraber.org>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

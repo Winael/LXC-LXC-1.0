@@ -358,5 +358,41 @@
         <content src="lxc-1-0-scripting-with-the-api.html#python3-scripting" />
       </navPoint>
     </navPoint>
+    <navPoint id="navPoint50" playOrder="50">
+      <navLabel>
+        <text>GUI in containers</text>
+      </navLabel>
+      <content src="lxc-1-0-gui-in-containers.html" />
+      <navPoint id="navPoint50" playOrder="50">
+        <navLabel>
+          <text>GUI in containers</text>
+        </navLabel>
+        <content src="lxc-1-0-gui-in-containers.html" />
+      </navPoint>
+      <navPoint id="navPoint51" playOrder="51">
+        <navLabel>
+          <text>Some starting notes</text>
+        </navLabel>
+        <content src="lxc-1-0-gui-in-containers.html#some-starting-notes" />
+      </navPoint>
+      <navPoint id="navPoint52" playOrder="52">
+        <navLabel>
+          <text>Running Google chrome in a container</text>
+        </navLabel>
+        <content src="lxc-1-0-gui-in-containers.html#running-google-chrome-in-a-container" />
+      </navPoint>
+      <navPoint id="navPoint53" playOrder="53">
+        <navLabel>
+          <text>Skype</text>
+        </navLabel>
+        <content src="lxc-1-0-gui-in-containers.html#skype" />
+      </navPoint>
+      <navPoint id="navPoint54" playOrder="54">
+        <navLabel>
+          <text>Steam</text>
+        </navLabel>
+        <content src="lxc-1-0-gui-in-containers.html#steam" />
+      </navPoint>
+    </navPoint>
   </navMap>
 </ncx>

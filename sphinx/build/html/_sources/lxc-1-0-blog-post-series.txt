@@ -22,7 +22,7 @@ As a result, I’m preparing a series of 10 blog posts covering what I think are
 - :ref:`lxc-1-0-security-features`
 - :ref:`lxc-1-0-unprivileged-containers`
 - :ref:`lxc-1-0-scripting-with-the-api`
-- LXC 1.0: GUI in containers [9/10]
+- :ref:`lxc-1-0-gui-in-containers`
 - LXC 1.0: Troubleshooting and debugging [10/10]
 
 While they are all titled LXC 1.0, most of the things I’ll be showing will work just as well on older LXC. However some of the features will need a very very recent version of LXC (as in, current upstream git). I’ll try to make that clear and will explain how to use our `stable backports in Ubuntu <https://launchpad.net/ubuntu/+source/lxc>`_ or `current upstream snapshots from our PPA <https://launchpad.net/~ubuntu-lxc/+archive/daily>`_.

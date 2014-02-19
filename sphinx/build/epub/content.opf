@@ -9,7 +9,7 @@
     <dc:publisher>Stéphane Graber</dc:publisher>
     <dc:rights>2014, Stéphane Graber</dc:rights>
     <dc:identifier id="unknown" opf:scheme="unknown">unknown</dc:identifier>
-    <dc:date>2014-02-19</dc:date>
+    <dc:date>2014-02-20</dc:date>
   </metadata>
   <manifest>
     <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
@@ -42,6 +42,9 @@
           media-type="application/xhtml+xml" />
     <item id="genindex.html"
           href="genindex.html"
+          media-type="application/xhtml+xml" />
+    <item id="lxc-1-0-gui-in-containers.html"
+          href="lxc-1-0-gui-in-containers.html"
           media-type="application/xhtml+xml" />
     <item id="lxc-1-0-security-features.html"
           href="lxc-1-0-security-features.html"
@@ -94,6 +97,12 @@
     <item id="_static_down.png"
           href="_static/down.png"
           media-type="image/png" />
+    <item id="_static_img_chrome-in-lxc.mini.png"
+          href="_static/img/chrome-in-lxc.mini.png"
+          media-type="image/png" />
+    <item id="_images_chrome-in-lxc.mini.png"
+          href="_images/chrome-in-lxc.mini.png"
+          media-type="image/png" />
   </manifest>
   <spine toc="ncx">
     <itemref idref="index.html" />
@@ -106,6 +115,7 @@
     <itemref idref="lxc-1-0-security-features.html" />
     <itemref idref="lxc-1-0-unprivileged-containers.html" />
     <itemref idref="lxc-1-0-scripting-with-the-api.html" />
+    <itemref idref="lxc-1-0-gui-in-containers.html" />
     <itemref idref="genindex.html" />
   </spine>
 </package>

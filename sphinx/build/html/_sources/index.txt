@@ -23,6 +23,7 @@ Contents:
    lxc-1-0-security-features
    lxc-1-0-unprivileged-containers
    lxc-1-0-scripting-with-the-api
+   lxc-1-0-gui-in-containers
 
 
 Indices and tables

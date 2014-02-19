@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>10. GUI in containers &mdash; LXC 1.0 - Quickstart 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="LXC 1.0 - Quickstart 1.0 documentation" href="index.html" />
+    <link rel="prev" title="9. Scripting with the api" href="lxc-1-0-scripting-with-the-api.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-scripting-with-the-api.html" title="9. Scripting with the api"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">10. GUI in containers</a><ul>
+<li><a class="reference internal" href="#some-starting-notes">10.1. Some starting notes</a></li>
+<li><a class="reference internal" href="#running-google-chrome-in-a-container">10.2. Running Google chrome in a container</a></li>
+<li><a class="reference internal" href="#skype">10.3. Skype</a></li>
+<li><a class="reference internal" href="#steam">10.4. Steam</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lxc-1-0-scripting-with-the-api.html"
+                        title="previous chapter">9. Scripting with the api</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lxc-1-0-gui-in-containers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gui-in-containers">
+<span id="lxc-1-0-gui-in-containers"></span><h1>10. GUI in containers<a class="headerlink" href="#gui-in-containers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="some-starting-notes">
+<h2>10.1. Some starting notes<a class="headerlink" href="#some-starting-notes" title="Permalink to this headline">¶</a></h2>
+<p>This post uses unprivileged containers, this isn’t an hard requirement but makes a lot of sense for GUI applications. Besides, since you followed the whole series, you have those setup anyway, right?</p>
+<p>I’ll be using Google Chrome with the Google Talk and Adobe Flash plugins as “hostile” piece of software that I do not wish to allow to run directly on my machine.
+Here are a few reasons why:</p>
+<ul class="simple">
+<li>Those are binaries I don’t have source for. (That alone is usually enough for me to put an application in a container)</li>
+<li>Comes from an external (non-Ubuntu) repository which may then push anything they wish to my system. (Could be restricted with careful apt pining)</li>
+<li>Installs a daily cronjob which will re-add said repository and GPG keys should I for some reason choose to remove them. (Apparently done to have the repository re-added after dist-upgrades)</li>
+<li>Uses a setuid wrapper to setup their sandbox. Understandable as they switch namespaces and user namespaces aren’t widespread yet. (This can be worked around by turning off the sandbox. The code for the sandbox is also available from the chromium project, though there’s no proof that the binary build doesn’t have anything added to it)</li>
+<li>I actually need to use those piece of software because of my work environment and because the web hasn’t entirely moved away from flash yet…</li>
+</ul>
+<p>While what I’ll be describing below is a huge step up for security in my opinion, it’s still not ideal and a few compromises have to be made to make those software even work. Those are basically access to:</p>
+<ul class="simple">
+<li>pulseaudio: possibly recording you</li>
+<li>X11: possibly doing key logging or taking pictures of your screen</li>
+<li>dri/snd devices: can’t think of anything that’s not already covered by the first two, but I’m sure someone with a better imagination than mine will come up with something</li>
+</ul>
+<p>But there’s only so much you can do while still having the cool features, so the best you can do is make sure never to run the container while doing sensitive work.</p>
+</div>
+<div class="section" id="running-google-chrome-in-a-container">
+<h2>10.2. Running Google chrome in a container<a class="headerlink" href="#running-google-chrome-in-a-container" title="Permalink to this headline">¶</a></h2>
+<p>So now to the actual fun. The plan is rather simple, I want a simple container, running a stable, well supported, version of Ubuntu, in there I’ll install Google Chrome and any plugin I need, then integrate it with my desktop.</p>
+<p>First of all, let’s get ourselves an Ubuntu 12.04 i386 container as that’s pretty well supported by most ISVs:</p>
+<div class="code highlight-python"><pre>lxc-create -t download -n precise-gui -- -d ubuntu -r precise -a i386</pre>
+</div>
+<p>Let’s tweak the configuration a bit by adding the following to <tt class="docutils literal"><span class="pre">~/.local/share/lxc/precise-gui/config</span></tt> (replacing <tt class="docutils literal"><span class="pre">USERNAME</span></tt> appropriately):</p>
+<div class="code highlight-python"><pre>lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir
+lxc.mount.entry = /dev/snd dev/snd none bind,optional,create=dir
+lxc.mount.entry = /tmp/.X11-unix tmp/.X11-unix none bind,optional,create=dir
+lxc.mount.entry = /dev/video0 dev/video0 none bind,optional,create=file
+
+lxc.hook.pre-start = /home/USERNAME/.local/share/lxc/precise-gui/setup-pulse.sh</pre>
+</div>
+<p>Still in that same config file, you’ll have to replace your existing (or similar):</p>
+<div class="code highlight-python"><pre>lxc.id_map = u 0 100000 65536
+lxc.id_map = g 0 100000 65536</pre>
+</div>
+<p>By something like (this assume your user’s uid/gid is 1000/1000):</p>
+<div class="code highlight-python"><pre>lxc.id_map = u 0 100000 1000
+lxc.id_map = g 0 100000 1000
+lxc.id_map = u 1000 1000 1
+lxc.id_map = g 1000 1000 1
+lxc.id_map = u 1001 101001 64535
+lxc.id_map = g 1001 101001 64535</pre>
+</div>
+<p>So those mappings basically mean that your container has 65536 uids and gids mapped to it, starting at 0 up to 65535 in the container. Those are mapped to host ids 100000 to 165535 with one exception, uid and gid 1000 isn’t translated. That trick is needed so that your user in the container can access the X socket, pulseaudio socket and DRI/snd devices just as your own user can (this saves us a whole lot of configuration on the host).</p>
+<p>Now that we’re done with the config file, let’s create that setup-pulse.sh script:</p>
+<pre class="code bash literal-block">
+<span class="ln">1 </span><span class="comment">#!/bin/sh
+</span><span class="ln">2 </span><span class="comment"></span><span class="name variable">PULSE_PATH</span><span class="operator">=</span><span class="name variable">$LXC_ROOTFS_PATH</span>/home/ubuntu/.pulse_socket
+<span class="ln">3 </span>
+<span class="ln">4 </span><span class="keyword">if</span> <span class="operator">[</span> ! -e <span class="literal string double">&quot;$PULSE_PATH&quot;</span> <span class="operator">]</span> <span class="operator">||</span> <span class="operator">[</span> -z <span class="literal string double">&quot;$(lsof -n $PULSE_PATH 2&gt;&amp;1)&quot;</span> <span class="operator">]</span>; <span class="keyword">then
+</span><span class="ln">5 </span><span class="keyword">    </span>pactl load-module module-native-protocol-unix auth-anonymous<span class="operator">=</span>1 <span class="literal string escape">\
+</span><span class="ln">6 </span><span class="literal string escape"></span>        <span class="name variable">socket</span><span class="operator">=</span><span class="name variable">$PULSE_PATH</span>
+<span class="ln">7 </span><span class="keyword">fi</span>
+</pre>
+<p>Make sure the file is executable or LXC will ignore it!</p>
+<p>That script is fairly simple, it’ll simply tell pulseaudio on the host to bind <tt class="docutils literal"><span class="pre">/home/ubuntu/.pulse_socket</span></tt> in the container, checking that it’s not already setup.</p>
+<p>Finally, run the following to fix the permissions of your container’s home directory:</p>
+<div class="code highlight-python"><pre>sudo chown -R 1000:1000 ~/.local/share/lxc/precise-gui/rootfs/home/ubuntu</pre>
+</div>
+<p>And that’s all that’s needed in the LXC side. So let’s start the container and install Google Chrome and the Google Talk plugin in there:</p>
+<div class="code highlight-python"><pre>lxc-start -n precise-gui -d
+lxc-attach -n precise-gui -- umount /tmp/.X11-unix
+lxc-attach -n precise-gui -- apt-get update
+lxc-attach -n precise-gui -- apt-get dist-upgrade -y
+lxc-attach -n precise-gui -- apt-get install wget ubuntu-artwork dmz-cursor-theme ca-certificates pulseaudio -y
+lxc-attach -n precise-gui -- wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb -O /tmp/chrome.deb
+lxc-attach -n precise-gui -- wget https://dl.google.com/linux/direct/google-talkplugin_current_i386.deb -O /tmp/talk.deb
+lxc-attach -n precise-gui -- dpkg -i /tmp/chrome.deb /tmp/talk.deb
+lxc-attach -n precise-gui -- apt-get -f install -y
+lxc-attach -n precise-gui -- sudo -u ubuntu mkdir -p /home/ubuntu/.pulse/
+echo "disable-shm=yes" | lxc-attach -n precise-gui -- sudo -u ubuntu tee /home/ubuntu/.pulse/client.conf
+lxc-stop -n precise-gui</pre>
+</div>
+<p>At this point, everything you need is installed in the container.</p>
+<p>To make your life easier, create the following launcher script, let’s call it <tt class="docutils literal"><span class="pre">start-chrome</span></tt> and put it in the container’s configuration directory (next to <tt class="docutils literal"><span class="pre">config</span></tt> and <tt class="docutils literal"><span class="pre">setup-pulse.sh</span></tt>):</p>
+<pre class="code bash literal-block">
+<span class="ln"> 1 </span><span class="comment">#!/bin/sh
+</span><span class="ln"> 2 </span><span class="comment"></span><span class="name variable">CONTAINER</span><span class="operator">=</span>precise-gui
+<span class="ln"> 3 </span><span class="name variable">CMD_LINE</span><span class="operator">=</span><span class="literal string double">&quot;google-chrome --disable-setuid-sandbox $*&quot;</span>
+<span class="ln"> 4 </span>
+<span class="ln"> 5 </span><span class="name variable">STARTED</span><span class="operator">=</span><span class="name builtin">false
+</span><span class="ln"> 6 </span><span class="name builtin">
+</span><span class="ln"> 7 </span><span class="name builtin"></span><span class="keyword">if</span> ! lxc-wait -n <span class="name variable">$CONTAINER</span> -s RUNNING -t 0; <span class="keyword">then
+</span><span class="ln"> 8 </span><span class="keyword">    </span>lxc-start -n <span class="name variable">$CONTAINER</span> -d
+<span class="ln"> 9 </span>    lxc-wait -n <span class="name variable">$CONTAINER</span> -s RUNNING
+<span class="ln">10 </span>    <span class="name variable">STARTED</span><span class="operator">=</span><span class="name builtin">true
+</span><span class="ln">11 </span><span class="name builtin"></span><span class="keyword">fi
+</span><span class="ln">12 </span><span class="keyword">
+</span><span class="ln">13 </span><span class="keyword"></span><span class="name variable">PULSE_SOCKET</span><span class="operator">=</span>/home/ubuntu/.pulse_socket
+<span class="ln">14 </span>
+<span class="ln">15 </span>lxc-attach --clear-env -n <span class="name variable">$CONTAINER</span> -- sudo -u ubuntu -i <span class="literal string escape">\
+</span><span class="ln">16 </span><span class="literal string escape"></span>    env <span class="name variable">DISPLAY</span><span class="operator">=</span><span class="name variable">$DISPLAY</span> <span class="name variable">PULSE_SERVER</span><span class="operator">=</span><span class="name variable">$PULSE_SOCKET</span> <span class="name variable">$CMD_LINE</span>
+<span class="ln">17 </span>
+<span class="ln">18 </span><span class="keyword">if</span> <span class="operator">[</span> <span class="literal string double">&quot;$STARTED&quot;</span> <span class="operator">=</span> <span class="literal string double">&quot;true&quot;</span> <span class="operator">]</span>; <span class="keyword">then
+</span><span class="ln">19 </span><span class="keyword">    </span>lxc-stop -n <span class="name variable">$CONTAINER</span> -t 10
+<span class="ln">20 </span><span class="keyword">fi</span>
+</pre>
+<p>Make sure the script is executable or the next step won’t work. This script will check if the container is running, if not, start it (and remember it did), then spawn google-chrome with the right environment set (and disabling its built-in sandbox as for some obscure reasons, it dislikes user namespaces), once google-chrome exits, the container is stopped.</p>
+<p>To make things shinier, you may now also create <tt class="docutils literal"><span class="pre">~/.local/share/applications/google-chrome.desktop</span></tt> containing:</p>
+<pre class="code literal-block">
+<span class="ln">1 </span>[Desktop Entry]
+<span class="ln">2 </span>Version=1.0
+<span class="ln">3 </span>Name=Google Chrome
+<span class="ln">4 </span>Comment=Access the Internet
+<span class="ln">5 </span>Exec=/home/USERNAME/.local/share/lxc/precise-gui/start-chrome %U
+<span class="ln">6 </span>Icon=/home/USERNAME/.local/share/lxc/precise-gui/rootfs/opt/google/chrome/product_logo_256.png
+<span class="ln">7 </span>Type=Application
+<span class="ln">8 </span>Categories=Network;WebBrowser;
+</pre>
+<p>Don’t forget to replace <tt class="docutils literal"><span class="pre">USERNAME</span></tt> to your own username so that both paths are valid.</p>
+<p>And that’s it! You should now find a Google Chrome icon somewhere in your desktop environment (menu, dash, whatever…). Clicking on it will start Chrome which can be used pretty much as usual, when closed, the container will shutdown.</p>
+<p>You may want to setup extra symlinks or bind-mount to make it easier to access things like the <tt class="docutils literal"><span class="pre">Downloads</span></tt> folder but that really depends on what you’re using the container for.</p>
+<img alt="Chrome running in LXC" class="align-center" src="_images/chrome-in-lxc.mini.png" />
+<p>Obviously, the same process can be used for many different piece of software.</p>
+</div>
+<div class="section" id="skype">
+<h2>10.3. Skype<a class="headerlink" href="#skype" title="Permalink to this headline">¶</a></h2>
+<p>Quite a few people have contacted me asking about running Skype in that same container. I won’t give you a whole step by step guide as the one for Chrome cover 99% of what you need to do for Skype.</p>
+<p>However there are two tricks you need to be aware of to get Skype to work properly:</p>
+<p>Set <tt class="docutils literal"><span class="pre">QT_X11_NO_MITSHM</span></tt> to <tt class="docutils literal"><span class="pre">1</span></tt></p>
+<p>(otherwise you get a blank window as it tries to use shared memory)</p>
+<p>Set <tt class="docutils literal"><span class="pre">GNOME_DESKTOP_SESSION_ID</span></tt> to <tt class="docutils literal"><span class="pre">this-is-deprecated</span></tt></p>
+<p>(otherwise you get an ugly Qt theme)</p>
+<p>Those two should be added after the <tt class="docutils literal"><span class="pre">env</span></tt> in the launcher script you’ll write for Skype.</p>
+<p>Apparently on some NVidia system, you may also need to set an additional environment variable (possibly useful not only for Skype):</p>
+<div class="code highlight-python"><pre>LD_PRELOAD=/usr/lib/i386-linux-gnu/mesa/libGL.so.1</pre>
+</div>
+</div>
+<div class="section" id="steam">
+<h2>10.4. Steam<a class="headerlink" href="#steam" title="Permalink to this headline">¶</a></h2>
+<p>And finally, yet another commonly asked one, Steam.</p>
+<p>That one actually doesn’t require anything extra in its environment, just grab the .deb, install it in the container, run an <tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">-f</span> <span class="pre">install</span></tt> to install any remaining dependency, create a launcher script and .desktop and you’re done.
+I’ve been happily playing a few games (thanks to Valve giving those to all Ubuntu and Debian developers) without any problem so far.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lxc-1-0-scripting-with-the-api.html" title="9. Scripting with the api"
+             >previous</a> |</li>
+        <li><a href="index.html">LXC 1.0 - Quickstart 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, CC-BY-NC-SA - Unless explicitly mentioned otherwise, the content of this blog is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Canada License, Stéphane Graber &lt;http://www.stgraber.org&gt;.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
